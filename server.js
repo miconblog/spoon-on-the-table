@@ -37,6 +37,7 @@ app.prepare()
     // 대쉬보드
     server.use('/dashboard', dashboard);
 
+    // 상세 페이지 라우팅
     server.get('/p/:id', (req, res) => {
       const actualPage = '/post'
       const queryParams = {
@@ -45,6 +46,7 @@ app.prepare()
       app.render(req, res, actualPage, queryParams)
     })
 
+    // 나머지 모든 라우팅
     server.get('*', (req, res) => {
       return handle(req, res)
     })
