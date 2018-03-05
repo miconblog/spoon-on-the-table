@@ -1,21 +1,14 @@
-# Razzle x After.js
+# Spoon on the table
 
-## How to use
+## Todo List
+- Storybook 설정
+- antd 설정
+- 회원가입 페이지
+- 로그인 페이지
+- 홈 페이지
 
-Download the example [or clone the whole project](https://github.com/jaredpalmer/razzle.git):
 
-```bash
-curl https://codeload.github.com/jaredpalmer/razzle/tar.gz/master | tar -xz --strip=2 razzle-master/examples/with-afterjs
-cd with-afterjs
-```
+## After.js 커스텀 바벨 설정
 
-Install it and run:
 
-```bash
-yarn install
-yarn start
-```
-
-## Idea behind the example
-
-This is a basic, bare-bones example of how to use After.js and Razzle.
+## Ant Design 설정
