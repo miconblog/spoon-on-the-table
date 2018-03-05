@@ -1,18 +1,36 @@
 import Link from 'next/link'
+import { Layout, Row, Col } from 'antd'
 
-const linkStyle = {
-  marginRight: 15
-}
+const { Header } = Layout;
 
-const Header = () => (
-    <div>
-        <Link href="/">
-          <a style={linkStyle}>Home</a>
-        </Link>
-        <Link href="/about">
-          <a style={linkStyle}>About</a>
-        </Link>
-    </div>
+export default () => (
+  <Header>
+    <Row type="flex" justify="space-between">
+      <Col>
+        <Link href="/"><h1>TableSpoon</h1></Link>
+      </Col>
+      <Col>
+        <Link href="/"><a className="rm">도움말</a></Link>
+        <Link href="/"><a className="rm">테이블 등록</a></Link>
+        <Link href="/sign"><a>회원가입/로그인</a></Link>
+      </Col>
+
+      <style jsx>{`
+      h1 {
+        color: #fff;
+        font-family: cursive;
+        font-weight: bold;    
+      }
+      a { 
+        color: #fff; 
+        display:inline-block; 
+        text-align:center; 
+        
+        &.rm {
+          margin-right: 25px;
+        }
+      }
+    `}</style>
+    </Row>
+  </Header>
 )
-
-export default Header
