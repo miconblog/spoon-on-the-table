@@ -11,6 +11,7 @@
     "analyze": "cross-env ANALYZE=1 next build"
   },
   "dependencies": {
+    "antd": "^3.2.3",
     "express": "^4.16.2",
     "isomorphic-unfetch": "^2.0.0",
     "next": "^5.0.0",
@@ -21,6 +22,7 @@
     "react-markdown": "^3.2.2"
   },
   "devDependencies": {
+    "babel-plugin-inline-import": "^2.0.6",
     "cross-env": "^5.0.1",
     "parse-dashboard": "^1.1.2",
     "webpack-bundle-analyzer": "^2.11.1"

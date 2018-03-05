@@ -1,4 +1,4 @@
-import Layout from '../components/MyLayout'
+import Layout from '../lib/Layout'
 import fetch from 'isomorphic-unfetch'
 import Markdown from 'react-markdown'
 

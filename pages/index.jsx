@@ -1,6 +1,7 @@
-import Layout from '../components/MyLayout'
+import Layout from '../lib/Layout'
 import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
+import { Button } from 'antd'
 
 const Index = (props) => (
   <Layout>
@@ -14,6 +15,8 @@ const Index = (props) => (
         </li>
       ))}
     </ul>
+
+    <Button>TEST</Button>
     <style jsx>{`
       h1, a {
         font-family: "Arial";
