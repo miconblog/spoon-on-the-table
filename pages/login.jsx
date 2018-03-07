@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Form, Icon, Input, Button, Checkbox, Divider } from 'antd';
 const FormItem = Form.Item;
 
-class RegisterForm extends React.Component {
+class LoginForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -14,12 +14,14 @@ class RegisterForm extends React.Component {
   }
   render() {
     const { getFieldDecorator } = this.props.form;
+
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
         <label className="field-label">이메일 주소<span>*</span></label>
         <FormItem>
           {getFieldDecorator('email', {
             rules: [{ required: true }],
+
           })(
             <Input disabled prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="email" />
           )}
@@ -65,26 +67,26 @@ class RegisterForm extends React.Component {
   }
 }
 
-const WrappedRegisterForm = Form.create({
+const WrappedLoginForm = Form.create({
   mapPropsToFields(props) {
     return {
       email: Form.createFormField({ value: props.email })
     };
   }
-})(RegisterForm);
+})(LoginForm);
 
-const Signup = (props) => (
+const Login = (props) => (
   <div>
-    <div className="sign-page">
+    <div className="login-page">
       <div className="logo">
         <Link href="/"><a><h1>TableSpoon</h1></a></Link>
-        <p>어서오세요! 환영합니다.</p>
+        <p>어서오세요! 이제 거의 다 끝나갑니다.</p>
       </div>
-      <WrappedRegisterForm {...props} />
+      <WrappedLoginForm {...props} />
     </div>
 
     <style jsx>{`
-      .sign-page {
+      .login-page {
         padding-top: 50px;
         width: 310px;
         margin: 0 auto;
@@ -109,7 +111,7 @@ const Signup = (props) => (
   </div>
 )
 
-Signup.getInitialProps = ({ query, res }) => {
+Login.getInitialProps = ({ query, res }) => {
 
   const { email } = query;
   if (!email) {
@@ -121,4 +123,4 @@ Signup.getInitialProps = ({ query, res }) => {
   }
 }
 
-export default Signup;
+export default Login;

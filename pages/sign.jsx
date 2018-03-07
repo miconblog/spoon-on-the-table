@@ -1,13 +1,30 @@
-import { HtmlHead } from '../lib/Layout'
 import Link from 'next/link'
+import Router from 'next/router'
 import { Form, Icon, Input, Button, Checkbox, Divider } from 'antd';
+import Parse from '../lib/parse';
+
 const FormItem = Form.Item;
 
 class LoginForm extends React.Component {
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
+
+        Parse.Cloud.run('duplicateUser', values).then((res) => {
+          console.log(res)
+
+          if (res === 'YES') {
+            // 로그인 페이지로 
+            Router.push(`/login?email=${values.email}`, '/login');
+          } else {
+            // 가입 페이지로 
+            Router.push(`/signup?email=${values.email}`, '/signup');
+          }
+
+        })
+
         console.log('Received values of form: ', values);
       }
     });
@@ -55,17 +72,16 @@ const WrappedNormalLoginForm = Form.create()(LoginForm);
 
 const SocialButtons = () => (
   <div>
-    <Button 
-    icon="facebook" 
-    className="full-width-button" 
-    style={{backgroundColor:'#4267b2', color:'#fff', height: '40px'}}>페이스북</Button>
+    <Button
+      icon="facebook"
+      className="full-width-button"
+      style={{ backgroundColor: '#4267b2', color: '#fff', height: '40px' }}>페이스북</Button>
   </div>
 )
 
 
 export default () => (
   <div>
-    <HtmlHead />
     <div className="sign-page">
       <div className="logo">
         <Link href="/"><a><h1>TableSpoon</h1></a></Link>
@@ -76,34 +92,6 @@ export default () => (
       <Divider>OR</Divider>
       <SocialButtons />
     </div>
-
-    <style jsx global>{`
-      #__next {
-        height: 100%;
-
-        > div {
-          height: 100%;
-          display: flex;
-        }
-
-        .login-form {
-          max-width: 300px;
-        }
-        .login-form-forgot {
-          float: right;
-        }
-        .full-width-button {
-          width: 100%;
-          font-size: 15px;
-          height: 38px;
-        }
-
-        .ant-input-affix-wrapper {
-          font-size: 15px;
-          height: 38px;
-        }
-      }
-    `}</style>
 
     <style jsx>{`
       .sign-page {
