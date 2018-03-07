@@ -7,22 +7,29 @@ const dev = process.env.NODE_ENV !== 'production'
 const app = next({
   dev
 })
-const handle = app.getRequestHandler()
+const handle = app.getRequestHandler();
+
+const {
+  appId,
+  serverURL,
+  masterKey,
+  fileKey
+} = require('./lib/parse_env');
 
 const api = new ParseServer({
   databaseURI: 'mongodb://localhost:27017/dev', // Connection string for your MongoDB database
-  cloud: './cloud/main.js', // Absolute path to your Cloud Code
-  appId: 'myAppId',
-  masterKey: 'myMasterKey', // Keep this key secret!
-  fileKey: 'optionalFileKey',
-  serverURL: 'http://localhost:3000/parse' // Don't forget to change to https if needed
+  cloud: './cloud', // Absolute path to your Cloud Code
+  appId,
+  masterKey, // Keep this key secret!
+  fileKey,
+  serverURL // Don't forget to change to https if needed
 });
 
 const dashboard = new ParseDashboard({
   "apps": [{
-    "serverURL": "http://localhost:3000/parse",
-    "appId": "myAppId",
-    "masterKey": "myMasterKey",
+    serverURL,
+    appId,
+    masterKey,
     "appName": "MyApp"
   }]
 });
@@ -38,7 +45,9 @@ app.prepare()
     server.use('/dashboard', dashboard);
 
     // 상세 페이지 라우팅
-    server.get('/p/:id', (req, res) => {
+    server.get('/tables/:id', (req, res) => {
+      console.log('매칭???...')
+
       const actualPage = '/post'
       const queryParams = {
         id: req.params.id

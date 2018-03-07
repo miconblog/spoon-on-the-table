@@ -1,5 +1,5 @@
 import { About, SiteMap } from '../components'
-import Layout from '../lib/Layout'
+import Layout from '../layouts/Layout'
 import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
 import { Button, Divider } from 'antd'
@@ -34,10 +34,7 @@ Index.getInitialProps = async function () {
     rows.push(data.slice(i * size, (i + 1) * size))
   }
 
-  console.log(`Show data fetched. Count: ${data.length}`)
-
   return {
-    shows: data,
     rows
   }
 }
