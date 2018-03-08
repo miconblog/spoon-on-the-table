@@ -3,12 +3,12 @@ import Head from 'next/head'
 import { Layout, Divider } from 'antd'
 const { Footer, Sider, Content } = Layout;
 
-export default (props) => (
+export default ({ loginUser, children }) => (
   <div>
     <Layout style={{backgroundColor:'#fff'}}>
-      <Header />
+      <Header loginUser={loginUser} />
       <Content style={{ padding: '10px 20px', width: '900px', margin: '0 auto' }}>
-        {props.children}
+        {children}
       </Content>
       <Footer style={{ backgroundColor:'#fff', padding: '10px 20px', width: '900px', margin: '0 auto' }}>
         <footer>

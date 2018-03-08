@@ -1,31 +1,31 @@
 import Link from 'next/link'
 import Router from 'next/router'
 import { Form, Icon, Input, Button, Checkbox, Divider } from 'antd';
-import Parse from '../lib/parse';
+import { checkStatus } from '../lib/utils'
 
 const FormItem = Form.Item;
 
-class LoginForm extends React.Component {
+class SignForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
 
-        Parse.Cloud.run('duplicateUser', values).then((res) => {
-          console.log(res)
-
-          if (res === 'YES') {
-            // 로그인 페이지로 
-            Router.push(`/login?email=${values.email}`, '/login');
-          } else {
-            // 가입 페이지로 
-            Router.push(`/signup?email=${values.email}`, '/signup');
-          }
-
-        })
-
-        console.log('Received values of form: ', values);
+        const { email } = values;
+        fetch('/api/user/duplicate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify({ email })
+        }).then(checkStatus)
+          .then(function (data) {
+            Router.push(`/signup?email=${email}`, '/signup');
+          }).catch(function (error) {
+            Router.push(`/login?email=${email}`, '/login');
+          })
       }
     });
   }
@@ -43,32 +43,12 @@ class LoginForm extends React.Component {
         <FormItem>
           <Button type="primary" htmlType="submit" className="full-width-button">로그인 또는 가입하기</Button>
         </FormItem>
-        {/* <FormItem>
-          {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your Password!' }],
-          })(
-            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
-          )}
-        </FormItem>
-        <FormItem>
-          {getFieldDecorator('remember', {
-            valuePropName: 'checked',
-            initialValue: true,
-          })(
-            <Checkbox>Remember me</Checkbox>
-          )}
-          <a className="login-form-forgot" href="">Forgot password</a>
-          <Button type="primary" htmlType="submit" className="login-form-button">
-            Log in
-          </Button>
-          Or <a href="">register now!</a>
-        </FormItem> */}
       </Form>
     );
   }
 }
 
-const WrappedNormalLoginForm = Form.create()(LoginForm);
+const WrappedSignForm = Form.create()(SignForm);
 
 const SocialButtons = () => (
   <div>
@@ -88,7 +68,7 @@ export default () => (
         <p>전세계의 여행자들을</p>
         <p>내 식탁에서 만나는 방법!</p>
       </div>
-      <WrappedNormalLoginForm />
+      <WrappedSignForm />
       <Divider>OR</Divider>
       <SocialButtons />
     </div>
@@ -98,6 +78,7 @@ export default () => (
         width: 300px;
         margin: 0 auto;
         align-self: center;
+        margin-top: -100px;
       }
 
       .logo {

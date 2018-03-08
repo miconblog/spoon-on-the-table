@@ -13,6 +13,12 @@
   - [v] 중복메일이 아니면 가입 페이지로 이동한다.
   - [v] 중복메일이면 로그인 페이지로 이동한다.
   - [v] 로그인 페이지로 이동할때 중복이 확인된 이메일을 물고 넘어가야한다. (Route.push의 as와 getInitialProps를 응용 )
+  - [0] 회원가입 페이지의 폼을 완성해서 회원가입 버튼을 누르면 회원가입이 되어야한다.
+    - [ ] 회원가입후 메일이 유효한지 확인하는 메일을 보낸다.
+    - [ ] 회원가입후 로그아웃 시켜준다. (메일이 유효하지 않으면 로그인을 시켜주지 않는다. 에러메시지로 확인을 보내줌..) / 정책문제
+  - [v] 로그인 페이지에서 비밀번호를 입력하고 로그인 버튼을 누르면 로그인이 되야한다.
+  - [v] 로그인후에 로그아웃을 누르면 로그아웃 되야한다.
+  - [v] 로그인 이후에 저장된 데이터를 가지고 헤더에 로그인된 이메일이 보여야한다.
   - [ ] 페이스북으로 연결해서 로그인하면 회원가입페이지로 이동한다.
 - [ ] 로그인 페이지
 - [ ] 홈 페이지
@@ -53,11 +59,12 @@ After.js는 Next.js에 React-Router를 붙인 개념으로 이해하면된다. �
 Next.js 문서에서 추천하는 구조
 - Next_PRJ/
    |- .next/
-   |- components/
-   |- layouts/
-   |- pages/
+   |- components/  --- comp
+   |- layouts/     --- 
+   |- pages/  --- 컨벤션
+       |- _document.jsx
 
-- Express_PRJ/
+- ParseServer_PRJ/
    |- cloud/
    |- lib/
    |- logs/
@@ -111,4 +118,47 @@ const WrappedLoginForm = Form.create({
 })(LoginForm);
 
 ```
-[참고링크 1](https://ant.design/components/form/#components-form-demo-global-state)
+#### 참고링크
+
+- https://ant.design/components/form/#components-form-demo-global-state
+
+
+### 4. Paser.Promise
+
+```javascript
+
+Parse.User.login()
+  .then(resolved, rejected)
+  .catch()
+
+```
+
+### 5. 파스서버에 로그인 하는 방법
+
+파스 서버에 로그인하는 방법은 SDK를 이용하는 방법과 REST API를 직접 호출하는 방법이 있다. 어떤 방법을 사용하든 파스 서버에 로그인하면 유저 세션(Session)은 파스 서버가 관리해준다.
+즉, 로그인한 정보 관리는 Express 세션 없이도 관리가 가능한다.
+
+#### 1. Parse SDK 를 이용하는 방법
+
+SDK 이용은 보통 클라이언트(App)에서 쓰인다. 웹(자바스크립트)에서 사용할땐 중요한 키값들이 노출되므로 모양새가 이쁘지는 않다. 다만 App에서는 이런 키가 패키징되므로 비교적 안전하다.
+
+SDK로 로그인하면 기본적으로 localStorage에 세션 정보(세션토큰과 유저정보)를 저장하게 된다. 따라서 웹에서 SPA를 구현한다면 항상 로그인한 이후에 로컬 스토리지에 저장된 세션토큰을 이용해 정보를 얻을수있다.
+
+#### 2. REST API를 이용하는 방법
+
+NodeJS 서버를 이용할 경우 SDK를 이용하는 것보다 /login 엔드포인트를 만들고 직접 REST API를 호출하는 것이 비교적 안전하다. (키값 노출이 없다.)
+
+다만, REST API로 구현하면 웹 클라이언트 쪽으로 쿠키를 이용해 토큰을 내려주고, 요청을 받을때 쿠키에 박힌 토큰을 보고 유저를 직접 판단해야한다.
+
+
+### 6. Ajax 응답으로 쿠키(set-cookie) 설정하기
+
+클라이언트에서 요청할때 보안 관련 옵션인 `credentials`을 설정해주어야한다.
+
+- `credentials:'same-origin'` - 같은 도메인일 경우 쿠키 허용
+- `credentials:'include'` - 다른 도메인일때도 쿠키 허용, (서버에 CORS 설정이 필요)
+
+#### 참고링크
+
+- https://github.com/github/fetch#sending-cookies
+- https://xhr.spec.whatwg.org/#the-withcredentials-attribute

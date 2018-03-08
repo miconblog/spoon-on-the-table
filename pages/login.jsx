@@ -1,18 +1,42 @@
 import Link from 'next/link'
+import Router from 'next/router'
 import { Form, Icon, Input, Button, Checkbox, Divider } from 'antd';
+import { checkStatus } from '../lib/utils'
+
 const FormItem = Form.Item;
 
 class LoginForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    const data = new FormData(e.target);
+
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+
+        const { email, password } = values;
+
+        fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify({
+            username: email,
+            password
+          })
+        }).then(checkStatus)
+          .then(function () {
+            location.replace('/')
+          }).catch(function (error) {
+            console.log('로그인 실패...', error);
+          })
       }
     });
   }
   render() {
+
     const { getFieldDecorator } = this.props.form;
 
     return (
@@ -38,7 +62,7 @@ class LoginForm extends React.Component {
 
         <p className="desc">SpoonTable에 가입함으로써 <a target="_blank" href="/privacy">개인정보 이용약관</a>에 동의합니다.</p>
         <FormItem>
-          <Button type="primary" htmlType="submit" className="full-width-button">회원 가입</Button>
+          <Button type="primary" htmlType="submit" className="full-width-button">로그인</Button>
         </FormItem>
 
         <style jsx>{`
@@ -68,19 +92,19 @@ class LoginForm extends React.Component {
 }
 
 const WrappedLoginForm = Form.create({
-  mapPropsToFields(props) {
+  mapPropsToFields({ email }) {
     return {
-      email: Form.createFormField({ value: props.email })
+      email: Form.createFormField({ value: email })
     };
   }
 })(LoginForm);
 
 const Login = (props) => (
-  <div>
+  <div className="Login">
     <div className="login-page">
       <div className="logo">
         <Link href="/"><a><h1>TableSpoon</h1></a></Link>
-        <p>어서오세요! 이제 거의 다 끝나갑니다.</p>
+        <p>비밀번호가 노출되지 않도록 주의해주세요!</p>
       </div>
       <WrappedLoginForm {...props} />
     </div>

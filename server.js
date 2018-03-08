@@ -1,7 +1,8 @@
 const express = require('express')
 const next = require('next')
-const ParseServer = require('parse-server').ParseServer;
-const ParseDashboard = require('parse-dashboard');
+const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
+const parseServer = require('./lib/parse-server')
 
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({
@@ -9,40 +10,28 @@ const app = next({
 })
 const handle = app.getRequestHandler();
 
-const {
-  appId,
-  serverURL,
-  masterKey,
-  fileKey
-} = require('./lib/parse_env');
-
-const api = new ParseServer({
-  databaseURI: 'mongodb://localhost:27017/dev', // Connection string for your MongoDB database
-  cloud: './cloud', // Absolute path to your Cloud Code
-  appId,
-  masterKey, // Keep this key secret!
-  fileKey,
-  serverURL // Don't forget to change to https if needed
-});
-
-const dashboard = new ParseDashboard({
-  "apps": [{
-    serverURL,
-    appId,
-    masterKey,
-    "appName": "MyApp"
-  }]
-});
-
 app.prepare()
   .then(() => {
     const server = express()
 
+    // 정적 파일
+    server.use(express.static('public'))
+    server.use('/_next', express.static('.next'))
+
+    // 쿠키 파서
+    server.use(cookieParser())
+
     // API 서버
-    server.use('/parse', api);
+    server.use('/parse', parseServer.api);
 
     // 대쉬보드
-    server.use('/dashboard', dashboard);
+    server.use('/dashboard', parseServer.dashboard);
+
+    // 파스 유저 인증 및 로그인/아웃, 중복이메일 확인
+    server.use(parseServer.authentication);
+    server.post('/login', bodyParser.json(), parseServer.login);
+    server.get('/logout', parseServer.logout);
+    server.post('/api/user/duplicate', bodyParser.json(), parseServer.duplicate)
 
     // 상세 페이지 라우팅
     server.get('/tables/:id', (req, res) => {

@@ -3,10 +3,10 @@ import Layout from '../layouts/Layout'
 import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
 import { Button, Divider } from 'antd'
-import TableList from '../components/TableList';
+import TableList from '../components/TableList'
 
 const Index = (props) => (
-  <Layout>
+  <Layout loginUser={props.loginUser}>
 
     <TableList {...props} />
 
@@ -21,9 +21,10 @@ const Index = (props) => (
   </Layout>
 )
 
-Index.getInitialProps = async function () {
-  const res = await fetch('https://api.tvmaze.com/search/shows?q=batman')
-  const data = await res.json()
+Index.getInitialProps = async function ({req}) {
+  const res = await fetch('https://api.tvmaze.com/search/shows?q=batman');
+  const data = await res.json();
+  const loginUser = req.user ? req.user.toJSON() : null;
 
   const size = 3;
   const rows = [];
@@ -35,7 +36,8 @@ Index.getInitialProps = async function () {
   }
 
   return {
-    rows
+    rows,
+    loginUser
   }
 }
 

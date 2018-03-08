@@ -13,7 +13,7 @@ export default class MyDocument extends Document {
     return (
       <html>
         <Head>
-          <title>This page has a title 🤔</title>
+          <title>CodingNight 🤔</title>
           <meta charSet='utf-8' />
           <meta name='viewport' content='initial-scale=1.0, width=device-width' />
           <style dangerouslySetInnerHTML={{ __html: stylesheet }} />
@@ -28,7 +28,7 @@ export default class MyDocument extends Document {
               display: flex;
             }
           }
-          
+
           .login-form {
             max-width: 310px;
           }
@@ -50,7 +50,7 @@ export default class MyDocument extends Document {
 
         `}</style>
 
-        <body className="custom_class">
+        <body className="coding-night">
           {this.props.customValue}
           <Main />
           <NextScript />
