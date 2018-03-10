@@ -1,33 +1,30 @@
-const express = require('express')
-const next = require('next')
-const LRUCache = require('lru-cache')
-const cookieParser = require('cookie-parser')
-const bodyParser = require('body-parser')
-const parseServer = require('./lib/parse-server')
+const express = require('express');
+const next = require('next');
+const LRUCache = require('lru-cache');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const parseServer = require('./lib/parse-server');
 
-const dev = process.env.NODE_ENV !== 'production'
-const app = next({
-  dev
-})
+const dev = process.env.NODE_ENV !== 'production';
+const app = next({ dev });
 const handle = app.getRequestHandler();
 
 // SSR 캐시 설정
 const ssrCache = new LRUCache({
   max: 100,
-  maxAge: 1000 * 60 * 60 // 1hour
-})
-
+  maxAge: 1000 * 60 * 60, // 1hour
+});
 
 app.prepare()
   .then(() => {
-    const server = express()
+    const server = express();
 
     // 정적 파일
     server.use(express.static('public'));
     server.use('/antd', express.static('node_modules/antd/dist'));
 
     // 쿠키 파서
-    server.use(cookieParser())
+    server.use(cookieParser());
 
     // API 서버
     server.use('/parse', parseServer.api);
@@ -39,32 +36,32 @@ app.prepare()
     server.use(parseServer.authentication);
     server.get('/logout', parseServer.logout);
     server.post('/login', bodyParser.json(), parseServer.login);
-    server.post('/api/user/duplicate', bodyParser.json(), parseServer.duplicate)
-    server.post('/api/user/create', bodyParser.json(), parseServer.createUser)
+    server.post('/api/user/duplicate', bodyParser.json(), parseServer.duplicate);
+    server.post('/api/user/create', bodyParser.json(), parseServer.createUser);
 
     // 상세 페이지 라우팅
     server.get('/tables/:id', (req, res) => {
-      const actualPage = '/post'
+      const actualPage = '/post';
       const queryParams = {
-        id: req.params.id
-      }
-      renderAndCache(req, res, actualPage, queryParams)
-    })
+        id: req.params.id,
+      };
+      app.render(req, res, actualPage, queryParams);
+    });
 
     // 나머지 모든 라우팅
     server.get('*', (req, res) => {
-      return handle(req, res)
-    })
+      return handle(req, res);
+    });
 
     server.listen(3000, (err) => {
-      if (err) throw err
-      console.log('> Ready on http://localhost:3000')
-    })
+      if (err) throw err;
+      console.log('> Ready on http://localhost:3000');
+    });
   })
   .catch((ex) => {
-    console.error(ex.stack)
-    process.exit(1)
-  })
+    console.error(ex.stack);
+    process.exit(1);
+  });
 
 
 /*
@@ -72,35 +69,36 @@ app.prepare()
  * an immediate page change (e.g a locale stored in req.session)
  */
 function getCacheKey(req) {
-  return `${req.url}`
+  return `${req.url}`;
 }
 
+// eslint-disable-next-line no-unused-vars
 async function renderAndCache(req, res, pagePath, queryParams) {
-  const key = getCacheKey(req)
+  const key = getCacheKey(req);
 
   // If we have a page in the cache, let's serve it
   if (ssrCache.has(key)) {
-    res.setHeader('x-cache', 'HIT')
-    res.send(ssrCache.get(key))
-    return
+    res.setHeader('x-cache', 'HIT');
+    res.send(ssrCache.get(key));
+    return;
   }
 
   try {
     // If not let's render the page into HTML
-    const html = await app.renderToHTML(req, res, pagePath, queryParams)
+    const html = await app.renderToHTML(req, res, pagePath, queryParams);
 
     // Something is wrong with the request, let's skip the cache
     if (res.statusCode !== 200) {
-      res.send(html)
-      return
+      res.send(html);
+      return;
     }
 
     // Let's cache this page
-    ssrCache.set(key, html)
+    ssrCache.set(key, html);
 
-    res.setHeader('x-cache', 'MISS')
-    res.send(html)
+    res.setHeader('x-cache', 'MISS');
+    res.send(html);
   } catch (err) {
-    app.renderError(err, req, res, pagePath, queryParams)
+    app.renderError(err, req, res, pagePath, queryParams);
   }
 }
