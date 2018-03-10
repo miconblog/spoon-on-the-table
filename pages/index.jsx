@@ -26,7 +26,8 @@ Index.getInitialProps = async function ({req}) {
   const data = await res.json();
   let loginUser = null;
 
-  if( !!req && req.user) {
+  // SSR 에서만 동작 
+  if( req && req.user) {
     loginUser = req.user.toJSON();
   }
   
