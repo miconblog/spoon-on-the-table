@@ -1,8 +1,8 @@
-import { initStore } from '../redux/store'
-import withRedux from '../redux/withRedux'
-import Layout from '../layouts/Layout'
-import fetch from 'isomorphic-unfetch'
-import Markdown from 'react-markdown'
+import { initStore } from '../redux/store';
+import withRedux from '../redux/withRedux';
+import Layout from '../layouts/Layout';
+import fetch from 'isomorphic-unfetch';
+import Markdown from 'react-markdown';
 
 const Post = (props) => (
   <Layout>
@@ -42,23 +42,21 @@ And here's the content.
      }
   `}</style>
   </Layout>
-)
+);
 
 Post.getInitialProps = async function ({ query, req, store }) {
 
   // SSR 에서만 동작 
   if (req && req.user) {
-    store.dispatch({ type: 'EXIST_SESSION_USER', payload: { loginUser: req.user.toJSON() } })
+    store.dispatch({ type: 'EXIST_SESSION_USER', payload: { loginUser: req.user.toJSON() } });
   }
 
   const { id } = query;
-  const res = await fetch(`https://api.tvmaze.com/shows/${id}`)
-  const show = await res.json()
+  const res = await fetch(`https://api.tvmaze.com/shows/${id}`);
+  const show = await res.json();
 
-  console.log(`Fetched show: ${id}, ${show.name}`, show)
+  return { show };
+};
 
-  return { show }
-}
-
-export default withRedux(initStore)(Post)
+export default withRedux(initStore)(Post);
 

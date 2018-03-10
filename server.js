@@ -33,19 +33,23 @@ app.prepare()
     server.use('/dashboard', parseServer.dashboard);
 
     // 파스 유저 인증 및 로그인/아웃, 중복이메일 확인
-    server.use(parseServer.authentication);
     server.get('/logout', parseServer.logout);
     server.post('/login', bodyParser.json(), parseServer.login);
     server.post('/api/user/duplicate', bodyParser.json(), parseServer.duplicate);
     server.post('/api/user/create', bodyParser.json(), parseServer.createUser);
 
     // 상세 페이지 라우팅
-    server.get('/tables/:id', (req, res) => {
+    server.get('/tables/:id', parseServer.authentication, (req, res) => {
       const actualPage = '/post';
       const queryParams = {
         id: req.params.id,
       };
       app.render(req, res, actualPage, queryParams);
+    });
+
+    // 메인페이지
+    server.get('/', parseServer.authentication, (req, res) => {
+      return handle(req, res);
     });
 
     // 나머지 모든 라우팅

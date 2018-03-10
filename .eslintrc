@@ -27,9 +27,10 @@
     "no-underscore-dangle": ["error", {"allow": ["_super", "_lookupFactory"]}],
     "object-shorthand": ["error", "methods"],
     "semi": 2,
-    "class-property": "always"
+    "class-property": 0
   },
   "plugins": [
+    "react",
     "class-property"
   ]
 }
