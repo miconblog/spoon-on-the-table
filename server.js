@@ -23,8 +23,8 @@ app.prepare()
     const server = express()
 
     // 정적 파일
-    server.use(express.static('public'))
-    server.use('/_next', express.static('.next'))
+    server.use(express.static('public'));
+    server.use('/antd', express.static('node_modules/antd/dist'));
 
     // 쿠키 파서
     server.use(cookieParser())

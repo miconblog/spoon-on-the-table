@@ -16,7 +16,7 @@ export default class MyDocument extends Document {
           <title>CodingNight 🤔</title>
           <meta charSet='utf-8' />
           <meta name='viewport' content='initial-scale=1.0, width=device-width' />
-          <style dangerouslySetInnerHTML={{ __html: stylesheet }} />
+          <link rel="stylesheet" href="/antd/antd.min.css"/>
           <style>{`body { margin: 0 } /* custom! */`}</style>
         </Head>
         <style jsx global>{`
