@@ -3,7 +3,7 @@ const next = require('next');
 const LRUCache = require('lru-cache');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const parseServer = require('./lib/parse-server');
+const ps = require('./lib/parse-server');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -27,28 +27,26 @@ app.prepare()
     server.use(cookieParser());
 
     // API 서버
-    server.use('/parse', parseServer.api);
+    server.use('/parse', ps.api);
 
     // 대쉬보드
-    server.use('/dashboard', parseServer.dashboard);
+    server.use('/dashboard', ps.dashboard);
 
     // 파스 유저 인증 및 로그인/아웃, 중복이메일 확인
-    server.get('/logout', parseServer.logout);
-    server.post('/login', bodyParser.json(), parseServer.login);
-    server.post('/api/user/duplicate', bodyParser.json(), parseServer.duplicate);
-    server.post('/api/user/create', bodyParser.json(), parseServer.createUser);
+    server.get('/logout', ps.logout);
+    server.post('/login', bodyParser.json(), ps.login);
+    server.post('/api/user/duplicate', bodyParser.json(), ps.duplicate);
+    server.post('/api/user/create', bodyParser.json(), ps.createUser);
 
     // 상세 페이지 라우팅
-    server.get('/tables/:id', parseServer.authentication, (req, res) => {
-      const actualPage = '/post';
-      const queryParams = {
+    server.get('/tables/:id', ps.authentication, (req, res) => {
+      app.render(req, res, '/post', {
         id: req.params.id,
-      };
-      app.render(req, res, actualPage, queryParams);
+      });
     });
 
     // 메인페이지
-    server.get('/', parseServer.authentication, (req, res) => {
+    server.get('/', ps.authentication, (req, res) => {
       return handle(req, res);
     });
 
