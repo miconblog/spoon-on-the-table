@@ -4,9 +4,11 @@ import Link from 'next/link'
 import fetch from 'isomorphic-unfetch'
 import { Button, Divider } from 'antd'
 import TableList from '../components/TableList'
+import { initStore } from '../redux/store'
+import withRedux from '../redux/withRedux'
 
 const Index = (props) => (
-  <Layout loginUser={props.loginUser}>
+  <Layout>
 
     <TableList {...props} />
 
@@ -21,16 +23,15 @@ const Index = (props) => (
   </Layout>
 )
 
-Index.getInitialProps = async function ({req}) {
+Index.getInitialProps = async function ({ req, store }) {
   const res = await fetch('https://api.tvmaze.com/search/shows?q=batman');
   const data = await res.json();
-  let loginUser = null;
 
   // SSR 에서만 동작 
-  if( req && req.user) {
-    loginUser = req.user.toJSON();
+  if (req && req.user) {
+    store.dispatch({ type: 'EXIST_SESSION_USER', payload: { loginUser: req.user.toJSON() } })
   }
-  
+
   const size = 3;
   const rows = [];
   const MAX_ROWS = Math.ceil(data.length / size);
@@ -41,10 +42,10 @@ Index.getInitialProps = async function ({req}) {
   }
 
   return {
-    rows,
-    loginUser
+    rows
   }
 }
 
-export default Index
+// Redux 스토어를 Index.props에 주입한다.
+export default withRedux(initStore)(Index)
 

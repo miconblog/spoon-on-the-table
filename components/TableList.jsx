@@ -7,7 +7,7 @@ const EventCard = ({ show }) => (
       style={{ width: 280, margin: '0 auto' }}
       cover={<img src={show.image.medium} />}
     >
-      <Link as={`/p/${show.id}`} href={`/post?id=${show.id}`}>
+      <Link as={`/tables/${show.id}`} href={`/post?id=${show.id}`}>
         <a>{show.name}</a>
       </Link>
     </Card>
