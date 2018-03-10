@@ -24,8 +24,12 @@ const Index = (props) => (
 Index.getInitialProps = async function ({req}) {
   const res = await fetch('https://api.tvmaze.com/search/shows?q=batman');
   const data = await res.json();
-  const loginUser = req.user ? req.user.toJSON() : null;
+  let loginUser = null;
 
+  if( !!req && req.user) {
+    loginUser = req.user.toJSON();
+  }
+  
   const size = 3;
   const rows = [];
   const MAX_ROWS = Math.ceil(data.length / size);

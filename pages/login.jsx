@@ -41,7 +41,6 @@ class LoginForm extends React.Component {
 
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
-        <label className="field-label">이메일 주소<span>*</span></label>
         <FormItem>
           {getFieldDecorator('email', {
             rules: [{ required: true }],
@@ -51,7 +50,6 @@ class LoginForm extends React.Component {
           )}
         </FormItem>
 
-        <label className="field-label">비밀번호<span>*</span></label>
         <FormItem>
           {getFieldDecorator('password', {
             rules: [{ required: true, message: 'Please input your Password!' }],
@@ -59,8 +57,6 @@ class LoginForm extends React.Component {
             <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
           )}
         </FormItem>
-
-        <p className="desc">SpoonTable에 가입함으로써 <a target="_blank" href="/privacy">개인정보 이용약관</a>에 동의합니다.</p>
         <FormItem>
           <Button type="primary" htmlType="submit" className="full-width-button">로그인</Button>
         </FormItem>

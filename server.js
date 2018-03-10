@@ -32,6 +32,7 @@ app.prepare()
     server.post('/login', bodyParser.json(), parseServer.login);
     server.get('/logout', parseServer.logout);
     server.post('/api/user/duplicate', bodyParser.json(), parseServer.duplicate)
+    server.post('/api/user/create', bodyParser.json(), parseServer.createUser)
 
     // 상세 페이지 라우팅
     server.get('/tables/:id', (req, res) => {

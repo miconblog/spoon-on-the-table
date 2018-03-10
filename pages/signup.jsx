@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Form, Icon, Input, Button, Checkbox, Divider } from 'antd';
+import { checkStatus } from '../lib/utils'
 const FormItem = Form.Item;
 
 class RegisterForm extends React.Component {
@@ -9,6 +10,30 @@ class RegisterForm extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+
+        const { email, password } = values;
+
+        fetch('/api/user/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'same-origin',
+          body: JSON.stringify({
+            username: email,
+            email,
+            password
+          })
+        }).then(checkStatus)
+          .then(function (user) {
+            
+            console.log( user );
+            location.replace('/')
+
+          }).catch(function (error) {
+            console.log('가입 실패...', error);
+          })
+
       }
     });
   }
@@ -78,7 +103,7 @@ const Signup = (props) => (
     <div className="sign-page">
       <div className="logo">
         <Link href="/"><a><h1>TableSpoon</h1></a></Link>
-        <p>어서오세요! 환영합니다.</p>
+        <p>어서오세요! 이제 거의 다 끝나갑니다.</p>
       </div>
       <WrappedRegisterForm {...props} />
     </div>
