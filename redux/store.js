@@ -1,24 +1,26 @@
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware } from 'redux';
 
 // 리듀서
 export const reducer = (state, { type, payload }) => {
   switch (type) {
-
     case 'EXIST_SESSION_USER':
 
-      return Object.assign({}, state, {
-        loginUser: payload.loginUser
-      })
+      return ({
+        ...state,
+        ...{
+          loginUser: payload.loginUser
+        }
+      });
 
     default:
-      return state
+      return state;
   }
-}
+};
 
 export const initStore = (initialState = {}) => {
   return createStore(
     reducer, initialState,
 
-    (typeof window !== 'undefined' && window.devToolsExtension) ? window.devToolsExtension() : f => f,
-  )
-}
+    (typeof window !== 'undefined' && window.devToolsExtension) ? window.devToolsExtension() : f => f
+  );
+};

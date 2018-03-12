@@ -1,9 +1,9 @@
 const {
-  BundleAnalyzerPlugin
-} = require('webpack-bundle-analyzer')
+  BundleAnalyzerPlugin,
+} = require('webpack-bundle-analyzer');
 const {
-  ANALYZE
-} = process.env
+  ANALYZE,
+} = process.env;
 
 module.exports = {
 
@@ -12,29 +12,28 @@ module.exports = {
   onDemandEntries: {
     // 개발모드에서 페이지 랜더링 비용이 좀 비싸므로 매번 빌드하지 않고, 메모리에 일정기간 유지한다.
     maxInactiveAge: 1000 * 60 * 60 * 24,
-    pagesBufferLength: 2
+    pagesBufferLength: 2,
   },
-  webpack: function (config, {
-    dev
-  }) {
+  webpack(config, { dev }) {
+
     if (ANALYZE) {
       config.plugins.push(new BundleAnalyzerPlugin({
         analyzerMode: 'server',
         analyzerPort: 8888,
-        openAnalyzer: true
-      }))
+        openAnalyzer: true,
+      }));
     }
 
-    // disable sourcemaps of webpack
-    config.devtool = 'eval'
+    if (dev) {
+      config.devtool = 'eval';
+    }
 
     // disable soucemaps of babel-loader
     for (const r of config.module.rules) {
       if (r.loader === 'babel-loader') {
-        r.options.sourceMaps = true
+        r.options.sourceMaps = true;
       }
     }
-
-    return config
-  }
-}
+    return config;
+  },
+};

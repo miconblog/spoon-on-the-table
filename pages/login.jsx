@@ -1,20 +1,19 @@
+import React from 'react'
 import Link from 'next/link'
 import Router from 'next/router'
-import { Form, Icon, Input, Button, Checkbox, Divider } from 'antd';
+import { Form, Icon, Input, Button, Checkbox, Divider } from 'antd'
 import { checkStatus } from '../lib/utils'
 
-const FormItem = Form.Item;
+const FormItem = Form.Item
 
 class LoginForm extends React.Component {
-
   handleSubmit = (e) => {
-    e.preventDefault();
-    const data = new FormData(e.target);
+    e.preventDefault()
+    const data = new FormData(e.target)
 
     this.props.form.validateFields((err, values) => {
       if (!err) {
-
-        const { email, password } = values;
+        const { email, password } = values
 
         fetch('/login', {
           method: 'POST',
@@ -30,35 +29,34 @@ class LoginForm extends React.Component {
           .then(function () {
             location.replace('/')
           }).catch(function (error) {
-            console.log('로그인 실패...', error);
+            console.log('로그인 실패...', error)
           })
       }
-    });
+    })
   }
-  render() {
-
-    const { getFieldDecorator } = this.props.form;
+  render () {
+    const { getFieldDecorator } = this.props.form
 
     return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
+      <Form onSubmit={this.handleSubmit} className='login-form'>
         <FormItem>
           {getFieldDecorator('email', {
-            rules: [{ required: true }],
+            rules: [{ required: true }]
 
           })(
-            <Input disabled prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="email" />
+            <Input disabled prefix={<Icon type='mail' style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder='email' />
           )}
         </FormItem>
 
         <FormItem>
           {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your Password!' }],
+            rules: [{ required: true, message: 'Please input your Password!' }]
           })(
-            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+            <Input prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />} type='password' placeholder='Password' />
           )}
         </FormItem>
         <FormItem>
-          <Button type="primary" htmlType="submit" className="full-width-button">로그인</Button>
+          <Button type='primary' htmlType='submit' className='full-width-button'>로그인</Button>
         </FormItem>
 
         <style jsx>{`
@@ -83,23 +81,23 @@ class LoginForm extends React.Component {
           }
         `}</style>
       </Form>
-    );
+    )
   }
 }
 
 const WrappedLoginForm = Form.create({
-  mapPropsToFields({ email }) {
+  mapPropsToFields ({ email }) {
     return {
       email: Form.createFormField({ value: email })
-    };
+    }
   }
-})(LoginForm);
+})(LoginForm)
 
 const Login = (props) => (
-  <div className="Login">
-    <div className="login-page">
-      <div className="logo">
-        <Link href="/"><a><h1>TableSpoon</h1></a></Link>
+  <div className='Login'>
+    <div className='login-page'>
+      <div className='logo'>
+        <Link href='/'><a><h1>TableSpoon</h1></a></Link>
         <p>비밀번호가 노출되지 않도록 주의해주세요!</p>
       </div>
       <WrappedLoginForm {...props} />
@@ -132,10 +130,9 @@ const Login = (props) => (
 )
 
 Login.getInitialProps = ({ query, res }) => {
-
-  const { email } = query;
+  const { email } = query
   if (!email) {
-    res.redirect('/sign');
+    res.redirect('/sign')
   }
 
   return {
@@ -143,4 +140,4 @@ Login.getInitialProps = ({ query, res }) => {
   }
 }
 
-export default Login;
+export default Login

@@ -1,5 +1,7 @@
 # Spoon on the table
 
+## 오늘 다룰 내용
+
 ## Todo List
 
 > v 완료, 0 진행중, - 고민중
@@ -18,13 +20,12 @@
   - [0] 회원가입 페이지의 폼을 완성해서 회원가입 버튼을 누르면 회원가입이 되어야한다.
   - [ ] 회원가입후 메일이 유효한지 확인하는 메일을 보낸다.
   - [ ] 회원가입후 로그아웃 시켜준다. (메일이 유효하지 않으면 로그인을 시켜주지 않는다. 에러메시지로 확인을 보내줌..) / 정책문제
-  - [ ] 세션정보 유지를 위해서 Redux, 로컬스토리지, 전역변수나 기타 등등 사용에 대한 고민을 해야함.
 - [v] 로그인 페이지
   - [v] 로그인 페이지에서 비밀번호를 입력하고 로그인 버튼을 누르면 로그인이 되야한다.
   - [v] 로그인 이후에 저장된 데이터를 가지고 헤더에 로그인된 이메일이 보여야한다.
   - [v] 로그인후에 로그아웃을 누르면 로그아웃 되야한다.
-
 - [ ] 홈 페이지
+- [v] 세션정보 유지를 위해서 Redux 적용
 
 ### 나중에 확장해야 할 기능
 
@@ -127,7 +128,7 @@ const WrappedLoginForm = Form.create({
 
 #### 참고링크
 
-- https://ant.design/components/form/#components-form-demo-global-state
+- [global-state](https://ant.design/components/form/#components-form-demo-global-state)
 
 
 ### 4. Paser.Promise
@@ -166,5 +167,5 @@ NodeJS 서버를 이용할 경우 SDK를 이용하는 것보다 /login 엔드포
 - `credentials:'include'` - 다른 도메인일때도 쿠키 허용, (서버에 CORS 설정이 필요)
 
 ***참고링크***
-- https://github.com/github/fetch#sending-cookies
-- https://xhr.spec.whatwg.org/#the-withcredentials-attribute
+- [sending-cookies](https://github.com/github/fetch#sending-cookies)
+- [withcredentials](https://xhr.spec.whatwg.org/#the-withcredentials-attribute)

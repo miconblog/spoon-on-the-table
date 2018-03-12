@@ -10,7 +10,7 @@ const Post = (props) => (
     <p>{props.show.summary.replace(/<[/]?tables>/g, '')}</p>
     <img src={props.show.image.medium} />
 
-    <div className="markdown">
+    <div className='markdown'>
       <Markdown source={`
 This is our blog post.
 Yes. We can have a [link](/link).
@@ -53,4 +53,3 @@ Post.getInitialProps = async function ({ query }) {
 };
 
 export default withRedux(initStore)(Post);
-

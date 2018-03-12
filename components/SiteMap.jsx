@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { Button, Row, Col } from 'antd'
 
 export default () => (
-  <Row id="site-map">
+  <Row id='site-map'>
     <Col span={8}>
       <h4>테이블스푼</h4>
       <ul>

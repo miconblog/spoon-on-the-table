@@ -12,20 +12,18 @@ const EventCard = ({ show }) => (
       </Link>
     </Card>
   </Col>
-);
+)
 
 export default ({rows}) => (
-  <div id="table-list" className="intro">
+  <div id='table-list' className='intro'>
     <h2>예약가능한 테이블</h2>
     <div>
       {rows.map((cols, idx) => {
-
         return (
-          <Row key={idx} type="flex" justify="space-between" gutter={16} style={{ marginBottom: '10px' }}>
+          <Row key={idx} type='flex' justify='space-between' gutter={16} style={{ marginBottom: '10px' }}>
             {cols.map((data) => (<EventCard key={data.show.id} {...data} />))}
           </Row>
         )
-
       })}
     </div>
 

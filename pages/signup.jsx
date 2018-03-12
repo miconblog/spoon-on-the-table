@@ -1,17 +1,16 @@
 import Link from 'next/link'
-import { Form, Icon, Input, Button, Checkbox, Divider } from 'antd';
+import { Form, Icon, Input, Button, Checkbox, Divider } from 'antd'
 import { checkStatus } from '../lib/utils'
-const FormItem = Form.Item;
+const FormItem = Form.Item
 
 class RegisterForm extends React.Component {
-
   handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        console.log('Received values of form: ', values)
 
-        const { email, password } = values;
+        const { email, password } = values
 
         fetch('/api/user/create', {
           method: 'POST',
@@ -26,42 +25,39 @@ class RegisterForm extends React.Component {
           })
         }).then(checkStatus)
           .then(function (user) {
-            
-            console.log( user );
+            console.log(user)
             location.replace('/')
-
           }).catch(function (error) {
-            console.log('가입 실패...', error);
+            console.log('가입 실패...', error)
           })
-
       }
-    });
+    })
   }
-  render() {
-    const { getFieldDecorator } = this.props.form;
+  render () {
+    const { getFieldDecorator } = this.props.form
     return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
-        <label className="field-label">이메일 주소<span>*</span></label>
+      <Form onSubmit={this.handleSubmit} className='login-form'>
+        <label className='field-label'>이메일 주소<span>*</span></label>
         <FormItem>
           {getFieldDecorator('email', {
-            rules: [{ required: true }],
+            rules: [{ required: true }]
           })(
-            <Input disabled prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="email" />
+            <Input disabled prefix={<Icon type='mail' style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder='email' />
           )}
         </FormItem>
 
-        <label className="field-label">비밀번호<span>*</span></label>
+        <label className='field-label'>비밀번호<span>*</span></label>
         <FormItem>
           {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your Password!' }],
+            rules: [{ required: true, message: 'Please input your Password!' }]
           })(
-            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+            <Input prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />} type='password' placeholder='Password' />
           )}
         </FormItem>
 
-        <p className="desc">SpoonTable에 가입함으로써 <a target="_blank" href="/privacy">개인정보 이용약관</a>에 동의합니다.</p>
+        <p className='desc'>SpoonTable에 가입함으로써 <a target='_blank' href='/privacy'>개인정보 이용약관</a>에 동의합니다.</p>
         <FormItem>
-          <Button type="primary" htmlType="submit" className="full-width-button">회원 가입</Button>
+          <Button type='primary' htmlType='submit' className='full-width-button'>회원 가입</Button>
         </FormItem>
 
         <style jsx>{`
@@ -86,23 +82,23 @@ class RegisterForm extends React.Component {
           }
         `}</style>
       </Form>
-    );
+    )
   }
 }
 
 const WrappedRegisterForm = Form.create({
-  mapPropsToFields(props) {
+  mapPropsToFields (props) {
     return {
       email: Form.createFormField({ value: props.email })
-    };
+    }
   }
-})(RegisterForm);
+})(RegisterForm)
 
 const Signup = (props) => (
   <div>
-    <div className="sign-page">
-      <div className="logo">
-        <Link href="/"><a><h1>TableSpoon</h1></a></Link>
+    <div className='sign-page'>
+      <div className='logo'>
+        <Link href='/'><a><h1>TableSpoon</h1></a></Link>
         <p>어서오세요! 이제 거의 다 끝나갑니다.</p>
       </div>
       <WrappedRegisterForm {...props} />
@@ -135,10 +131,9 @@ const Signup = (props) => (
 )
 
 Signup.getInitialProps = ({ query, res }) => {
-
-  const { email } = query;
+  const { email } = query
   if (!email) {
-    res.redirect('/sign');
+    res.redirect('/sign')
   }
 
   return {
@@ -146,4 +141,4 @@ Signup.getInitialProps = ({ query, res }) => {
   }
 }
 
-export default Signup;
+export default Signup

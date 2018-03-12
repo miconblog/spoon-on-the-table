@@ -1,10 +1,9 @@
-import Link from 'next/link'
-import { Button } from 'antd'
+import Link from 'next/link';
+import { Button } from 'antd';
 
-export default () => (
-  <div id="about" className="intro">
+const About = () => (
+  <div id='about' className='intro'>
     <h2><strong>TableSpoon</strong>을<br />소개합니다.</h2>
-
     <div>
       <p>
         <strong>TableSpoon</strong>은 내가 만든 음식을 여행자에게 제공합니다. <br />
@@ -23,8 +22,7 @@ export default () => (
       </p>
 
     </div>
-
-    <Button size="large" style={{width: 200}}>호스트 되기</Button>
+    <Link href='/become-host'><a className='ant-btn ant-btn-primary ant-btn-lg'>호스팅하기</a></Link>
 
     <style jsx>{`
       #about {
@@ -36,9 +34,15 @@ export default () => (
           font-weight: bold;
           color: #4a4a4a;
         }
+
+        .ant-btn-primary {
+          width: 200px;
+        }
       }
 
       
     `}</style>
   </div>
-)
+);
+
+export default About;

@@ -12,7 +12,7 @@ const handle = app.getRequestHandler();
 // SSR 캐시 설정
 const ssrCache = new LRUCache({
   max: 100,
-  maxAge: 1000 * 60 * 60, // 1hour
+  maxAge: 1000 * 60 * 60 // 1hour
 });
 
 app.prepare()
@@ -41,8 +41,13 @@ app.prepare()
     // 상세 페이지 라우팅
     server.get('/tables/:id', ps.authentication, (req, res) => {
       app.render(req, res, '/post', {
-        id: req.params.id,
+        id: req.params.id
       });
+    });
+
+    // 상세 페이지 라우팅
+    server.get('/become-a-host', ps.authentication, (req, res) => {
+      app.render(req, res, '/become-host', {});
     });
 
     // 메인페이지
@@ -64,7 +69,6 @@ app.prepare()
     console.error(ex.stack);
     process.exit(1);
   });
-
 
 /*
  * NB: make sure to modify this to take into account anything that should trigger
