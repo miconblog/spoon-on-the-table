@@ -23,14 +23,9 @@ const Index = (props) => (
   </Layout>
 )
 
-Index.getInitialProps = async function ({ req, store }) {
+Index.getInitialProps = async function () {
   const res = await fetch('https://api.tvmaze.com/search/shows?q=batman');
   const data = await res.json();
-
-  // SSR 에서만 동작 
-  if (req && req.user) {
-    store.dispatch({ type: 'EXIST_SESSION_USER', payload: { loginUser: req.user.toJSON() } })
-  }
 
   const size = 3;
   const rows = [];

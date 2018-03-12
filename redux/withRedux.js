@@ -24,7 +24,11 @@ export default (...args) => (Component) => {
   const [initStore, ...connectArgs] = args
 
   const ComponentWithRedux = (props = {}) => {
-    const { store, initialProps, initialState } = props
+    const { store, initialProps, initialState, loginUser } = props;
+
+    if (loginUser) {
+      initialState.loginUser = loginUser;
+    }
 
     // Connect page to redux with connect arguments
     const ConnectedComponent = connect.apply(null, connectArgs)(Component)
@@ -42,18 +46,27 @@ export default (...args) => (Component) => {
   ComponentWithRedux.getInitialProps = async (props = {}) => {
     const isServer = checkServer()
     const store = getOrCreateStore(initStore)
+    // 스토어 객체에 인증정보를 같이 넣는다.
+    const { req } = props;
+    let loginUser = null;
+    if (isServer && req.user) {
+      loginUser = req.user.toJSON();
+    }
 
     // Run page getInitialProps with store and isServer
-    const initialProps = Component.getInitialProps ?
-      await Component.getInitialProps({
+    const initialProps = Component.getInitialProps
+      ? await Component.getInitialProps({
         ...props,
         isServer,
+        loginUser,
         store
-      }) :
-      {}
+      })
+      : {};
 
+    // For Client 
     return {
       store,
+      loginUser,
       initialState: store.getState(),
       initialProps
     }

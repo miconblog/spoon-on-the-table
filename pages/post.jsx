@@ -44,13 +44,7 @@ And here's the content.
   </Layout>
 );
 
-Post.getInitialProps = async function ({ query, req, store }) {
-
-  // SSR 에서만 동작 
-  if (req && req.user) {
-    store.dispatch({ type: 'EXIST_SESSION_USER', payload: { loginUser: req.user.toJSON() } });
-  }
-
+Post.getInitialProps = async function ({ query }) {
   const { id } = query;
   const res = await fetch(`https://api.tvmaze.com/shows/${id}`);
   const show = await res.json();
