@@ -13,29 +13,29 @@
     "lint-fix": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "antd": "^3.2.3",
+    "antd": "^3.3.0",
     "cookie-parser": "^1.4.3",
-    "express": "^4.16.2",
+    "express": "^4.16.3",
     "isomorphic-unfetch": "^2.0.0",
     "lru-cache": "^4.1.2",
     "next": "^5.0.0",
-    "parse-server": "^2.7.2",
+    "parse-server": "^2.7.4",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-markdown": "^3.2.2",
+    "react-markdown": "^3.3.0",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
-    "styled-jsx": "^2.2.5"
+    "styled-jsx": "^2.2.6"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.2",
     "babel-plugin-inline-import": "^2.0.6",
-    "cross-env": "^5.0.1",
-    "eslint": "^4.18.2",
+    "cross-env": "^5.1.4",
+    "eslint": "^4.19.0",
     "eslint-plugin-class-property": "^1.1.0",
     "eslint-plugin-prefer-object-spread": "^1.2.1",
     "less": "^3.0.1",
-    "parse-dashboard": "^1.1.2",
+    "parse-dashboard": "^1.2.0",
     "styled-jsx-plugin-less": "0.0.1-alpha.2",
     "webpack-bundle-analyzer": "^2.11.1"
   }
