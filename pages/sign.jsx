@@ -1,4 +1,6 @@
 import React from 'react';
+import { initStore } from '../redux/store';
+import withRedux from '../redux/withRedux';
 import Link from 'next/link';
 import Router from 'next/router';
 import { Form, Icon, Input, Button, Checkbox, Divider } from 'antd';
@@ -58,8 +60,8 @@ const SocialButtons = () => (
 );
 
 const Sign = () => (
-  <div>
-    <div className='sign-page'>
+  <div className='sign-page'>
+    <div>
       <div className='logo'>
         <Link href='/'><a><h1>TableSpoon</h1></a></Link>
         <p>전세계의 여행자들을</p>
@@ -72,10 +74,13 @@ const Sign = () => (
 
     <style jsx>{`
       .sign-page {
-        width: 300px;
-        margin: 0 auto;
-        align-self: center;
-        margin-top: -100px;
+        display: flex;
+
+        > div {
+          align-self: center;
+          width: 300px;
+          margin: 0 auto;
+        }
       }
 
       .logo {
@@ -97,4 +102,14 @@ const Sign = () => (
   </div>
 );
 
-export default Sign;
+Sign.getInitialProps = async function ({ res, loginUser }) {
+
+  if( loginUser ) {
+    res.redirect('/');
+  }
+
+  return { };
+};
+
+
+export default withRedux(initStore)(Sign);

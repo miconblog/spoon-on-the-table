@@ -1,19 +1,19 @@
-import React from 'react'
-import Link from 'next/link'
-import Router from 'next/router'
-import { Form, Icon, Input, Button, Checkbox, Divider } from 'antd'
-import { checkStatus } from '../lib/utils'
+import React from 'react';
+import Link from 'next/link';
+import Router from 'next/router';
+import { Form, Icon, Input, Button, Checkbox, Divider } from 'antd';
+import { checkStatus } from '../lib/utils';
 
-const FormItem = Form.Item
+const FormItem = Form.Item;
 
 class LoginForm extends React.Component {
   handleSubmit = (e) => {
-    e.preventDefault()
-    const data = new FormData(e.target)
+    e.preventDefault();
+    const data = new FormData(e.target);
 
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const { email, password } = values
+        const { email, password } = values;
 
         fetch('/login', {
           method: 'POST',
@@ -27,15 +27,15 @@ class LoginForm extends React.Component {
           })
         }).then(checkStatus)
           .then(function () {
-            location.replace('/')
+            location.replace('/');
           }).catch(function (error) {
-            console.log('로그인 실패...', error)
-          })
+            console.log('로그인 실패...', error);
+          });
       }
-    })
+    });
   }
   render () {
-    const { getFieldDecorator } = this.props.form
+    const { getFieldDecorator } = this.props.form;
 
     return (
       <Form onSubmit={this.handleSubmit} className='login-form'>
@@ -81,7 +81,7 @@ class LoginForm extends React.Component {
           }
         `}</style>
       </Form>
-    )
+    );
   }
 }
 
@@ -89,9 +89,9 @@ const WrappedLoginForm = Form.create({
   mapPropsToFields ({ email }) {
     return {
       email: Form.createFormField({ value: email })
-    }
+    };
   }
-})(LoginForm)
+})(LoginForm);
 
 const Login = (props) => (
   <div className='Login'>
@@ -127,17 +127,17 @@ const Login = (props) => (
       }
     `}</style>
   </div>
-)
+);
 
 Login.getInitialProps = ({ query, res }) => {
-  const { email } = query
+  const { email } = query;
   if (!email) {
-    res.redirect('/sign')
+    res.redirect('/sign');
   }
 
   return {
     email
-  }
-}
+  };
+};
 
-export default Login
+export default Login;

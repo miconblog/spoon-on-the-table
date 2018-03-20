@@ -25,7 +25,7 @@ module.exports = {
     }
 
     if (dev) {
-      config.devtool = 'eval';
+      config.devtool = 'cheap-module-source-map';
     }
 
     // disable soucemaps of babel-loader

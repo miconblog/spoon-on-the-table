@@ -1,10 +1,68 @@
-import { initStore } from '../redux/store'
-import withRedux from '../redux/withRedux'
-import Layout from '../layouts/Layout'
-import Markdown from 'react-markdown'
+import { initStore } from '../redux/store';
+import withRedux from '../redux/withRedux';
+import { MyPageLayout } from '../layouts';
+import Markdown from 'react-markdown';
+import { Card, Avatar, Divider } from 'antd';
+import { Table } from 'antd';
 
-const MyTables = (props) => (
-  <Layout>
+const columns = [{
+  title: '테이블 이름',
+  dataIndex: 'name',
+  render: text => <a href="#">{text}</a>,
+}, {
+  title: '주소',
+  dataIndex: 'address',
+}, {
+  title: '총 예약자',
+  dataIndex: 'guests',
+}];
+const data = [{
+  key: '1',
+  name: '우리집으로 놀러와! 밥먹자!',
+  address: 'New York No. 1 Lake Park',
+  guests: 0
+}, {
+  key: '2',
+  name: '무더운 여름! 마지사! 한강 수제 맥주 파티!',
+  address: 'London No. 1 Lake Park',
+  guests: 0
+}, {
+  key: '3',
+  name: 'Joe Black',
+  address: 'Sidney No. 1 Lake Park',
+  guests: 0
+}];
+
+// rowSelection object indicates the need for row selection
+const rowSelection = {
+  onChange: (selectedRowKeys, selectedRows) => {
+    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+  },
+  getCheckboxProps: record => ({
+    disabled: record.name === 'Disabled User', // Column configuration not to be checked
+    name: record.name,
+  }),
+};
+
+const MyTables = ({ loginUser }) => (
+  <MyPageLayout>
+    {/* <ul>
+      <li>1. 호스트 소개</li>
+      <li>2. 기본 사항</li>
+      <li>3. 상세 정보</li>
+      <li>4. 손님 맞이</li>
+    </ul> */}
+
+    <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+
+    <Divider />
+
+    <Card>
+      <img src={loginUser.profileImage} />
+    </Card>
+
+    <Divider />
+
     <h1>호스팅하기</h1>
     <div className='markdown'>
       <Markdown source={`
@@ -71,16 +129,13 @@ const MyTables = (props) => (
         
      `} />
     </div>
-  </Layout>
-)
+  </MyPageLayout>
+);
 
-MyTables.getInitialProps = async function ({ query, req, store }) {
-  // SSR 에서만 동작
-  if (req && req.user) {
-    store.dispatch({ type: 'EXIST_SESSION_USER', payload: { loginUser: req.user.toJSON() } })
-  }
+MyTables.getInitialProps = async function ({ query, req, loginUser }) {
+  return {
+    loginUser
+  };
+};
 
-  return { }
-}
-
-export default withRedux(initStore)(MyTables)
+export default withRedux(initStore)(MyTables);

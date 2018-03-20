@@ -1,5 +1,5 @@
 import { About, SiteMap } from '../components';
-import Layout from '../layouts/Layout';
+import { HomeLayout } from '../layouts';
 import Link from 'next/link';
 import fetch from 'isomorphic-unfetch';
 import { Button, Divider } from 'antd';
@@ -8,7 +8,7 @@ import { initStore } from '../redux/store';
 import withRedux from '../redux/withRedux';
 
 const Index = (props) => (
-  <Layout>
+  <HomeLayout>
 
     <TableList {...props} />
 
@@ -20,7 +20,7 @@ const Index = (props) => (
 
     <SiteMap />
 
-  </Layout>
+  </HomeLayout>
 );
 
 Index.getInitialProps = async function () {

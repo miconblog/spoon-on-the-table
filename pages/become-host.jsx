@@ -1,14 +1,14 @@
 import { initStore } from '../redux/store';
 import withRedux from '../redux/withRedux';
 import Link from 'next/link';
-import Layout from '../layouts/Layout';
+import { HomeLayout } from '../layouts';
 import { Button } from 'antd';
 import Markdown from 'react-markdown';
 
 const BecomeHost = ({ loginUser }) => {
 
   return (
-    <Layout>
+    <HomeLayout>
       <h1>호스트가 되어 보세요!</h1>
       <div className='markdown'>
         <Markdown source={`
@@ -19,19 +19,23 @@ const BecomeHost = ({ loginUser }) => {
      `} />
 
         {
-          loginUser 
-          ? <Link href="/dashboard/my-tables"><a className="ant-btn ant-btn-primary">테이블 시작하기</a></Link>
-          : <Link href="/sign"><a className="ant-btn ant-btn-primary">가입하기</a></Link>
+          loginUser
+            ? <Link href="/my/tables"><a className="ant-btn ant-btn-primary">테이블 시작하기</a></Link>
+            : <Link href="/sign"><a className="ant-btn ant-btn-primary">가입하기</a></Link>
         }
       </div>
-    </Layout>
+    </HomeLayout>
   );
 };
 
-BecomeHost.getInitialProps = async function ({ loginUser }) {
+BecomeHost.getInitialProps = async function ({ isServer, loginUser, store }) {
+
+  console.log('33333', isServer);
+  
   return {
     loginUser
   };
 };
 
+// High Ordered Componet 고차함수: (컴포넌트)=>랩핑컴포넌트
 export default withRedux(initStore)(BecomeHost);

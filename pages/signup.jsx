@@ -1,16 +1,17 @@
-import Link from 'next/link'
-import { Form, Icon, Input, Button, Checkbox, Divider } from 'antd'
-import { checkStatus } from '../lib/utils'
-const FormItem = Form.Item
+import React from 'react';
+import Link from 'next/link';
+import { Form, Icon, Input, Button, Checkbox, Divider } from 'antd';
+import { checkStatus } from '../lib/utils';
+const FormItem = Form.Item;
 
 class RegisterForm extends React.Component {
   handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values)
+        console.log('Received values of form: ', values);
 
-        const { email, password } = values
+        const { email, password } = values;
 
         fetch('/api/user/create', {
           method: 'POST',
@@ -25,16 +26,16 @@ class RegisterForm extends React.Component {
           })
         }).then(checkStatus)
           .then(function (user) {
-            console.log(user)
-            location.replace('/')
+            console.log(user);
+            location.replace('/');
           }).catch(function (error) {
-            console.log('가입 실패...', error)
-          })
+            console.log('가입 실패...', error);
+          });
       }
-    })
+    });
   }
   render () {
-    const { getFieldDecorator } = this.props.form
+    const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} className='login-form'>
         <label className='field-label'>이메일 주소<span>*</span></label>
@@ -82,7 +83,7 @@ class RegisterForm extends React.Component {
           }
         `}</style>
       </Form>
-    )
+    );
   }
 }
 
@@ -90,9 +91,9 @@ const WrappedRegisterForm = Form.create({
   mapPropsToFields (props) {
     return {
       email: Form.createFormField({ value: props.email })
-    }
+    };
   }
-})(RegisterForm)
+})(RegisterForm);
 
 const Signup = (props) => (
   <div>
@@ -128,17 +129,17 @@ const Signup = (props) => (
       }
     `}</style>
   </div>
-)
+);
 
 Signup.getInitialProps = ({ query, res }) => {
-  const { email } = query
+  const { email } = query;
   if (!email) {
-    res.redirect('/sign')
+    res.redirect('/sign');
   }
 
   return {
     email
-  }
-}
+  };
+};
 
-export default Signup
+export default Signup;

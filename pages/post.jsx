@@ -1,11 +1,11 @@
 import { initStore } from '../redux/store';
 import withRedux from '../redux/withRedux';
-import Layout from '../layouts/Layout';
+import { HomeLayout } from '../layouts';
 import fetch from 'isomorphic-unfetch';
 import Markdown from 'react-markdown';
 
 const Post = (props) => (
-  <Layout>
+  <HomeLayout>
     <h1>{props.show.name}</h1>
     <p>{props.show.summary.replace(/<[/]?tables>/g, '')}</p>
     <img src={props.show.image.medium} />
@@ -41,7 +41,7 @@ And here's the content.
        text-transform: uppercase;
      }
   `}</style>
-  </Layout>
+  </HomeLayout>
 );
 
 Post.getInitialProps = async function ({ query }) {

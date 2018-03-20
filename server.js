@@ -45,12 +45,23 @@ app.prepare()
       });
     });
 
-    // 상세 페이지 라우팅
-    server.get('/become-a-host', ps.authentication, (req, res) => {
-      app.render(req, res, '/become-host', {});
+    // 마이 페이지 라우팅
+    server.get('/my/:pageName', ps.authentication, (req, res) => {
+      const { pageName } = req.params;
+      app.render(req, res, `/my-${pageName}`, {
+        pageName
+      });
     });
 
-    // 메인페이지
+    // 엔드 페이지
+    server.get('/:pageName', ps.authentication, (req, res) => {
+      const { pageName } = req.params;
+      app.render(req, res, `/${pageName}`, {
+        pageName
+      });
+    });
+
+    // 메인 페이지
     server.get('/', ps.authentication, (req, res) => {
       return handle(req, res);
     });
