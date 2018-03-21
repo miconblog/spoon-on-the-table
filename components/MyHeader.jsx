@@ -13,7 +13,7 @@ const HeadStyle = {
 };
 
 const MyHeaderWithRedux = ({ loginUser }) => (
-  <Header style={HeadStyle}>
+  <Header className="bright" style={HeadStyle}>
     <Row type='flex' justify='space-between'>
       <Col>
         <TableSpoonLogo />
@@ -26,21 +26,6 @@ const MyHeaderWithRedux = ({ loginUser }) => (
         <Link href='/logout'><a className='rm'>로그아웃</a></Link>
       </Col>
     </Row>
-
-    <style jsx global>{`
-      h1 {
-        font-family: cursive;
-        font-weight: bold;    
-      }
-      a { 
-        display:inline-block; 
-        text-align:center; 
-        
-        &.rm {
-          margin-right: 25px;
-        }
-      }
-    `}</style>
   </Header>
 );
 

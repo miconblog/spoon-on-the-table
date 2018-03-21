@@ -50,6 +50,33 @@ export default class MyDocument extends Document {
             height: 38px;
           }
 
+          /* global style */
+          .dark {
+            a, .logo-title {
+              color: #fff; 
+            }
+          }
+    
+          .bright {
+            a, .logo-title {
+              color: #222;
+            }
+          }
+
+          .logo-title {
+            font-family: cursive;
+            font-weight: bold;    
+          }
+    
+          a { 
+            display:inline-block; 
+            text-align:center; 
+            
+            &.rm {
+              margin-right: 25px;
+            }
+          }
+
         `}</style>
 
         <body className='coding-night'>

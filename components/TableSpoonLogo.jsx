@@ -5,7 +5,7 @@ const TableSpoonLogo = () => (
   <a
     onMouseEnter={() => Router.prefetch('/')}
     onClick={() => Router.push('/')}
-  ><h1>TableSpoon</h1></a>
+  ><h1 className="logo-title">TableSpoon</h1></a>
 );
 
 export default TableSpoonLogo;
