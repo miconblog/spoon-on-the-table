@@ -4,6 +4,8 @@ import MainFooter from './MainFooter';
 import MyHeader from './MyHeader';
 import SiteMap from './SiteMap';
 import TableList from './TableList';
+import PrefetchLink from './PrefetchLink';
+import TableSpoonLogo from './TableSpoonLogo';
 
 export {
   About,
@@ -11,5 +13,7 @@ export {
   MainFooter,
   MyHeader,
   SiteMap,
-  TableList
+  TableList,
+  PrefetchLink,
+  TableSpoonLogo
 };

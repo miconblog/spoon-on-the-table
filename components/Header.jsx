@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import Router from 'next/router';
 import Link from 'next/link';
 import { Layout, Avatar, Row, Col } from 'antd';
+import TableSpoonLogo from './TableSpoonLogo';
 
 const { Header } = Layout;
 
@@ -9,7 +10,7 @@ const HeaderWithRedux = ({ loginUser }) => (
   <Header>
     <Row type='flex' justify='space-between' style={{ maxWidth: '1000px', margin: '0 auto' }}>
       <Col>
-        <Link prefetch href='/'><a><h1>TableSpoon</h1></a></Link>
+        <TableSpoonLogo />
       </Col>
       <Col>
         <Link prefetch href='/#about'><a className='rm'>소개</a></Link>

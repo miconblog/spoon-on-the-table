@@ -174,3 +174,8 @@ NodeJS 서버를 이용할 경우 SDK를 이용하는 것보다 /login 엔드포
 ***참고링크***
 - [sending-cookies](https://github.com/github/fetch#sending-cookies)
 - [withcredentials](https://xhr.spec.whatwg.org/#the-withcredentials-attribute)
+
+
+## 7. 서버 라우팅과 클라이언트 라우팅
+
+SSR 이후에 이동하는 모든 링크는 클라이언트 라우팅으로 이동해야 속도가 빠르다. 그렇지않고 서버를 한번 거치면 모든걸 새로 받기 때문에 그만큼 느리다. 링크 이동시 브라우저 타이틀에 새로고침 표시가 되는지 항상 주시하고 새로고침된다면 링크를 PrefetchLink로 변경한다.
