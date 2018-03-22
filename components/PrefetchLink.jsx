@@ -1,8 +1,8 @@
 import Router from 'next/router';
 import Link from 'next/link';
 
-const PrefetchLink = ({ children, href = '/', as = null }) => (
-  <a className='rm' href={href}
+const PrefetchLink = ({ children, style={}, href = '/', as = null }) => (
+  <a className='rm' href={as || href} style={style}
     onMouseEnter={() => {
       Router.prefetch(href);
     }}
