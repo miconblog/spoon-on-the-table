@@ -57,12 +57,6 @@ const MyTables = ({ loginUser }) => (
 
     <Divider />
 
-    <Card>
-      <img src={loginUser.profileImage} />
-    </Card>
-
-    <Divider />
-
     <h1>호스팅하기</h1>
     <div className='markdown'>
       <Markdown source={`
@@ -132,9 +126,10 @@ const MyTables = ({ loginUser }) => (
   </MyPageLayout>
 );
 
-MyTables.getInitialProps = async function ({ query, req, loginUser }) {
+MyTables.getInitialProps = async function ({ query, req, store }) {
+
   return {
-    loginUser
+    loginUser: store.getState().loginUser
   };
 };
 

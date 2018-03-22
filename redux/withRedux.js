@@ -23,17 +23,13 @@ export default (...args) => (Component) => {
   // First argument is initStore, the rest are redux connect arguments and get passed
   const [initStore, ...connectArgs] = args;
 
-  console.log('111111');
+  //console.log('1. withRedux 초기화');
 
 
   // 마지막에 동작하는 컴포넌트,..
   const ComponentWithRedux = (props = {}) => {
-    const { store, initialProps, initialState, loginUser } = props;
-    console.log('444444');
-
-    if (loginUser) {
-      initialState.loginUser = loginUser;
-    }
+    const { store, initialProps = {}, initialState } = props;
+    //console.log('4. withRedux 랩핑 컴포넌트가 마지막으로 반응한다.')
 
     // Connect page to redux with connect arguments
     const ConnectedComponent = connect.apply(null, connectArgs)(Component);
@@ -51,9 +47,7 @@ export default (...args) => (Component) => {
   // Next.js --> getInitialProps (S)
   ComponentWithRedux.getInitialProps = async (props = {}) => {
     const isServer = checkServer();
-    const store = getOrCreateStore(initStore);
-    console.log('22222', isServer);
-
+    //console.log('2. Next.js 에서 랩핑한 getInitialProps 호출 하지만 서버니?:', isServer);
 
     // 스토어 객체에 인증정보를 같이 넣는다.
     const { req } = props;
@@ -65,8 +59,10 @@ export default (...args) => (Component) => {
       loginUser.profileImage = "https://scontent-hkg3-2.xx.fbcdn.net/v/t1.0-1/p320x320/1510494_10151938283373302_404117394_n.jpg?oh=fef97d5f281b11e85993992d276ee11f&oe=5B45B569";
     } else {
       // for client..
-      loginUser = store.getState().loginUser;
+      loginUser = store && store.getState().loginUser;
     }
+
+    const store = getOrCreateStore(initStore, { loginUser });
 
     // Run page getInitialProps with store and isServer + loginUser
     // 서버에서 동작: HOC 원본 컴포넌트에 스토어와 인증객체 같이 내려줌. 
@@ -74,7 +70,6 @@ export default (...args) => (Component) => {
       ? await Component.getInitialProps({
         ...props,
         isServer,
-        loginUser,
         store
       })
       : {};
@@ -82,7 +77,6 @@ export default (...args) => (Component) => {
     // HOC 컴포넌트는 원본이 먼저 동작한 후에 반환된다. for Client
     return {
       store,
-      loginUser,
       initialState: store.getState(),
       initialProps
     };

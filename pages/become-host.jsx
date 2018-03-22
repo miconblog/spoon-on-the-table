@@ -28,12 +28,9 @@ const BecomeHost = ({ loginUser }) => {
   );
 };
 
-BecomeHost.getInitialProps = async function ({ isServer, loginUser, store }) {
-
-  console.log('33333', isServer);
-  
+BecomeHost.getInitialProps = async function ({ store }) {
   return {
-    loginUser
+    loginUser: store.getState().loginUser
   };
 };
 
