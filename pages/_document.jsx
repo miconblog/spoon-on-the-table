@@ -30,6 +30,9 @@ export default class MyDocument extends Document {
 
           /* antd override */
           .ant-form {
+            min-width: 300px;
+            max-width: 600px;
+
             &.login-form {
               max-width: 310px;
             }
