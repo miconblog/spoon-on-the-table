@@ -38,6 +38,9 @@ app.prepare()
     server.post('/api/user/duplicate', bodyParser.json(), ps.duplicate);
     server.post('/api/user/create', bodyParser.json(), ps.createUser);
 
+    // 개인정보수정은 로그인한 본인만 할 수 있음.
+    server.put('/api/user/:id', ps.authentication, bodyParser.json(), ps.updateUser);
+
     // 상세 페이지 라우팅
     server.get('/tables/:id', ps.authentication, (req, res) => {
       app.render(req, res, '/post', {
@@ -48,18 +51,28 @@ app.prepare()
     // 마이 페이지 라우팅
     server.get('/my/:pageName', ps.authentication, (req, res) => {
       const { pageName } = req.params;
+      const { query = {} } = req;
+
+      if (!req.user) {
+        return res.redirect('/sign')
+      }
+
       app.render(req, res, `/my-${pageName}`, {
-        pageName
+        pageName,
+        ...query
       });
     });
 
-    // 엔드 페이지
+    // 페이지
     server.get('/:pageName', ps.authentication, (req, res) => {
       const { pageName } = req.params;
+      const { query = {} } = req;
       app.render(req, res, `/${pageName}`, {
-        pageName
+        pageName,
+        ...query
       });
     });
+
 
     // 메인 페이지
     server.get('/', ps.authentication, (req, res) => {
