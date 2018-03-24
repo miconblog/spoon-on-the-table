@@ -4,10 +4,10 @@
   "license": "MIT",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node server.js",
+    "test": "jest --forceExit",
+    "dev": "node app.js",
     "build": "next build",
-    "start": "cross-env NODE_ENV=production node server.js",
+    "start": "cross-env NODE_ENV=production node app.js",
     "analyze": "cross-env ANALYZE=1 next build",
     "lint": "eslint . --ignore-path .gitignore",
     "lint-fix": "eslint . --fix --ignore-path .gitignore"
@@ -34,9 +34,11 @@
     "eslint": "^4.19.0",
     "eslint-plugin-class-property": "^1.1.0",
     "eslint-plugin-prefer-object-spread": "^1.2.1",
+    "jest": "^22.4.3",
     "less": "^3.0.1",
     "parse-dashboard": "^1.2.0",
     "styled-jsx-plugin-less": "0.0.1-alpha.2",
+    "supertest": "^3.0.0",
     "webpack-bundle-analyzer": "^2.11.1"
   }
 }
