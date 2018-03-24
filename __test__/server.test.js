@@ -1,18 +1,18 @@
 import agent from './agent';
 
-describe('POST /api/user/duplicate - 사용자 중복 조회', () => {
-  it('중복된 유저가 있으면 200 상태를 반환한다.', async () => {
+describe('POST /api/user/duplicate - 회원 중복 조회', () => {
+  it('중복된 이메일이 있으면 409 상태를 반환한다.', async () => {
     const res = await agent({
       method: 'POST',
       url: '/api/user/duplicate',
       data: { email: 'realrap2@naver.com' }
     });
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(409);
     expect(res.body.message).toBe('Sorry, it was duplicated!');
   });
 
-  it('중복된 유저가 없으면 202 상태를 반환한다.', async () => {
+  it('중복된 이메일이 없으면 202 상태를 반환한다.', async () => {
     const res = await agent({
       method: 'POST',
       url: '/api/user/duplicate',
@@ -31,7 +31,15 @@ describe('POST /api/user/create - 회원 가입', () => {
   let createdUserId = '';
   let createdUserCookie = '';
 
-  it('회원가입에 필요한 인자가 충분하지 않으면, 400(Bad Request) 상태를 반환한다.', async () => {
+  afterAll(async () => {
+    await agent({
+      cookie: createdUserCookie,
+      method: 'DELETE',
+      url: `/api/user/${createdUserId}`
+    });
+  });
+
+  it('회원가입에 필요한 email, username, password 중 하나라도 없으면, 400(Bad Request) 상태를 반환한다.', async () => {
     const res = await agent({
       method: 'POST',
       url: '/api/user/create',
@@ -43,11 +51,11 @@ describe('POST /api/user/create - 회원 가입', () => {
   });
 
 
-  it('회원가입에 성공하면 201 상태를 반환한다.', async () => {
+  it('회원 가입에 성공하면 세션은 쿠키로 내려오고, 상태 코드는 201을 반환한다.', async () => {
     const res = await agent({
       method: 'POST',
       url: '/api/user/create',
-      data: { email: 'test@test.com', username: '테스트유저', password: '1' }
+      data: { email: 'create@test.com', username: '회원가입', password: '1' }
     });
 
     expect(res.status).toBe(201);
@@ -60,9 +68,68 @@ describe('POST /api/user/create - 회원 가입', () => {
     createdUserCookie = res.header['set-cookie'][0].split(';')[0];
   });
 
+});
 
-  it('앞에서 생성한 테스트 유저를 삭제한다.', async () => {
+describe('PUT /api/user/:id - 회원 정보 수정', () => {
 
+  let createdUserId, createdUserCookie;
+
+  beforeAll(async () => {
+    const res = await agent({
+      method: 'POST',
+      url: '/api/user/create',
+      data: { email: 'update@test.com', username: '회원정보수정', password: '1' }
+    });
+
+    createdUserId = res.body.id;
+    createdUserCookie = res.header['set-cookie'][0].split(';')[0];
+  });
+
+  afterAll(async () => {
+    await agent({
+      cookie: createdUserCookie,
+      method: 'DELETE',
+      url: `/api/user/${createdUserId}`
+    });
+  })
+
+  it('로그인한 유저가 아니면 회원 정보를 변경할 수 없다.', async () => {
+    const res = await agent({
+      method: 'PUT',
+      url: `/api/user/${createdUserId}`
+    });
+
+    expect(res.status).toBe(401);
+    expect(res.body.message).toBe('권한이 없습니다.');
+  });
+})
+
+describe('DELETE /api/user/:id - 회원 탈퇴', () => {
+
+  let createdUserId, createdUserCookie;
+
+  beforeAll(async () => {
+    const res = await agent({
+      method: 'POST',
+      url: '/api/user/create',
+      data: { email: 'delete@test.com', username: '회원탈퇴', password: '1' }
+    });
+
+    createdUserId = res.body.id;
+    createdUserCookie = res.header['set-cookie'][0].split(';')[0];
+  });
+
+  it('로그인한 유저가 아니면 회원 탈퇴를 할 수 없다.', async () => {
+    const res = await agent({
+      method: 'DELETE',
+      url: `/api/user/${createdUserId}`
+    });
+
+    expect(res.status).toBe(401);
+    expect(res.body.message).toBe('권한이 없습니다.');
+  });
+
+  it('회원을 탈퇴하면 세션 쿠키도 삭제 된다.', async () => {
     const res = await agent({
       cookie: createdUserCookie,
       method: 'DELETE',
@@ -76,6 +143,4 @@ describe('POST /api/user/create - 회원 가입', () => {
     expect(res.header).toHaveProperty('set-cookie');
     expect(res.header['set-cookie'][0]).toMatch(/parse.session=;/);
   });
-
-
-});
+})
