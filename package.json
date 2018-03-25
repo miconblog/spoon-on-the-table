@@ -10,7 +10,8 @@
     "start": "cross-env NODE_ENV=production node app.js",
     "analyze": "cross-env ANALYZE=1 next build",
     "lint": "eslint . --ignore-path .gitignore",
-    "lint-fix": "eslint . --fix --ignore-path .gitignore"
+    "lint-fix": "eslint . --fix --ignore-path .gitignore",
+    "dashboard": "PORT=4040 node ./utils/dashboard.js"
   },
   "dependencies": {
     "antd": "^3.3.0",
