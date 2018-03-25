@@ -1,4 +1,4 @@
-function checkStatus (response) {
+function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
   } else {
@@ -8,6 +8,4 @@ function checkStatus (response) {
   }
 }
 
-module.exports = {
-  checkStatus
-};
+module.exports = checkStatus;

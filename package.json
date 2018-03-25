@@ -5,9 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "jest --forceExit",
-    "dev": "node app.js",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "cross-env NODE_ENV=production node app.js",
+    "start": "cross-env NODE_ENV=production node server.js",
     "analyze": "cross-env ANALYZE=1 next build",
     "lint": "eslint . --ignore-path .gitignore",
     "lint-fix": "eslint . --fix --ignore-path .gitignore",

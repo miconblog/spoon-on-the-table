@@ -1,4 +1,4 @@
-import agent from './agent';
+import agent from '../../../utils/agent';
 
 describe('POST /api/user/duplicate - 회원 중복 조회', () => {
   it('중복된 이메일이 있으면 409 상태를 반환한다.', async () => {
