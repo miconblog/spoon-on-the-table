@@ -102,6 +102,51 @@ describe('PUT /api/user/:id - 회원 정보 수정', () => {
     expect(res.status).toBe(401);
     expect(res.body.message).toBe('권한이 없습니다.');
   });
+
+  it('회원 정보를 변경한다', async () => {
+    const res = await agent({
+      cookie: createdUserCookie,
+      method: 'PUT',
+      url: `/api/user/${createdUserId}`,
+      data: { firstName: 'test', fullName: 'test user' }
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.body.firstName).toBe('test');
+    expect(res.body.fullName).toBe('test user');
+  });
+
+  it('비밀번호를 변경하면 세션쿠키가 변경된다.', async () => {
+    const res = await agent({
+      cookie: createdUserCookie,
+      method: 'PUT',
+      url: `/api/user/${createdUserId}`,
+      data: { password: 'change' }
+    });
+
+    expect(res.status).toBe(200);
+
+    // 비밀번호는 유저 정보에 내려오면 안됨!
+    expect(res.body).not.toHaveProperty('password');
+
+    // set-cookie 
+    expect(res.header).toHaveProperty('set-cookie');
+    const newCookie = res.header['set-cookie'][0].split(';')[0];
+
+    expect(createdUserCookie).not.toBe(newCookie);
+    createdUserCookie = newCookie;
+  });
+
+  it('변경후 내려받는 유저 정보에는 비밀번호는 없어야한다.', async () => {
+
+    const res = await agent({
+      cookie: createdUserCookie,
+      method: 'PUT',
+      url: `/api/user/${createdUserId}`,
+      data: { phone: '000-0000-0000' }
+    });
+    expect(res.body).not.toHaveProperty('password');
+  });
 })
 
 describe('DELETE /api/user/:id - 회원 탈퇴', () => {
