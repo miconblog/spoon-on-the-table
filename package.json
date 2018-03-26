@@ -29,6 +29,7 @@
     "styled-jsx": "^2.2.6"
   },
   "devDependencies": {
+    "@zeit/next-less": "^0.1.2",
     "babel-eslint": "^8.2.2",
     "babel-plugin-inline-import": "^2.0.6",
     "cross-env": "^5.1.4",
