@@ -9,7 +9,7 @@ const api = require('./routes/api');
 const user = require('./routes/api/user');
 
 // 정적 파일
-server.use(express.static('public'));
+server.use(express.static('./express/public'));
 server.use('/antd', express.static('node_modules/antd/dist'));
 
 // 쿠키 파서

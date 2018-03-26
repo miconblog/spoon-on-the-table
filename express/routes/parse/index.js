@@ -5,7 +5,7 @@ const { appId, serverURL, masterKey, fileKey } = require('./env');
 
 const api = new ParseServer({
   databaseURI: 'mongodb://localhost:27017/dev', // Connection string for your MongoDB database
-  cloud: './cloud', // Absolute path to your Cloud Code
+  cloud: './express/cloud', // Absolute path to your Cloud Code
   appId,
   masterKey, // Keep this key secret!
   fileKey,
