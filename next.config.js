@@ -1,12 +1,18 @@
-const {
-  BundleAnalyzerPlugin,
-} = require('webpack-bundle-analyzer');
-const {
-  ANALYZE,
-} = process.env;
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { ANALYZE } = process.env;
+const withLess = require('@zeit/next-less')
 
-module.exports = {
-
+/**
+ * 클래스 스타일을 만들어 컴포넌트에 삽입하는 CSS 모듈 옵션을 ON 하려면 아래 속성을 추가해야한다. 
+ * {
+ *   cssModules: true,
+ *   cssLoaderOptions: {
+ *      importLoaders: 1,
+ *      localIdentName: "[local]___[hash:base64:5]",
+ *    }
+ * }
+ */
+module.exports = withLess({
   distDir: 'build', // default .next
   useFileSystemPublicRoutes: true, // default true
   onDemandEntries: {
@@ -15,7 +21,6 @@ module.exports = {
     pagesBufferLength: 2,
   },
   webpack(config, { dev }) {
-
     if (ANALYZE) {
       config.plugins.push(new BundleAnalyzerPlugin({
         analyzerMode: 'server',
@@ -36,4 +41,4 @@ module.exports = {
     }
     return config;
   },
-};
+});

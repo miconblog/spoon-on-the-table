@@ -1,4 +1,7 @@
-import server from '../server';
+/**
+ * @fileOverview agent for jest with supertest 
+ */
+import server from '../express';
 import request from 'supertest';
 
 server.listen(3000, (err) => {

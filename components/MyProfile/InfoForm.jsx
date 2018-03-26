@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Form, Input, Icon, Select, Row, Col, Button, notification } from 'antd';
-import { checkStatus } from '../../lib/utils';
+import { checkStatus } from '../../utils';
 
 const FormItem = Form.Item;
 const Option = Select.Option;

@@ -1,58 +1,8 @@
-const Parse = require('parse/node');
-const ParseServer = require('parse-server').ParseServer;
-const ParseDashboard = require('parse-dashboard');
-const { appId, serverURL, masterKey, fileKey } = require('./parse_env');
-
-const api = new ParseServer({
-  databaseURI: 'mongodb://localhost:27017/dev', // Connection string for your MongoDB database
-  cloud: './cloud', // Absolute path to your Cloud Code
-  appId,
-  masterKey, // Keep this key secret!
-  fileKey,
-  serverURL // Don't forget to change to https if needed
-});
-
-const dashboard = new ParseDashboard({
-  apps: [{
-    serverURL,
-    appId,
-    masterKey,
-    appName: 'TableSpoon'
-  }]
-});
-
-function Rest(endpoint, method, token) {
-  return Parse.Cloud.httpRequest({
-    url: `${serverURL}${endpoint}`,
-    method,
-    headers: {
-      'X-Parse-Application-Id': appId,
-      'X-Parse-Session-Token': token
-    }
-  });
-}
-
-// 인증 미들웨어
-function authentication(req, res, next) {
-
-  const session = req.cookies['parse.session'];
-  const token = session ? JSON.parse(session).token : null;
-
-  if (!token) {
-    return next();
-  }
-
-  Rest('/users/me', 'GET', token)
-    .then(function (userData) {
-      req.user = Parse.Object.fromJSON(userData.data);
-      next();
-    })
-    .then(null, function () {
-      res.clearCookie('parse.session');
-      console.log('error... ----', req.method, req.originalUrl);
-      next();
-    });
-}
+const express = require('express');
+const router = express.Router();
+const bodyParser = require('body-parser');
+const Rest = require('../../routes/parse').Rest
+const authentication = require('../../middles/authentication');
 
 function login(req, res) {
   const { username, password } = req.body;
@@ -194,14 +144,15 @@ function setCookie(user, res) {
   });
 }
 
+router.post('/duplicate', bodyParser.json(), duplicate);
+router.post('/create', bodyParser.json(), createUser);
+
+// 개인정보수정은 로그인한 본인만 할 수 있음.
+router.put('/:id', authentication, bodyParser.json(), updateUser);
+router.delete('/:id', authentication, deleteUser);
+
 module.exports = {
-  api,
-  dashboard,
-  authentication,
-  duplicate,
-  createUser,
-  updateUser,
-  deleteUser,
+  router,
   login,
   logout
-};
+}

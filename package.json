@@ -5,16 +5,16 @@
   "main": "server.js",
   "scripts": {
     "test": "jest --forceExit",
-    "dev": "node app.js",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "cross-env NODE_ENV=production node app.js",
+    "start": "cross-env NODE_ENV=production node server.js",
     "analyze": "cross-env ANALYZE=1 next build",
     "lint": "eslint . --ignore-path .gitignore",
     "lint-fix": "eslint . --fix --ignore-path .gitignore",
     "dashboard": "PORT=4040 node ./utils/dashboard.js"
   },
   "dependencies": {
-    "antd": "^3.3.0",
+    "antd": "^3.3.3",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
     "isomorphic-unfetch": "^2.0.0",
@@ -29,10 +29,11 @@
     "styled-jsx": "^2.2.6"
   },
   "devDependencies": {
+    "@zeit/next-less": "^0.1.2",
     "babel-eslint": "^8.2.2",
     "babel-plugin-inline-import": "^2.0.6",
     "cross-env": "^5.1.4",
-    "eslint": "^4.19.0",
+    "eslint": "^4.19.1",
     "eslint-plugin-class-property": "^1.1.0",
     "eslint-plugin-prefer-object-spread": "^1.2.1",
     "jest": "^22.4.3",

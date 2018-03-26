@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { Form, Icon, Input, Button, Checkbox, Divider } from 'antd';
-import { checkStatus } from '../lib/utils';
+import { checkStatus } from '../utils';
 
 const FormItem = Form.Item;
 
