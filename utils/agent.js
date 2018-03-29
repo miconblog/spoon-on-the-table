@@ -9,18 +9,25 @@ server.listen(3000, (err) => {
   console.info('> Ready on http://localhost:3000');
 });
 
-export default ({ cookie, method, url, data }) => {
+export default ({ cookie, method, url, data, attach }) => {
   return new Promise((resolve) => {
 
-    const query = request(server)[method.toLowerCase()](url)
+    let query = request(server)[method.toLowerCase()](url)
       .set('Accept', 'application/json');
 
     if (cookie) {
       query.set('cookie', cookie);
     }
 
+    if (attach) {
+      Object.keys(attach).forEach((name) => {
+        query.attach(name, attach[name])
+      })
+    } else {
+      query = query.send(data);
+    }
+
     query
-      .send(data)
       .expect('Content-Type', /json/)
       .then(({ header, status, body }) => resolve({ header, status, body }))
       .catch(ex => console.log(ex))
