@@ -1,15 +1,9 @@
 /**
  * @fileOverview agent for jest with supertest 
  */
-import server from '../express';
 import request from 'supertest';
 
-server.listen(3000, (err) => {
-  if (err) throw err;
-  console.info('> Ready on http://localhost:3000');
-});
-
-export default ({ cookie, method, url, data, attach }) => {
+export default (server) => ({ cookie, method, url, data, attach }) => {
   return new Promise((resolve) => {
 
     let query = request(server)[method.toLowerCase()](url)

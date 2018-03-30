@@ -1,4 +1,15 @@
-import agent from '../../../utils/agent';
+import withServer from '../../../../supertest-with-server';
+import server from '../../../../restapi';
+import parseapp from '../../../../parse';
+
+const agent = withServer(server);
+
+beforeAll(() => {
+  parseapp.listen(9000);
+});
+afterAll(() => {
+  parseapp.close();
+})
 
 describe('POST /api/user/duplicate - 회원 중복 조회', () => {
   it('중복된 이메일이 있으면 409 상태를 반환한다.', async () => {
