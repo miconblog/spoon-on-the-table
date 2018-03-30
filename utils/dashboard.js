@@ -1,5 +1,5 @@
-const server = require('../express');
+const server = require('../apps/dashboard');
 server.listen(4040, (err) => {
   if (err) throw err;
-  console.info('> Ready on http://localhost:4040/dashboard');
+  console.info('> Ready on http://localhost:4040');
 });
