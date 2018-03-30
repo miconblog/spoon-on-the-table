@@ -1,8 +1,9 @@
+const Parse = require('parse/node');
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
-const Rest = require('../../routes/parse').Rest
-const authentication = require('../../middles/authentication');
+const cloudReq = require('../../../../request-parse-cloud');
+const authentication = require('../../../../authentication');
 
 function login(req, res) {
   const { username, password } = req.body;
@@ -30,7 +31,7 @@ function logout(req, res) {
   const token = session ? JSON.parse(session).token : null;
 
   // 로그아웃 API를 이용하면 서버의 세션도 같이 지워준다.
-  Rest('/logout', 'POST', token)
+  cloudReq('/logout', 'POST', token)
     .then((e) => {
       res.clearCookie('parse.session');
       res.redirect('/');
@@ -123,7 +124,7 @@ function deleteUser(req, res) {
     .destroy({ sessionToken })
     .then(async () => {
       // 파스 세션도 지워준다.
-      await Rest('/logout', 'POST', sessionToken)
+      await cloudReq('/logout', 'POST', sessionToken)
 
       res.clearCookie('parse.session')
       return res.status(200).json({ user: user.toJSON(), message: 'OK' })

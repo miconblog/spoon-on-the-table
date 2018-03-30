@@ -1,5 +1,5 @@
 const Parse = require('parse/node');
-const Rest = require('../routes/parse').Rest;
+const cloudReq = require('./request-parse-cloud');
 
 function authentication(req, res, next) {
 
@@ -10,7 +10,7 @@ function authentication(req, res, next) {
     return next();
   }
 
-  Rest('/users/me', 'GET', token)
+  cloudReq('/users/me', 'GET', token)
     .then(function (userData) {
       req.user = Parse.Object.fromJSON(userData.data);
       next();
