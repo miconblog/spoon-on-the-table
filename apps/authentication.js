@@ -1,5 +1,6 @@
 const Parse = require('parse/node');
 const cloudReq = require('./request-parse-cloud');
+const { MSG } = require('./restapi/errors');
 
 function authentication(req, res, next) {
 
@@ -7,7 +8,7 @@ function authentication(req, res, next) {
   const token = session ? JSON.parse(session).token : null;
 
   if (!token) {
-    return next();
+    return next(new Error(MSG.NEED_AUTHENTICATION))
   }
 
   cloudReq('/users/me', 'GET', token)
@@ -17,7 +18,6 @@ function authentication(req, res, next) {
     })
     .then(null, function () {
       res.clearCookie('parse.session');
-      console.log('error... ----', req.method, req.originalUrl);
       next();
     });
 }

@@ -11,15 +11,19 @@ function login(req, res) {
   Parse.User
     .logIn(username, password)
     .then((user) => {
+
       setCookie(user, res);
-      res.status(202).send('Login Success!');
+      res.status(202).json({ message: 'Login Success!' });
+
     }, (error) => {
+
       res.clearCookie('parse.session');
       res.json({
         error: {
           message: error.message
         }
       });
+
     })
     .catch((ex) => {
       console.log('Exception... ', ex);
@@ -83,11 +87,6 @@ function createUser(req, res) {
 function updateUser(req, res) {
   const { user, params: { id }, body } = req;
 
-  // 권한 확인
-  if (!user || (user.id !== id)) {
-    return res.status(401).json({ message: '권한이 없습니다.' });
-  }
-
   user
     .save(body, {
       sessionToken: user.getSessionToken()
@@ -112,11 +111,6 @@ function updateUser(req, res) {
 
 function deleteUser(req, res) {
   const { user, params: { id } } = req;
-
-  // 권한 확인
-  if (!user || (user.id !== id)) {
-    return res.status(401).json({ message: '권한이 없습니다.' });
-  }
 
   const sessionToken = user.getSessionToken();
 
