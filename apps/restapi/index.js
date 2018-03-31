@@ -4,6 +4,12 @@ const bodyParser = require('body-parser');
 const app = express();
 const api = require('./routes/api');
 const user = require('./routes/api/user');
+const errors = require('./errors');
+
+function errorHandler(err, req, res, next) {
+  const { code, message } = errors[err.message];
+  return res.status(code).json({ message })
+}
 
 // 쿠키 파서
 app.use(cookieParser());
@@ -13,5 +19,6 @@ app.get('/logout', user.logout);
 app.post('/login', bodyParser.json(), user.login);
 
 app.use('/api', api);
+app.use(errorHandler)
 
 module.exports = app;
