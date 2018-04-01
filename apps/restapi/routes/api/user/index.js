@@ -85,7 +85,6 @@ function createUser(req, res) {
 }
 
 function deleteOldPhoto(photo, sessionToken) {
-  console.log('유저 업데이트 > 사진 변경 > 이전에 설정한 사진객체가 있다면 지웁니다.');
   return new Promise((resolve) => photo.destroy({ sessionToken }).then(resolve).catch(resolve))
 }
 

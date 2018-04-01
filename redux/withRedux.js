@@ -76,15 +76,25 @@ export default (...args) => (Component) => {
 
     if (isServer && req.user) {
       // for server
-      loginUser = req.user.toJSON();
+      try {
+        await req.user.get('photo').fetch();
+        loginUser = req.user.toJSON();
+      } catch (ex) {
+        loginUser = req.user.toJSON();
+        loginUser.photo = {
+          image: "/assets/images/default-user-image.png"
+        }
+      }
     } else {
       // for client..
       loginUser = store && store.getState().loginUser;
     }
 
     // 프로필 이미지가 없으면 샘플을 넣어준다.
-    if (loginUser && !loginUser.profileImage) {
-      loginUser.profileImage = "/assets/images/default-user-image.png";
+    if (loginUser && !loginUser.photo) {
+      loginUser.photo = {
+        image: "/assets/images/default-user-image.png"
+      }
     }
 
     // 인증 객체를 스토어에 넣어서 초기화 한다.
