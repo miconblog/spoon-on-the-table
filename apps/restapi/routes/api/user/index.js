@@ -108,9 +108,18 @@ function updateUser(req, res) {
         await deleteOldPhoto(oldPhoto, user.getSessionToken());
       }
 
-      // 유저정보를 내릴때 패스워드는 뺀다.
+      // 프로필 정보가 있으면 패치해서 내려준다.
+      if (user.get('photo')) {
+        await user.get('photo').fetch();
+      }
+
+      // 유저정보를 내릴때 패스워드와 세션토큰은 뺀다.
       const userInfo = user.toJSON();
       delete userInfo.password;
+      delete userInfo.sessionToken;
+      delete userInfo.ACL;
+      delete userInfo.photo.ACL;
+      delete userInfo.photo.author;
 
       return res.status(200).json(userInfo)
     })
