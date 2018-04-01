@@ -1,15 +1,15 @@
 const crypto = require('crypto');
 const Busboy = require('busboy');
 const is = require('type-is');
-const s3upload = require('./lib/s3-upload');
+const s3 = require('../../lib/aws-s3');
 const { MSG } = require('../errors');
 
 function getFilename(from, user) {
-  const buf = crypto.randomBytes(8);
+  const buf = crypto.randomBytes(12);
 
   switch (from) {
     case 'profile':
-      return `${from}/${user.get('username')}/${buf.toString('hex')}`;
+      return `${from}/${buf.toString('hex')}`;
 
     default:
       return null;
@@ -43,8 +43,8 @@ function up2s3(req, res, next) {
       return next(new Error(MSG.NOT_CORRECT_FROM_FIELD));
     }
 
-    try {
-      s3upload(hashname, file, (resp) => {
+    s3.upload(hashname, file)
+      .then(resp => {
         req.s3 = {
           ...resp,
           size: parseInt(req.headers['content-length'], 10),
@@ -53,11 +53,8 @@ function up2s3(req, res, next) {
         };
 
         next();
-      });
-    } catch (ex) {
-      console.error(ex);
-      next(new Error(MSG.UNKNOWN_S3));
-    }
+      })
+      .catch(ex => next(new Error(MSG.UNKNOWN_S3)))
   });
   req.pipe(busboy)
 }
