@@ -84,18 +84,29 @@ function createUser(req, res) {
   });
 }
 
+function deleteOldPhoto(photo, sessionToken) {
+  console.log('유저 업데이트 > 사진 변경 > 이전에 설정한 사진객체가 있다면 지웁니다.');
+  return new Promise((resolve) => photo.destroy({ sessionToken }).then(resolve).catch(resolve))
+}
+
 function updateUser(req, res) {
   const { user, params: { id }, body } = req;
+  const oldPhoto = user.get('photo');
 
   user
     .save(body, {
       sessionToken: user.getSessionToken()
     })
-    .then((updatedUser) => {
+    .then(async updatedUser => {
 
       // 패스워드가 변경될 경우 세션이 변경된다. 
       if (body.password) {
         setCookie(updatedUser, res);
+      }
+
+      // 프로필 사진이 변경되면 이전 사진은 지운다. 
+      if (body.photo && oldPhoto) {
+        await deleteOldPhoto(oldPhoto, user.getSessionToken());
       }
 
       // 유저정보를 내릴때 패스워드는 뺀다.

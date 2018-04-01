@@ -114,19 +114,16 @@ describe('POST /api/file/upload - 유효성 검사', () => {
   });
 });
 
-describe('POST /api/file/upload - 업로드 결과 확인', () => {
+describe('프로필 페이지에서 사진 업로드 결과', () => {
   /**
   * 업로드 조건, 
-  * 1. 인증된 유저만 파일을 올릴수 있다. 
-  * 2. 인증된 유저의 소유로 파일이 관리되야한다. 
-  * 3. S3에 업로드 되는 키값은 /타입/유저/랜덤바이트 형식으로 저장된다. 
-  *   ex) 프로필이미지 /users/:userId/randombyte
-  *   ex) 테이블이미지 /tables/:tableId/randombyte
-  * 
+  * 1. 인증된 유저
+  * 2. 첨부파일
+  * 3. from 필드: 어디서 업로드하는지를 나타낸다. 
+  * 사진을 업로드하면 Photo 에 저장한다.
   */
-
-  it('프로필 페이지에서 파일은 이미지다.', async () => {
-
+  let json;
+  beforeAll(async () => {
     const res = await agent({
       cookie: sessionCookie,
       method: 'POST',
@@ -138,24 +135,13 @@ describe('POST /api/file/upload - 업로드 결과 확인', () => {
         file: path3
       }
     });
-
-    expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty('image'); // S3 링크
-    expect(res.body.image).not.toBeFalsy();
-    expect(res.body.image).toMatch(/miconblog/);
-    expect(res.body).toHaveProperty('size');  // 이미지 크기 
-    expect(res.body.size).not.toBeFalsy();
-    expect(res.body).toHaveProperty('key'); // 
-    expect(res.body).toHaveProperty('mimetype'); // 
-    expect(res.body).toHaveProperty('originalname'); //
+    json = res.body;
   })
 
-  // afterAll(() => {
-  //   const used = process.memoryUsage(); //.rss / 1024 / 1024;
-  //   //console.log(`The script uses approximately ${Math.round(used * 100) / 100} MB`);
-
-  //   for (let key in used) {
-  //     console.log(`${key} ${Math.round(used[key] / 1024 / 1024 * 100) / 100} MB`);
-  //   }
-  // })
+  it('key 필드가 있어야한다 ', () => expect(json).toHaveProperty('key'));
+  it('size 필드가 있어야한다 ', () => expect(json).toHaveProperty('size'));
+  it('image 필드가 있어야한다 ', () => expect(json).toHaveProperty('image'));
+  it('image 값은 /profile/:hash 형태다.', () => {
+    expect(json.image).toMatch(/profile\//);
+  });
 })
