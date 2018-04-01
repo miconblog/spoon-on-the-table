@@ -1,10 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import { Form, Input, Icon, Select, Row, Col, Button, notification } from 'antd';
-import { checkStatus } from '../../utils';
+import updateUser from './updateUser';
+import { Form, Input, Row, Col, Button } from 'antd';
 
 const FormItem = Form.Item;
-const Option = Select.Option;
 
 class PasswordForm extends React.Component {
   state = {
@@ -16,34 +15,13 @@ class PasswordForm extends React.Component {
 
     const { resetFields } = this.props.form;
 
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
 
-        const { loginUser } = this.props;
+        const { loginUser: { objectId } } = this.props;
         const { password } = values;
-
-        fetch(`/api/user/${loginUser.objectId}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          credentials: 'same-origin',
-          body: JSON.stringify({
-            password
-          })
-        }).then(checkStatus)
-          .then(res => res.json())
-          .then(user => {
-
-            notification.success({
-              message: '비밀번호 변경',
-              description: '정상적으로 변경 되었습니다.',
-            });
-            resetFields(['password', 'confirm'])
-
-          }).catch(function (error) {
-            console.log('수정 실패...', error);
-          });
+        const user = await updateUser(objectId, { password });
+        resetFields(['password', 'confirm'])
       }
     });
   }

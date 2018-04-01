@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import React from 'react';
 import Link from 'next/link';
-import { Form, Input, Icon, Select, Row, Col, Button, notification } from 'antd';
-import { checkStatus } from '../../utils';
+import updateUser from './updateUser';
+import { Form, Input, Icon, Select, Row, Col, Button } from 'antd';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -10,35 +10,17 @@ const Option = Select.Option;
 class InfoForm extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    this.props.form.validateFieldsAndScroll( async (err, values) => {
       if (!err) {
         const { loginUser, dispatch } = this.props;
         const { prefix, lastName, firstName, phone } = values;
-
-        fetch(`/api/user/${loginUser.objectId}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          credentials: 'same-origin',
-          body: JSON.stringify({
-            lastName,
-            firstName,
-            fullName: `${firstName} ${lastName}`,
-            phone: `${prefix}#${phone}`
-          })
-        }).then(checkStatus)
-          .then(res => res.json())
-          .then(user => {
-            notification.success({
-              message: '프로필 정보 수정',
-              description: '정상적으로 수정되었습니다.',
-            });
-            dispatch({ type: 'UPDATE_LOGIN_USER', payload: { loginUser: user } })
-          }).catch(error => {
-            console.log('수정 실패...', error);
-          });
-      }
+        const user = await updateUser(loginUser.objectId, {
+          lastName,
+          firstName,
+          fullName: `${firstName} ${lastName}`,
+          phone: `${prefix}#${phone}`
+        }, dispatch);
+       }
     });
   }
   render() {
