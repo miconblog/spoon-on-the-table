@@ -3,8 +3,7 @@ import { createStore, applyMiddleware } from 'redux';
 // 리듀서
 export const reducer = (state, { type, payload }) => {
   switch (type) {
-    case 'EXIST_SESSION_USER':
-
+    case 'UPDATE_LOGIN_USER':
       return ({
         ...state,
         ...{

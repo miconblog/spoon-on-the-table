@@ -17,7 +17,7 @@ const Map = (props) => (
 Map.getInitialProps = async function ({ query, req, store }) {
   // SSR 에서만 동작
   if (req && req.user) {
-    store.dispatch({ type: 'EXIST_SESSION_USER', payload: { loginUser: req.user.toJSON() } });
+    store.dispatch({ type: 'UPDATE_LOGIN_USER', payload: { loginUser: req.user.toJSON() } });
   }
 
   return {};

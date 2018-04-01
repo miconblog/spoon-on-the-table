@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import React from 'react';
 import Link from 'next/link';
 import { Form, Input, Icon, Select, Row, Col, Button, notification } from 'antd';
@@ -30,12 +31,13 @@ class InfoForm extends React.Component {
           })
         }).then(checkStatus)
           .then(res => res.json())
-          .then(function (user) {
+          .then(user => {
             notification.success({
               message: '프로필 정보 수정',
               description: '정상적으로 수정되었습니다.',
             });
-          }).catch(function (error) {
+            dispatch({ type: 'UPDATE_LOGIN_USER', payload: { loginUser: user } })
+          }).catch(error => {
             console.log('수정 실패...', error);
           });
       }
@@ -95,11 +97,11 @@ class InfoForm extends React.Component {
   }
 }
 
-export default Form.create({
+const CreatedForm = Form.create({
   mapPropsToFields({ loginUser: { firstName, lastName, phone } }) {
 
     let match = null;
-    if( phone ){
+    if (phone) {
       match = phone.split('#');
     }
 
@@ -111,3 +113,9 @@ export default Form.create({
     };
   }
 })(InfoForm);
+
+export default connect((state) => {
+  return {
+    loginUser: state.loginUser
+  };
+})(CreatedForm);
