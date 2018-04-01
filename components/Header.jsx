@@ -23,7 +23,7 @@ const HeaderWithRedux = ({ loginUser }) => (
         {
           loginUser
             ? <Avatar
-              src={loginUser.profileImage} />
+              src={loginUser.photo.image} />
             : false
         }
       </Col>

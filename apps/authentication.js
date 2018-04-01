@@ -8,7 +8,10 @@ function authentication(req, res, next) {
   const token = session ? JSON.parse(session).token : null;
 
   if (!token) {
-    return next(new Error(MSG.NEED_AUTHENTICATION))
+    if (req.originalUrl.indexOf('api') > -1) {
+      return next(new Error(MSG.NEED_AUTHENTICATION))
+    }
+    return next()
   }
 
   cloudReq('/users/me', 'GET', token)

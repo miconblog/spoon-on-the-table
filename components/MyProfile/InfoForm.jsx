@@ -12,10 +12,8 @@ class InfoForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const { loginUser } = this.props;
+        const { loginUser, dispatch } = this.props;
         const { prefix, lastName, firstName, phone } = values;
-
-        console.log('Received values of form: ', loginUser, values);
 
         fetch(`/api/user/${loginUser.objectId}`, {
           method: 'PUT',
