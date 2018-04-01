@@ -1,15 +1,12 @@
 import withServer from '../../../../supertest-with-server';
-import server from '../../../../restapi';
+import restapi from '../../../../restapi';
 import parseapp from '../../../../parse';
 
-const agent = withServer(server);
+const agent = withServer(restapi);
+let test_server = null;
 
-beforeAll(() => {
-  parseapp.listen(9000);
-});
-afterAll(() => {
-  parseapp.close();
-})
+beforeAll(() => test_server = parseapp.listen(9000));
+afterAll(done => test_server.close(done))
 
 describe('POST /api/user/duplicate - 회원 중복 조회', () => {
   it('중복된 이메일이 있으면 409 상태를 반환한다.', async () => {
@@ -110,8 +107,7 @@ describe('PUT /api/user/:id - 회원 정보 수정', () => {
       url: `/api/user/${createdUserId}`
     });
 
-    expect(res.status).toBe(401);
-    expect(res.body.message).toBe('권한이 없습니다.');
+    expect(res.status).toBe(403);
   });
 
   it('회원 정보를 변경한다', async () => {
@@ -180,9 +176,7 @@ describe('DELETE /api/user/:id - 회원 탈퇴', () => {
       method: 'DELETE',
       url: `/api/user/${createdUserId}`
     });
-
-    expect(res.status).toBe(401);
-    expect(res.body.message).toBe('권한이 없습니다.');
+    expect(res.status).toBe(403);
   });
 
   it('회원을 탈퇴하면 세션 쿠키도 삭제 된다.', async () => {

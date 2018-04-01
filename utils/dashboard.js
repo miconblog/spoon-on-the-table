@@ -1,5 +1,7 @@
-const server = require('../apps/dashboard');
-server.listen(4040, (err) => {
+const dashboard = require('../apps/dashboard');
+const parse = require('../apps/parse');
+parse.listen(9000);
+dashboard.listen(4040, (err) => {
   if (err) throw err;
   console.info('> Ready on http://localhost:4040');
 });
