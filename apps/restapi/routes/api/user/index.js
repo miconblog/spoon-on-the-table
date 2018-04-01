@@ -91,11 +91,10 @@ function deleteOldPhoto(photo, sessionToken) {
 function updateUser(req, res) {
   const { user, params: { id }, body } = req;
   const oldPhoto = user.get('photo');
+  const sessionToken = user.getSessionToken();
 
   user
-    .save(body, {
-      sessionToken: user.getSessionToken()
-    })
+    .save(body, { sessionToken })
     .then(async updatedUser => {
 
       // 패스워드가 변경될 경우 세션이 변경된다. 
@@ -105,16 +104,11 @@ function updateUser(req, res) {
 
       // 프로필 사진이 변경되면 이전 사진은 지운다. 
       if (body.photo && oldPhoto) {
-        await deleteOldPhoto(oldPhoto, user.getSessionToken());
-      }
-
-      // 프로필 정보가 있으면 패치해서 내려준다.
-      if (user.get('photo')) {
-        await user.get('photo').fetch();
+        await deleteOldPhoto(oldPhoto, sessionToken);
       }
 
       // 유저정보를 내릴때 패스워드와 세션토큰은 뺀다.
-      const userInfo = user.toJSON();
+      const userInfo = updatedUser.toJSON();
       delete userInfo.password;
       delete userInfo.sessionToken;
       delete userInfo.ACL;
@@ -124,6 +118,7 @@ function updateUser(req, res) {
       return res.status(200).json(userInfo)
     })
     .catch((error) => {
+      console.log(error)
       return res.status(500).json({ error })
     })
 }
