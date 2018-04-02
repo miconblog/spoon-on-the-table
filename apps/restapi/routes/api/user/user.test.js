@@ -9,15 +9,15 @@ beforeAll(() => test_server = parseapp.listen(9000));
 afterAll(done => test_server.close(done))
 
 describe('POST /api/user/duplicate - 회원 중복 조회', () => {
-  it('중복된 이메일이 있으면 409 상태를 반환한다.', async () => {
+  it('중복된 이메일이 있으면 200 상태를 에러 메시지를 반환한다.', async () => {
     const res = await agent({
       method: 'POST',
       url: '/api/user/duplicate',
       data: { email: 'realrap2@naver.com' }
     });
 
-    expect(res.status).toBe(409);
-    expect(res.body.message).toBe('Sorry, it was duplicated!');
+    expect(res.status).toBe(200);
+    expect(res.body.error.message).toBe('Sorry, it was duplicated!');
   });
 
   it('중복된 이메일이 없으면 202 상태를 반환한다.', async () => {

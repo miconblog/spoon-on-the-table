@@ -55,7 +55,7 @@ function duplicate(req, res) {
       if (users.length === 0) {
         res.status(202).json({ message: 'OK, you can use it' });
       } else {
-        res.status(409).json({ message: 'Sorry, it was duplicated!' });
+        res.status(200).json({ error: { message: 'Sorry, it was duplicated!' } });
       }
     })
     .catch((error) => res.status(500).json({ error }));
@@ -99,7 +99,7 @@ function updateUser(req, res) {
 
       // 패스워드가 변경될 경우 세션이 변경된다. 
       if (body.password) {
-        setCookie(updatedUser, res);
+        setCookie(user, res);
       }
 
       // 프로필 사진이 변경되면 이전 사진은 지운다. 
@@ -107,13 +107,22 @@ function updateUser(req, res) {
         await deleteOldPhoto(oldPhoto, sessionToken);
       }
 
+      // 유저의 사진이 있으면 패치한다. 
+      if (!body.photo && updatedUser.get('photo')) {
+        await updatedUser.get('photo').fetch({ sessionToken });
+      }
+
       // 유저정보를 내릴때 패스워드와 세션토큰은 뺀다.
       const userInfo = updatedUser.toJSON();
+
       delete userInfo.password;
       delete userInfo.sessionToken;
       delete userInfo.ACL;
-      delete userInfo.photo.ACL;
-      delete userInfo.photo.author;
+
+      if (userInfo.photo) {
+        delete userInfo.photo.ACL;
+        delete userInfo.photo.author;
+      }
 
       return res.status(200).json(userInfo)
     })

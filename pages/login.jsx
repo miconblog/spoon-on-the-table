@@ -2,40 +2,37 @@ import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { Form, Icon, Input, Button, Checkbox, Divider } from 'antd';
-import { checkStatus } from '../utils';
+import { loginUser } from '../utils/api';
 
 const FormItem = Form.Item;
 
 class LoginForm extends React.Component {
+  state = {
+    loading: false
+  };
+
   handleSubmit = (e) => {
     e.preventDefault();
-    const data = new FormData(e.target);
+    const { resetFields, validateFields } = this.props.form;
 
-    this.props.form.validateFields((err, values) => {
+    validateFields(async (err, values) => {
       if (!err) {
-        const { email, password } = values;
 
-        fetch('/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          credentials: 'same-origin',
-          body: JSON.stringify({
-            username: email,
-            password
-          })
-        }).then(checkStatus)
-          .then(function () {
-            location.replace('/');
-          }).catch(function (error) {
-            console.log('로그인 실패...', error);
-          });
+        this.setState({ loading: true });
+        const success = await loginUser(values);
+        this.setState({ loading: false });
+        if (success) {
+          location.replace('/');
+        } else {
+          resetFields(['password']);
+        }
+
       }
     });
   }
-  render () {
+  render() {
     const { getFieldDecorator } = this.props.form;
+    const { loading } = this.state;
 
     return (
       <Form onSubmit={this.handleSubmit} className='login-form'>
@@ -56,7 +53,7 @@ class LoginForm extends React.Component {
           )}
         </FormItem>
         <FormItem>
-          <Button type='primary' htmlType='submit' className='full-width-button'>로그인</Button>
+          <Button icon={loading ? 'loading' : ''} type='primary' htmlType='submit' className='full-width-button'>로그인</Button>
         </FormItem>
 
         <style jsx>{`
@@ -86,7 +83,7 @@ class LoginForm extends React.Component {
 }
 
 const WrappedLoginForm = Form.create({
-  mapPropsToFields ({ email }) {
+  mapPropsToFields({ email }) {
     return {
       email: Form.createFormField({ value: email })
     };

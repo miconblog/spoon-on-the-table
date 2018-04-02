@@ -1,40 +1,27 @@
 import React from 'react';
 import Link from 'next/link';
 import { Form, Icon, Input, Button, Checkbox, Divider } from 'antd';
-import { checkStatus } from '../utils';
+import { registerUser } from '../utils/api';
 const FormItem = Form.Item;
 
 class RegisterForm extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    const { validateFields } = this.props.form;
+
+    validateFields(async (err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
-
         const { email, password } = values;
+        const success = await registerUser(values);
+        if( success ){
+          location.replace('/'); 
 
-        fetch('/api/user/create', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          credentials: 'same-origin',
-          body: JSON.stringify({
-            username: email,
-            email,
-            password
-          })
-        }).then(checkStatus)
-          .then(function (user) {
-            console.log(user);
-            location.replace('/');
-          }).catch(function (error) {
-            console.log('가입 실패...', error);
-          });
+          // TODO: 회원가입 되었다는 안내와 함께 메일을 발송되었음을 알리는게 좋지 않을까?
+        }
       }
     });
   }
-  render () {
+  render() {
     const { getFieldDecorator } = this.props.form;
     return (
       <Form onSubmit={this.handleSubmit} className='login-form'>
@@ -88,7 +75,7 @@ class RegisterForm extends React.Component {
 }
 
 const WrappedRegisterForm = Form.create({
-  mapPropsToFields (props) {
+  mapPropsToFields(props) {
     return {
       email: Form.createFormField({ value: props.email })
     };
