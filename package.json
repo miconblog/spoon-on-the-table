@@ -2,17 +2,17 @@
   "name": "spoon-on-the-table",
   "version": "0.1.0",
   "license": "MIT",
-  "main": "server.js",
+  "main": "./bin/www",
   "repository": "",
   "scripts": {
     "test": "jest --forceExit",
-    "dev": "node server.js",
+    "dev": "node ./bin/www",
     "build": "next build",
-    "start": "cross-env NODE_ENV=production node server.js",
+    "start": "cross-env NODE_ENV=production node ./bin/www",
     "analyze": "cross-env ANALYZE=1 next build",
     "lint": "eslint . --ignore-path .gitignore",
     "lint-fix": "eslint . --fix --ignore-path .gitignore",
-    "dashboard": "node ./utils/dashboard.js"
+    "dashboard": "node ./bin/dashboard"
   },
   "jest": {
     "verbose": false
