@@ -2,27 +2,60 @@ import { connect } from 'react-redux';
 import React from 'react';
 import Link from 'next/link';
 import updateUser from './updateUser';
-import { Form, Input, Icon, Select, Row, Col, Button } from 'antd';
+import { Form, Input, Icon, Select, Row, Col, Button, Divider } from 'antd';
+import PhotoFormItem from './PhotoFormItem'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 class InfoForm extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      photoId: '',
+      photo: '',
+      photoIsChanged: false
+    }
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll( async (err, values) => {
+    this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
         const { loginUser, dispatch } = this.props;
         const { prefix, lastName, firstName, phone } = values;
-        const user = await updateUser(loginUser.objectId, {
+        const { photoId, photo, photoIsChanged } = this.state;
+
+        const userInfo = {
           lastName,
           firstName,
           fullName: `${firstName} ${lastName}`,
           phone: `${prefix}#${phone}`
-        }, dispatch);
-       }
+        };
+
+        if (photoIsChanged) {
+          userInfo.photo = {
+            __type: 'Pointer',
+            className: 'Photo',
+            objectId: photoId,
+            image: photo
+          }
+        }
+
+        const user = await updateUser(loginUser.objectId, userInfo, dispatch);
+      }
     });
   }
+
+  handleUpload = (resp) => {
+    this.setState({
+      photoIsChanged: true,
+      photo: resp.image,
+      photoId: resp.objectId
+    });
+  }
+
   render() {
     const { loginUser } = this.props;
     const { getFieldDecorator } = this.props.form;
@@ -39,6 +72,10 @@ class InfoForm extends React.Component {
         <FormItem>
           가입한 이메일 주소는 <strong>{loginUser.email}</strong> 입니다.
         </FormItem>
+
+        <PhotoFormItem defaultImage={loginUser.photo.image} onUpload={this.handleUpload} />
+        
+        <Divider />
 
         <Row type="flex" justify="space-between">
           <Col>

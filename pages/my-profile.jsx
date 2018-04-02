@@ -1,15 +1,16 @@
 import React from 'react';
-import { initStore } from '../redux/store';
+import Link from 'next/link';
 import withRedux from '../redux/withRedux';
+import { initStore } from '../redux/store';
 import { MyPageLayout } from '../layouts';
 import dynamic from 'next/dynamic';
 import Router from 'next/router';
 import Markdown from 'react-markdown';
 import { Layout, Card, Icon, Divider, Menu, Row, Col } from 'antd';
-import { 
-  InfoForm, PasswordForm, PhotoForm, 
-  AddressForm, BankAccountForm, ConnectSNSForm, 
-  LanguageForm, IntroduceForm 
+import {
+  InfoForm, PasswordForm,
+  AddressForm, BankAccountForm, ConnectSNSForm,
+  LanguageForm, IntroduceForm
 } from '../components/MyProfile';
 
 const { Content, Sider } = Layout;
@@ -35,13 +36,10 @@ class MyProfile extends React.Component {
   render() {
     const { menu } = this.props;
 
-    let component = InfoForm;
+    let component;
     switch (menu) {
       case 'password':
         component = PasswordForm;
-        break;
-      case 'photo':
-        component = PhotoForm;
         break;
       case 'address':
         component = AddressForm;
@@ -55,9 +53,8 @@ class MyProfile extends React.Component {
       case 'language':
         component = LanguageForm;
         break;
-      case 'about':
-        component = IntroduceForm;
-        break;    
+      default:
+        component = InfoForm;
     }
 
     return (
@@ -78,10 +75,6 @@ class MyProfile extends React.Component {
                 <Icon type="lock" />
                 <span>비밀번호 변경</span>
               </Menu.Item>
-              <Menu.Item key="photo">
-                <Icon type="picture" />
-                <span>대표 사진</span>
-              </Menu.Item>
               <Menu.Item key="address">
                 <Icon type="environment-o" />
                 <span>주소</span>
@@ -98,9 +91,10 @@ class MyProfile extends React.Component {
                 <Icon type="global" />
                 <span>사용 언어</span>
               </Menu.Item>
-              <Menu.Item key="about">
-                <Icon type="form" />
-                <span>자기 소개</span>
+              <Menu.Item>
+                <Link href='/logout'>
+                  <a style={{ display: 'inline-block' }}><Icon type="logout" />로그 아웃</a>
+                </Link>
               </Menu.Item>
             </Menu>
           </Col>
