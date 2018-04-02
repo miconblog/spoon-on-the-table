@@ -4,7 +4,7 @@ const next = require('next');
 const app = next({ dev: isDevelopment });
 
 const handle = app.getRequestHandler();
-const authentication = require('../authentication');
+const authentication = require('../lib/authentication');
 
 function route(resolve) {
 

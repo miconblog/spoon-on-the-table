@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const api = require('./routes/api');
 const user = require('./routes/api/user');
-const errors = require('./errors');
+const errors = require('../lib/errors');
 
 function errorHandler(err, req, res, next) {
   const { code, message } = errors[err.message];

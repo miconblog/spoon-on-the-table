@@ -1,7 +1,7 @@
 const Parse = require('parse/node');
 const express = require('express');
 const router = express.Router();
-const authentication = require('../../../../authentication');
+const authentication = require('../../../../lib/authentication');
 const up2s3 = require('../../../middles/up2s3.direct');
 
 class Photo extends Parse.Object {

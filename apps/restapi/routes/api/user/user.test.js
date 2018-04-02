@@ -1,4 +1,4 @@
-import withServer from '../../../../supertest-with-server';
+import withServer from '../../../../lib/supertest-with-server';
 import restapi from '../../../../restapi';
 import parseapp from '../../../../parse';
 

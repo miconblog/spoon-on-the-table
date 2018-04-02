@@ -2,8 +2,8 @@ const Parse = require('parse/node');
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
-const cloudReq = require('../../../../request-parse-cloud');
-const authentication = require('../../../../authentication');
+const cloudReq = require('../../../../lib/request-parse-cloud');
+const authentication = require('../../../../lib/authentication');
 
 function login(req, res) {
   const { username, password } = req.body;

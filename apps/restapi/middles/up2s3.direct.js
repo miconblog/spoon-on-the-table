@@ -2,7 +2,7 @@ const crypto = require('crypto');
 const Busboy = require('busboy');
 const is = require('type-is');
 const s3 = require('../../lib/aws-s3');
-const { MSG } = require('../errors');
+const { MSG } = require('../../lib/errors');
 
 function getFilename(from, user) {
   const buf = crypto.randomBytes(12);
