@@ -14,7 +14,6 @@ import {
 } from '../components/MyProfile';
 
 const { Content, Sider } = Layout;
-const { SubMenu } = Menu;
 
 class MyProfile extends React.Component {
 
@@ -59,49 +58,10 @@ class MyProfile extends React.Component {
 
     return (
       <MyPageLayout>
-        <Row type="flex">
-          <Col style={{ backgroundColor: 'transparent', width: '200px' }}>
-            <Menu
-              mode="inline"
-              selectedKeys={[menu]}
-              style={{ backgroundColor: 'transparent' }}
-              onSelect={this.handleSelect}
-            >
-              <Menu.Item key="info">
-                <Icon type="user" />
-                <span>개인정보</span>
-              </Menu.Item>
-              <Menu.Item key="password">
-                <Icon type="lock" />
-                <span>비밀번호 변경</span>
-              </Menu.Item>
-              <Menu.Item key="address">
-                <Icon type="environment-o" />
-                <span>주소</span>
-              </Menu.Item>
-              <Menu.Item key="bank">
-                <Icon type="bank" />
-                <span>계좌 연결</span>
-              </Menu.Item>
-              <Menu.Item key="sns">
-                <Icon type="cloud-o" />
-                <span>소셜 연동</span>
-              </Menu.Item>
-              <Menu.Item key="language">
-                <Icon type="global" />
-                <span>사용 언어</span>
-              </Menu.Item>
-              <Menu.Item>
-                <Link href='/logout'>
-                  <a style={{ display: 'inline-block' }}><Icon type="logout" />로그 아웃</a>
-                </Link>
-              </Menu.Item>
-            </Menu>
-          </Col>
-          <Col span={10}>
-            {React.createElement(component, this.props)}
-          </Col>
-        </Row>
+        <SideMenu
+          selectedKey={menu}
+          onSelect={this.handleSelect}
+        />
       </MyPageLayout>
     )
   }

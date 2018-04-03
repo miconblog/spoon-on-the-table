@@ -37,7 +37,6 @@ const MyHeaderWithRedux = ({ router }) => {
               <PrefetchLink key={title} style={style} href={href} as={as}>{title}</PrefetchLink>
             )
           })}
-          <Link href='/logout'><a className='rm'>로그아웃</a></Link>
         </Col>
       </Row>
     </Header>

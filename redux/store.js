@@ -11,6 +11,14 @@ export const reducer = (state, { type, payload }) => {
         }
       });
 
+    case 'COLLAPSE_SIDE_MENU':
+      return ({
+        ...state,
+        ...{
+          collapsed: payload
+        }
+      })
+
     default:
       return state;
   }

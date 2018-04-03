@@ -5,6 +5,7 @@ import AddressForm from './AddressForm';
 import BankAccountForm from './BankAccountForm';
 import ConnectSNSForm from './ConnectSNSForm';
 import LanguageForm from './LanguageForm';
+import SideMenu from './SideMenu';
 
 export {
   InfoForm,
@@ -13,5 +14,6 @@ export {
   PasswordForm,
   BankAccountForm,
   ConnectSNSForm,
+  SideMenu,
   LanguageForm,
 }
