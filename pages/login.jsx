@@ -20,7 +20,6 @@ class LoginForm extends React.Component {
 
         this.setState({ loading: true });
         const success = await loginUser(values);
-        this.setState({ loading: false });
         if (success) {
           location.replace('/');
         } else {

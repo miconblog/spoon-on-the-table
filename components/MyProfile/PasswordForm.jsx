@@ -46,7 +46,7 @@ class PasswordForm extends React.Component {
     const { getFieldDecorator } = this.props.form;
 
     return (
-      <Form onSubmit={this.handleSubmit} style={{ paddingLeft: '20px' }}>
+      <Form className="PasswordForm" onSubmit={this.handleSubmit}>
         <FormItem label="비밀번호">
           {getFieldDecorator('password', {
             rules: [{

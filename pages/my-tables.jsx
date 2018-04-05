@@ -2,7 +2,7 @@ import { initStore } from '../redux/store';
 import withRedux from '../redux/withRedux';
 import { MyPageLayout } from '../layouts';
 import Markdown from 'react-markdown';
-import { Card, Avatar, Divider } from 'antd';
+import { Card, Avatar } from 'antd';
 import { Table } from 'antd';
 
 const columns = [{
@@ -46,20 +46,19 @@ const rowSelection = {
 
 const MyTables = ({ loginUser }) => (
   <MyPageLayout>
-    {/* <ul>
+    <ul>
       <li>1. 호스트 소개</li>
       <li>2. 기본 사항</li>
       <li>3. 상세 정보</li>
       <li>4. 손님 맞이</li>
-    </ul> */}
+    </ul>
 
-    <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
+    <main className="page-my-table-content">
+      <Table rowSelection={rowSelection} columns={columns} dataSource={data} />
 
-    <Divider />
-
-    <h1>호스팅하기</h1>
-    <div className='markdown'>
-      <Markdown source={`
+      <h1>호스팅하기</h1>
+      <div className='markdown'>
+        <Markdown source={`
 
         # 기본사항 
          - 장소를 선택하세요. 
@@ -122,12 +121,15 @@ const MyTables = ({ loginUser }) => (
 
         
      `} />
-    </div>
+      </div>
+    </main>
+
   </MyPageLayout>
 );
 
 MyTables.getInitialProps = async function ({ query, req, store }) {
 
+  console.log('MyTables', query)
   return {
     loginUser: store.getState().loginUser
   };

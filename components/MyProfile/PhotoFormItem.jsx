@@ -2,7 +2,8 @@ import { connect } from 'react-redux';
 import React from 'react';
 import Link from 'next/link';
 import updateUser from './updateUser';
-import { Form, Input, Icon, Upload, Row, Col, Button, message } from 'antd';
+import { Form, Icon, Upload, Button, message } from 'antd';
+import './PhotoFormItem.less';
 
 const FormItem = Form.Item;
 
@@ -71,20 +72,17 @@ class PhotoFormItem extends React.Component {
     const isChanged = !loading && (image !== this.props.defaultImage);
 
     return (
-      <FormItem>
-        <Col span={10}>
+      <FormItem className="PhotoFormItem">
+        <div>
           <img alt="profile photo" style={{ width: '150px' }} src={this.state.image} />
-        </Col>
-        <Col span={2} />
-        <Col span={10}>
-          <Upload {...props}>
-            {!isChanged &&
-              <Button disabled={loading}>
-                <Icon type={loading ? "loading" : "picture"} /> 사진 업로드
+        </div>
+        <Upload {...props}>
+          {!isChanged &&
+            <Button disabled={loading}>
+              <Icon type={loading ? "loading" : "picture"} /> 사진 업로드
               </Button>
-            }
-          </Upload>
-        </Col>
+          }
+        </Upload>
       </FormItem>
     );
   }

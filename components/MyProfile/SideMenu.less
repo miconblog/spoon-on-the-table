@@ -1,43 +1,18 @@
 .SideMenu {
-  display: flex;
-  flex-direction: column;
-  border-right: 1px solid #e8e8e8;
+  height: 100%;
   
   > ul {
-    width: 200px;
+    width: 100%;
     padding: 20px 0 0 20px;
-    flex: 1;
     border-right: none;
-
-    &.ant-menu-inline-collapsed {
-      padding-left: 0;
-      width: 80px;
-    }
-  }
-
-  .btn-toggle-sider {
-    //display: none;
-    text-align: center;
-    background-color: gray;
-
-    .ant-btn {
-      margin: 10px 0;
-      color: #fff;
-      border: none;
-      width: 100%;
-    }
   }
   
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 500px) {
     width: auto;
 
     > ul {
       padding: 20px 0 0 0;
       flex: 1;
     }  
-
-    .btn-toggle-sider {
-      display: none;
-    }
   }
 }

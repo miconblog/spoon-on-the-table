@@ -14,7 +14,10 @@
 /* antd override */
 .ant-form {
   min-width: 300px;
-  max-width: 600px;
+
+  @media (max-width: 500px){
+    min-width: 100%;
+  }
 
   &.login-form {
     max-width: 310px;
@@ -60,5 +63,14 @@ a {
   
   &.rm {
     margin-right: 25px;
+
+    &:last-child {
+      margin-right: 0;
+    }
   }
+}
+
+main {
+  flex:1;
+  padding: 20px;
 }

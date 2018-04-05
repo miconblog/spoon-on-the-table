@@ -15,9 +15,9 @@ const HeadStyle = {
 
 const Menus = [
   { href: '/my-profile', as: '/my/profile', title: '내정보' },
-  { href: '/my-inbox', as: '/my/inbox', title: '메시지' },
+  // { href: '/my-inbox', as: '/my/inbox', title: '메시지' },
   { href: '/my-tables', as: '/my/tables', title: '테이블관리' },
-  { href: '/my-guests', as: '/my/guests', title: '예약관리' },
+  // { href: '/my-guests', as: '/my/guests', title: '예약관리' },
 ];
 
 const MyHeaderWithRedux = ({ router }) => {

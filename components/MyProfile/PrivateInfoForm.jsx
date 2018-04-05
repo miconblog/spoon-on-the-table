@@ -4,7 +4,6 @@ import Link from 'next/link';
 import updateUser from './updateUser';
 import { Form, Input, Icon, Select, Row, Col, Button, Divider } from 'antd';
 import PhotoFormItem from './PhotoFormItem';
-import './PrivateInfoForm.less';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -76,7 +75,7 @@ class PrivateInfoForm extends React.Component {
 
         <PhotoFormItem defaultImage={loginUser.photo.image} onUpload={this.handleUpload} />
 
-        <Row type="flex">
+        <Row>
           <Col span={11}>
             <FormItem label="성">
               {getFieldDecorator('lastName', {

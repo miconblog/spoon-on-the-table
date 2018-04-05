@@ -6,11 +6,11 @@ import { MyPageLayout } from '../layouts';
 import dynamic from 'next/dynamic';
 import Router from 'next/router';
 import Markdown from 'react-markdown';
-import { Layout, Card, Icon, Divider, Menu, Row, Col } from 'antd';
+import { Layout, Card, Icon, Divider, Row, Col } from 'antd';
 import {
-  InfoForm, PasswordForm,
+  PrivateInfoForm, PasswordForm,
   AddressForm, BankAccountForm, ConnectSNSForm,
-  LanguageForm, IntroduceForm
+  LanguageForm, IntroduceForm, SideMenu
 } from '../components/MyProfile';
 
 const { Content, Sider } = Layout;
@@ -53,15 +53,25 @@ class MyProfile extends React.Component {
         component = LanguageForm;
         break;
       default:
-        component = InfoForm;
+        component = PrivateInfoForm;
     }
+
+
+    // xl≥1200px lg≥992px md≥768px sm≥576px xs<576px
 
     return (
       <MyPageLayout>
-        <SideMenu
-          selectedKey={menu}
-          onSelect={this.handleSelect}
-        />
+        <Col sm={7} md={7}>
+          <SideMenu
+            selectedKey={menu}
+            onSelect={this.handleSelect}
+          />
+        </Col>
+        <Col sm={10} md={13}>
+          <main className="page-my-profile-content">
+            {React.createElement(component, this.props)}
+          </main>
+        </Col>
       </MyPageLayout>
     )
   }
