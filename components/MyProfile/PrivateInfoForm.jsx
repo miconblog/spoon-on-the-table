@@ -24,13 +24,14 @@ class PrivateInfoForm extends React.Component {
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
         const { loginUser, dispatch } = this.props;
-        const { prefix, lastName, firstName, phone } = values;
+        const { prefix, lastName, firstName, phone, sex } = values;
         const { photoId, photo, photoIsChanged } = this.state;
 
         const userInfo = {
           lastName,
           firstName,
           fullName: `${firstName} ${lastName}`,
+          sex,
           phone: `${prefix}#${phone}`
         };
 
@@ -75,28 +76,33 @@ class PrivateInfoForm extends React.Component {
 
         <PhotoFormItem defaultImage={loginUser.photo.image} onUpload={this.handleUpload} />
 
-        <Row>
-          <Col span={11}>
-            <FormItem label="성">
-              {getFieldDecorator('lastName', {
-                rules: [{ required: true, message: 'last name' }],
-              })(
-                <Input />
-              )}
-            </FormItem>
-          </Col>
-          <Col  span={2}>
-          </Col>
-          <Col span={11}>
-            <FormItem label="이름">
-              {getFieldDecorator('firstName', {
-                rules: [{ required: true, message: 'first name' }],
-              })(
-                <Input />
-              )}
-            </FormItem>
-          </Col>
-        </Row>
+        <FormItem label="이름">
+          {getFieldDecorator('firstName', {
+            rules: [{ required: true, message: 'first name' }],
+          })(
+            <Input />
+          )}
+        </FormItem>
+
+        <FormItem label="성">
+          {getFieldDecorator('lastName', {
+            rules: [{ required: true, message: 'last name' }],
+          })(
+            <Input />
+          )}
+        </FormItem>
+
+        <FormItem label="성별">
+          {getFieldDecorator('sex', {
+            rules: [{ required: true, message: '성별을 선택하세요' }],
+          })(
+            <Select>
+              <Option value="male">남성</Option>
+              <Option value="female">여성</Option>
+            </Select>
+          )}
+          <p>성별은 통계로 목적으로 사용되며 다른 회원들에게 절대 공개되지 않습니다.</p>
+        </FormItem>
 
         <FormItem label="휴대전화">
           {getFieldDecorator('phone', {
@@ -115,7 +121,7 @@ class PrivateInfoForm extends React.Component {
 }
 
 const CreatedForm = Form.create({
-  mapPropsToFields({ loginUser: { firstName, lastName, phone } }) {
+  mapPropsToFields({ loginUser: { firstName, lastName, phone, sex="선택하세요" } }) {
 
     let match = null;
     if (phone) {
@@ -126,7 +132,8 @@ const CreatedForm = Form.create({
       firstName: Form.createFormField({ value: firstName }),
       lastName: Form.createFormField({ value: lastName }),
       prefix: Form.createFormField({ value: match[0] }),
-      phone: Form.createFormField({ value: match[1] })
+      phone: Form.createFormField({ value: match[1] }),
+      sex: Form.createFormField({ value: sex }),    
     };
   }
 })(PrivateInfoForm);
