@@ -10,22 +10,37 @@ class SideMenu extends React.Component {
     this.props.dispatch({ type: 'COLLAPSE_SIDE_MENU', payload: !this.props.collapsed })
   }
 
-  // handleWindowResize = (e) => {
-  //   const { collapsed, dispatch } = this.props;
-  //   let shouldCollapsed = (e.target.innerWidth < 600);
+  handleWindowResize = (e) => {
+    const { collapsed, dispatch } = this.props;
 
-  //   if (collapsed !== shouldCollapsed) {
-  //     this.props.dispatch({ type: 'COLLAPSE_SIDE_MENU', payload: shouldCollapsed })
-  //   }
-  // }
+    let shouldCollapsed = false;
+    if (e.target.innerWidth < 600) {
+      shouldCollapsed = true;
+    }
 
-  // componentDidMount() {
-  //   window && window.addEventListener('resize', this.handleWindowResize);
-  // }
+    // 600보다 작으면 메뉴는 무조건 접는다.
+    if (e.target.innerWidth < 600) {
+      shouldCollapsed = true;
+    } else {
 
-  // componentWillUnmount() {
-  //   window && window.removeEventListener('resize', this.handleWindowResize);
-  // }
+      // 600보다 큰데,.. 메뉴가 접혀있으면 무시!
+      if (collapsed) {
+        shouldCollapsed = true;
+      }
+    }
+
+    if (collapsed !== shouldCollapsed) {
+      this.props.dispatch({ type: 'COLLAPSE_SIDE_MENU', payload: shouldCollapsed })
+    }
+  }
+
+  componentDidMount() {
+    window && window.addEventListener('resize', this.handleWindowResize);
+  }
+
+  componentWillUnmount() {
+    window && window.removeEventListener('resize', this.handleWindowResize);
+  }
 
   render() {
     const { selectedKey, onSelect, collapsed = false } = this.props;

@@ -3,12 +3,13 @@ import React from 'react';
 import Link from 'next/link';
 import updateUser from './updateUser';
 import { Form, Input, Icon, Select, Row, Col, Button, Divider } from 'antd';
-import PhotoFormItem from './PhotoFormItem'
+import PhotoFormItem from './PhotoFormItem';
+import './PrivateInfoForm.less';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-class InfoForm extends React.Component {
+class PrivateInfoForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -68,17 +69,15 @@ class InfoForm extends React.Component {
     );
 
     return (
-      <Form onSubmit={this.handleSubmit} style={{ paddingLeft: '20px' }}>
+      <Form className="PrivateInfoForm" onSubmit={this.handleSubmit}>
         <FormItem>
           가입한 이메일 주소는 <strong>{loginUser.email}</strong> 입니다.
         </FormItem>
 
         <PhotoFormItem defaultImage={loginUser.photo.image} onUpload={this.handleUpload} />
-        
-        <Divider />
 
-        <Row type="flex" justify="space-between">
-          <Col>
+        <Row type="flex">
+          <Col span={11}>
             <FormItem label="성">
               {getFieldDecorator('lastName', {
                 rules: [{ required: true, message: 'last name' }],
@@ -87,7 +86,9 @@ class InfoForm extends React.Component {
               )}
             </FormItem>
           </Col>
-          <Col>
+          <Col  span={2}>
+          </Col>
+          <Col span={11}>
             <FormItem label="이름">
               {getFieldDecorator('firstName', {
                 rules: [{ required: true, message: 'first name' }],
@@ -129,7 +130,7 @@ const CreatedForm = Form.create({
       phone: Form.createFormField({ value: match[1] })
     };
   }
-})(InfoForm);
+})(PrivateInfoForm);
 
 export default connect((state) => {
   return {

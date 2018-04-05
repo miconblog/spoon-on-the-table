@@ -1,4 +1,4 @@
-import InfoForm from './InfoForm';
+import PrivateInfoForm from './PrivateInfoForm';
 import PasswordForm from './PasswordForm';
 import PhotoFormItem from './PhotoFormItem';
 import AddressForm from './AddressForm';
@@ -8,7 +8,7 @@ import LanguageForm from './LanguageForm';
 import SideMenu from './SideMenu';
 
 export {
-  InfoForm,
+  PrivateInfoForm,
   PhotoFormItem,
   AddressForm,
   PasswordForm,
