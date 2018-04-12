@@ -6,6 +6,7 @@
   "repository": "",
   "scripts": {
     "test": "jest --forceExit",
+    "test-watch": "jest --watch",
     "dev": "node ./bin/www",
     "build": "next build",
     "start": "cross-env NODE_ENV=production node ./bin/www",
