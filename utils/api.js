@@ -10,21 +10,24 @@ function checkStatus(response) {
   }
 }
 
-export function registerUser({ email, password }) {
-  fetch('/api/user/create', {
-    method: 'POST',
+function fetchPromise({ endpoint, params }) {
+
+  const values = Object.assign({
     headers: {
       'Content-Type': 'application/json'
     },
     credentials: 'same-origin',
-    body: JSON.stringify({
-      username: email,
-      email,
-      password
-    })
-  }).then(checkStatus)
+  }, params);
+
+  return fetch(endpoint, values)
+    .then(checkStatus)
     .then(res => res.json())
-    .then(json => !!json)
+}
+
+// 회원가입
+export function registerUser(params) {
+  return fetchPromise(_registerUser(params))
+    .then(json => !!json.error)
     .catch(error => {
       notification.success({
         message: '회원가입 실패!',
@@ -33,20 +36,23 @@ export function registerUser({ email, password }) {
       console.log(error);
     });
 }
+export function _registerUser({ email, password }) {
+  return {
+    endpoint: '/api/user/create',
+    params: {
+      method: 'POST',
+      body: JSON.stringify({
+        username: email,
+        email,
+        password
+      })
+    }
+  }
+}
 
-export function loginUser({ email, password }) {
-  return fetch('/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'same-origin',
-    body: JSON.stringify({
-      username: email,
-      password
-    })
-  }).then(checkStatus)
-    .then(res => res.json())
+// 로그인
+export function loginUser(params) {
+  return fetchPromise(_loginUser(params))
     .then(json => {
       if (json.error) {
         notification.error({
@@ -58,31 +64,37 @@ export function loginUser({ email, password }) {
       return json;
     })
 }
-
-export function checkUserDuplicated({ email }) {
-  return fetch('/api/user/duplicate', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'same-origin',
-    body: JSON.stringify({ email })
-  }).then(checkStatus)
-    .then(res => res.json())
-    .then(json => !!json.error)
+export function _loginUser({ email, password }) {
+  return {
+    endpoint: '/login',
+    params: {
+      method: 'POST',
+      body: JSON.stringify({
+        username: email,
+        password
+      })
+    }
+  }
 }
 
-export default function updateUser(id, values, dispatch) {
+// 이메일 중복확인
+export function checkUserDuplicated(params) {
+  return fetchPromise(_checkUserDuplicated(params))
+    .then(json => !!json.error)
+}
+export function _checkUserDuplicated({ email }) {
+  return {
+    endpoint: '/api/user/duplicate',
+    params: {
+      method: 'POST',
+      body: JSON.stringify({ email })
+    }
+  }
+}
 
-  return fetch(`/api/user/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'same-origin',
-    body: JSON.stringify({ ...values })
-  }).then(checkStatus)
-    .then(res => res.json())
+// 유저 정보 업데이트
+export function updateUser(id, values, dispatch) {
+  return fetchPromise(_updateUser(id, values))
     .then(user => {
       notification.success({
         message: '프로필 정보 수정',
@@ -97,4 +109,17 @@ export default function updateUser(id, values, dispatch) {
       console.log(error);
     });
 }
+export function _updateUser(id, values) {
+  return {
+    endpoint: `/api/user/${id}`,
+    params: {
+      method: 'PUT',
+      body: JSON.stringify({ ...values })
+    }
+  }
+}
 
+// 테이블 임시저장
+export function saveCreatingTable() {
+
+}
