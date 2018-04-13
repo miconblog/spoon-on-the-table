@@ -22,28 +22,6 @@ class LanguageForm extends React.Component {
   
   render() {
     const { getFieldDecorator } = this.props.form;
-
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 4 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 20 },
-      },
-    };
-
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0,
-        }
-      },
-    };
-
-
     const children = Languages.map((language)=>{
       return (<Option key={language}>{language}</Option>)
     })
@@ -78,7 +56,7 @@ class LanguageForm extends React.Component {
         </FormItem>
 
 
-        <FormItem {...tailFormItemLayout}>
+        <FormItem>
           <Button type="primary" htmlType="submit">저장</Button>
         </FormItem>
       </Form>
