@@ -18,22 +18,22 @@
     "verbose": false
   },
   "dependencies": {
-    "antd": "^3.3.3",
+    "antd": "^3.4.1",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
     "isomorphic-unfetch": "^2.0.0",
     "lru-cache": "^4.1.2",
     "next": "^5.1.0",
     "parse-server": "^2.7.4",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
     "react-markdown": "^3.3.0",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
     "styled-jsx": "^2.2.6"
   },
   "devDependencies": {
-    "@zeit/next-less": "^0.1.2",
+    "@zeit/next-less": "^0.2.0",
     "babel-eslint": "^8.2.2",
     "babel-plugin-inline-import": "^2.0.6",
     "cross-env": "^5.1.4",
