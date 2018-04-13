@@ -22,7 +22,7 @@ const About = () => (
       </p>
 
     </div>
-    <Link href='/become-host'><a className='ant-btn ant-btn-primary ant-btn-lg'>호스팅하기</a></Link>
+    <Link href='/become-a-host'><a className='ant-btn ant-btn-primary ant-btn-lg'>호스팅하기</a></Link>
 
     <style jsx>{`
       #about {
