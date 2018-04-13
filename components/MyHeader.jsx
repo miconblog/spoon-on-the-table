@@ -14,6 +14,8 @@ const HeadStyle = {
 };
 
 const Menus = [
+  { href: '/become-a-host', title: '테이블 추가' },
+  { href: '/my-tables', as: '/my/tables', title: '호스트' },
   { href: '/my-profile', as: '/my/profile', title: '내정보' },
   // { href: '/my-inbox', as: '/my/inbox', title: '메시지' },
   { href: '/my-tables', as: '/my/tables', title: '테이블관리' },

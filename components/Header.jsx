@@ -15,7 +15,7 @@ const HeaderWithRedux = ({ loginUser }) => (
       </Col>
       <Col>
         <PrefetchLink href='/#about'>소개</PrefetchLink>
-        <PrefetchLink href='/become-host'>호스팅하기</PrefetchLink>
+        <PrefetchLink href='/become-a-host'>호스팅하기</PrefetchLink>
         {loginUser
           ? <PrefetchLink href='/my-profile' as='/my/profile'>{loginUser.email}</PrefetchLink>
           : <PrefetchLink href='/sign'>회원가입/로그인</PrefetchLink>
