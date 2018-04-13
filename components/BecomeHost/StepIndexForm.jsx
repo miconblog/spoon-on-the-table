@@ -6,7 +6,7 @@ import { Form, Icon, Input, Button, Select, AutoComplete } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-class StepOneForm extends React.Component {
+class StepIndexForm extends React.Component {
   state = {
     loading: false
   };
@@ -21,7 +21,7 @@ class StepOneForm extends React.Component {
 
         
         // TODO: 서버에 일단 저장
-        // Router.push('/become-a-host/menu')
+        Router.push('/become-a-host/menu')
       }
     });
   }
@@ -90,4 +90,4 @@ class StepOneForm extends React.Component {
   }
 }
 
-export default Form.create()(StepOneForm);
+export default Form.create()(StepIndexForm);
