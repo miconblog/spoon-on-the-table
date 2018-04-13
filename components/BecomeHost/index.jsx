@@ -1,7 +1,15 @@
 import Home from './Home';
-import StepOneForm from './StepOneForm';
+import StepIndexForm from './StepIndexForm';
+import StepMenuForm from './StepMenuForm';
+import StepLocationForm from './StepLocationForm';
+import StepPriceForm from './StepPriceForm';
+import StepCalendarForm from './StepCalendarForm';
 
 export {
   Home,
-  StepOneForm
+  StepIndexForm,
+  StepMenuForm,
+  StepLocationForm,
+  StepPriceForm,
+  StepCalendarForm
 }
