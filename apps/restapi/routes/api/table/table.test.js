@@ -39,7 +39,7 @@ describe('GET /api/tables/temporary - 작성중인 테이블 정보를 가져온
 
     expect(res.status).toBe(200);
     expect(res.body.data).not.toBeUndefined();
-    expect(res.body.data).toHaveProperty('objectId');
+    expect(res.body.data).toHaveProperty('id');
 
   });
 
@@ -76,7 +76,7 @@ describe('PUT /api/tables/temporary - 작성중인 테이블 정보를 저장한
 
     expect(res.status).toBe(200);
     expect(res.body.data).not.toBeUndefined();
-    expect(res.body.data).toHaveProperty('objectId');
+    expect(res.body.data).toHaveProperty('id');
     expect(res.body.data.table).not.toBeUndefined();
     expect(res.body.data.table.spoonCount).toBe(4);
 

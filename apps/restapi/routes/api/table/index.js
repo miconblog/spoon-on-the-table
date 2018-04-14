@@ -4,8 +4,7 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const cloudReq = require('../../../../lib/request-parse-cloud');
 const authentication = require('../../../../lib/authentication');
-
-const UserCache = Parse.Object.extend('UserCache');
+const UserCache = require('../../../models/UserCache');
 
 async function getUserTableCache(req, res) {
   const { user, params: { id } } = req;
