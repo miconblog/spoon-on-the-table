@@ -10,11 +10,12 @@ function checkStatus(response) {
   }
 }
 
-function fetchPromise({ endpoint, params }) {
+function fetchPromise({ endpoint, params }, sessionToken) {
 
   const values = Object.assign({
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Cookie': `parse.session=${JSON.stringify({ token: sessionToken })}`
     },
     credentials: 'same-origin',
   }, params);
@@ -120,6 +121,15 @@ export function _updateUser(id, values) {
 }
 
 // 테이블 임시저장
-export function saveCreatingTable() {
-
+export function saveTableCache(values, sessionToken) {
+  return fetchPromise(_saveTableCache(values), sessionToken)
+}
+export function _saveTableCache(values) {
+  return {
+    endpoint: `/api/tables/temporary`,
+    params: {
+      method: 'PUT',
+      body: JSON.stringify({ ...values })
+    }
+  }
 }
