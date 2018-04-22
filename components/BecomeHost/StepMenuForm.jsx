@@ -27,22 +27,22 @@ class StepMenuForm extends React.Component {
       }
     });
   }
-  
-  handleGoBack = (e) =>{
+
+  handleGoBack = (e) => {
     e.preventDefault();
     Router.push('/become-a-host?step=index', '/become-a-host');
   }
 
   render() {
-    const { 
-      form: { getFieldDecorator }, 
-      loginUser, 
-      cache: { 
+    const {
+      form: { getFieldDecorator },
+      loginUser,
+      cache: {
         table: {
           menu = '',
           alcohol = 'none'
-        } 
-      } 
+        }
+      }
     } = this.props;
     const { loading } = this.state;
 
@@ -51,7 +51,10 @@ class StepMenuForm extends React.Component {
         <strong>2단계</strong>
         <p>테이블에는 어떤 음식들이 올라가나요? 사진과 함께 설명을 넣어주세요.</p>
 
-        <PicturesWall />
+        <PicturesWall
+          cache={this.props.cache.table}
+          sessionToken={loginUser.sessionToken}
+        />
 
         <Divider />
 
