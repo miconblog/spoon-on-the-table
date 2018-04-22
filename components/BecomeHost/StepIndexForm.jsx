@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { Form, Icon, Input, Button, Select, AutoComplete } from 'antd';
+import { saveTableCache } from '../../utils/api';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -13,20 +14,28 @@ class StepIndexForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { validateFields } = this.props.form;
+    const { form: { validateFields }, loginUser, cache } = this.props;
 
     validateFields(async (err, values) => {
       if (!err) {
-        console.log(JSON.stringify(values));
-
-        
-        // TODO: 서버에 일단 저장
-        Router.push('/become-a-host/menu')
+        this.setState({ loading: true });
+        await saveTableCache({ table: { ...cache.table, ...values } }, loginUser.sessionToken);
+        Router.push('/become-a-host?step=menu', '/become-a-host/menu');
       }
     });
   }
   render() {
-    const { form: { getFieldDecorator }, loginUser } = this.props;
+    const {
+      form: { getFieldDecorator },
+      loginUser,
+      cache: {
+        table: {
+          eventType = 'dinner',
+          spoonCount = 4,
+          location = ''
+        }
+      }
+    } = this.props;
     const { loading } = this.state;
 
     return (
@@ -40,8 +49,8 @@ class StepIndexForm extends React.Component {
 
           <Form onSubmit={this.handleSubmit} >
             <FormItem style={{ marginBottom: 0, display: 'inline-block', width: 'auto' }}>
-              {getFieldDecorator('tableType', {
-                initialValue: 'dinner',
+              {getFieldDecorator('eventType', {
+                initialValue: eventType,
                 rules: [{ required: true, message: 'Please input your username!' }]
               })(
                 <Select style={{ width: 100, marginRight: 10 }}>
@@ -55,7 +64,7 @@ class StepIndexForm extends React.Component {
             </FormItem>
             <FormItem style={{ marginBottom: 0, display: 'inline-block', width: 'auto' }}>
               {getFieldDecorator('spoonCount', {
-                initialValue: 4,
+                initialValue: spoonCount,
                 rules: [{ required: true, message: 'Please input your username!' }]
               })(
                 <Select style={{ width: 160 }}>
@@ -70,17 +79,18 @@ class StepIndexForm extends React.Component {
             </FormItem>
             <FormItem style={{ marginBottom: 10 }}>
               {getFieldDecorator('location', {
-                rules: [{ required: true, message: '지역을 입력하세요.' }]
+                initialValue: location,
+                rules: [{ required: true, message: '호스팅할 대략적인 위치를 검색해주세요.' }]
               })(
                 <AutoComplete
                   dataSource={[]}
                   style={{ width: 270 }}
-                  placeholder="예) 호수로 672"
+                  placeholder="어느 동에 사시나요? 예) 서초동"
                 />
               )}
             </FormItem>
             <FormItem>
-              <Button type="primary" htmlType="submit">계속</Button>
+              <Button type="primary" htmlType="submit" icon={loading ? 'loading' : ''}>계속</Button>
             </FormItem>
           </Form>
 

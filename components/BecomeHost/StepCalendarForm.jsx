@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { Form, Icon, Input, Button, Calendar, Row, Col } from 'antd';
+import { saveTableCache } from '../../utils/api';
 
 const FormItem = Form.Item;
 
@@ -12,17 +13,22 @@ class StepCalendarForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { validateFields } = this.props.form;
+    const { form: { validateFields }, loginUser, cache } = this.props;
 
     validateFields(async (err, values) => {
       if (!err) {
-        console.log(JSON.stringify(values));
-
-        // TODO: 서버에 일단 저장
+        this.setState({ loading: true });
+        await saveTableCache({ table: { ...cache.table, ...values } }, loginUser.sessionToken);
         Router.push('/my/tables')
       }
     });
   }
+
+  handleGoBack = (e) =>{
+    e.preventDefault();
+    Router.push('/become-a-host?step=price', '/become-a-host/price');
+  }
+
   render() {
     const { form: { getFieldDecorator }, loginUser } = this.props;
     const { loading } = this.state;
@@ -40,10 +46,10 @@ class StepCalendarForm extends React.Component {
           <FormItem>
             <Row type="flex" justify="space-between">
               <Col>
-                <Link href="/become-a-host/price"><a className="ant-btn ant-type-ghost">이전</a></Link>
+                <a onClick={this.handleGoBack} href="/become-a-host/price" className="ant-btn ant-type-ghost">이전</a>
               </Col>
               <Col>
-                <Button type="primary" htmlType="submit">등록 완료</Button>
+                <Button type="primary" htmlType="submit" icon={loading ? 'loading' : ''}>등록 완료</Button>
               </Col>
             </Row>
           </FormItem>
