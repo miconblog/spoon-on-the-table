@@ -4,12 +4,15 @@ class UserCache extends Parse.Object {
     super('UserCache');
   }
 
-  toJSON() {
-    const table = this.get('table');
-    return {
-      id: this.id,
-      table
-    }
+  toJSON(attrs = ['table', 'test']) {
+
+    const json = { id: this.id };
+
+    attrs.forEach(name => {
+      json[name] = this.get(name);
+    });
+
+    return json;
   }
 }
 
