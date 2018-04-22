@@ -15,7 +15,7 @@ function fetchPromise({ endpoint, params }, sessionToken) {
   const values = Object.assign({
     headers: {
       'Content-Type': 'application/json',
-      'Cookie': `parse.session=${JSON.stringify({ token: sessionToken })}`
+      'Cookie': `auth-token=${JSON.stringify({ token: sessionToken })}`
     },
     credentials: 'same-origin',
   }, params);

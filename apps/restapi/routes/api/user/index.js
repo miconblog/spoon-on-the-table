@@ -4,20 +4,21 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const cloudReq = require('../../../../lib/request-parse-cloud');
 const authentication = require('../../../../lib/authentication');
+const ParseUser = require('../../../models/User');
 
 function login(req, res) {
   const { username, password } = req.body;
 
-  Parse.User
+  ParseUser
     .logIn(username, password)
     .then((user) => {
 
       setCookie(user, res);
-      res.status(202).json({ message: 'Login Success!' });
+      res.status(202).json({ id: user.id, message: 'Login Success!' });
 
     }, (error) => {
 
-      res.clearCookie('parse.session');
+      res.clearCookie('auth-token');
       res.json({
         error: {
           message: error.message
@@ -31,13 +32,12 @@ function login(req, res) {
 }
 
 function logout(req, res) {
-  const session = req.cookies['parse.session'];
-  const token = session ? JSON.parse(session).token : null;
+  const token = req.cookies['auth-token'];
 
   // 로그아웃 API를 이용하면 서버의 세션도 같이 지워준다.
   cloudReq('/logout', 'POST', token)
     .then((e) => {
-      res.clearCookie('parse.session');
+      res.clearCookie('auth-token');
       res.redirect('/');
     })
     .catch(err => {
@@ -48,7 +48,7 @@ function logout(req, res) {
 
 function duplicate(req, res) {
   const { email } = req.body;
-  const query = new Parse.Query(Parse.User);
+  const query = new Parse.Query(ParseUser);
   query.equalTo('email', email);
   query.find()
     .then((users) => {
@@ -63,7 +63,7 @@ function duplicate(req, res) {
 
 function createUser(req, res) {
   const { email, username, password } = req.body;
-  const user = new Parse.User();
+  const user = new ParseUser();
 
   if (!email || !username || !password) {
     return res.status(400).json({ message: '인자가 부족하다' });
@@ -114,16 +114,6 @@ function updateUser(req, res) {
 
       // 유저정보를 내릴때 패스워드와 세션토큰은 뺀다.
       const userInfo = updatedUser.toJSON();
-
-      delete userInfo.password;
-      delete userInfo.sessionToken;
-      delete userInfo.ACL;
-
-      if (userInfo.photo) {
-        delete userInfo.photo.ACL;
-        delete userInfo.photo.author;
-      }
-
       return res.status(200).json(userInfo)
     })
     .catch((error) => {
@@ -143,7 +133,7 @@ function deleteUser(req, res) {
       // 파스 세션도 지워준다.
       await cloudReq('/logout', 'POST', sessionToken)
 
-      res.clearCookie('parse.session')
+      res.clearCookie('auth-token')
       return res.status(200).json({ user: user.toJSON(), message: 'OK' })
     })
     .catch((error) => {
@@ -152,11 +142,7 @@ function deleteUser(req, res) {
 }
 
 function setCookie(user, res) {
-  var val = JSON.stringify({
-    token: user.getSessionToken()
-  });
-
-  res.cookie('parse.session', val, {
+  res.cookie('auth-token', user.getSessionToken(), {
     path: '/',
     httpOnly: true
   });

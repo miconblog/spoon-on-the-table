@@ -123,7 +123,7 @@ class PrivateInfoForm extends React.Component {
 const CreatedForm = Form.create({
   mapPropsToFields({ loginUser: { firstName, lastName, phone, sex="선택하세요" } }) {
 
-    let match = null;
+    let match = [null, null];
     if (phone) {
       match = phone.split('#');
     }
