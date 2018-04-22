@@ -1,5 +1,8 @@
+const Sharp = require('sharp');
 const AWS = require('aws-sdk');
+const Bucket = '4hrs-media';
 const s3 = new AWS.S3();
+
 AWS.config.update({
   region: process.env.S3_REGION,
   accessKeyId: process.env.S3_ACCESS_KEY,
@@ -7,28 +10,31 @@ AWS.config.update({
 });
 
 function upload(filename, file) {
-  return new Promise((resolve, reject) => {
-
-    s3.upload({
-      Bucket: '4hrs-media',
-      ACL: 'public-read',
-      Key: `tablespoon/${filename}`,
-      Body: file,
-    }, (err, resp) => err ? reject(err) : resolve(resp))
-
-  });
+  return s3.upload({
+    Bucket,
+    ACL: 'public-read',
+    Key: `tablespoon/${filename}`,
+    Body: file,
+  }).promise()
 }
 
-function deleteObject(Key) {
-  return new Promise((resolve, reject) => {
-    s3.deleteObject({
-      Bucket: '4hrs-media',
-      Key
-    }, (err, resp) => err ? reject(err) : resolve(resp))
-  });
+function deleteFile(Key) {
+  return s3.deleteObject({ Bucket, Key }).promise()
+}
+
+function readFile(Key) {
+  return s3.getObject({ Bucket, Key }).promise()
+    .then(data => Sharp(data.Body)
+      .resize(300, 300)
+      .toFormat('png')
+      .toBuffer()
+    ).catch(() => {
+      return null;
+    })
 }
 
 module.exports = {
   upload,
-  deleteObject
+  deleteFile,
+  readFile
 };

@@ -25,8 +25,8 @@ async function uploadFile(req, res) {
 async function deleteFile(req, res) {
   const { user, params: { photoId } } = req;
   const sessionToken = user.getSessionToken();
-  const photo = new Photo(photoId);
-
+  const query = new Parse.Query(Photo);
+  const photo = await query.get(photoId);
   await photo.destroy({ sessionToken });
   res.status(200).json({ id: photoId, message: 'OK' })
 }
