@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const app = express();
 const api = require('./routes/api');
+const image = require('./routes/image');
 const user = require('./routes/api/user');
 const errors = require('../lib/errors');
 
@@ -19,6 +20,7 @@ app.get('/logout', user.logout);
 app.post('/login', bodyParser.json(), user.login);
 
 app.use('/api', api);
+app.use('/image/:photoId', image);
 app.use(errorHandler)
 
 module.exports = app;

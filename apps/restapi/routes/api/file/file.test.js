@@ -136,12 +136,21 @@ describe('프로필 페이지에서 사진 업로드 결과', () => {
       }
     });
     json = res.body;
-  })
+  });
 
   it('key 필드가 있어야한다 ', () => expect(json).toHaveProperty('key'));
   it('size 필드가 있어야한다 ', () => expect(json).toHaveProperty('size'));
   it('image 필드가 있어야한다 ', () => expect(json).toHaveProperty('image'));
-  it('image 값은 /profile/:hash 형태다.', () => {
-    expect(json.image).toMatch(/profile\//);
-  });
-})
+  it('image 값은 /profile/:hash 형태다.', () => expect(json.image).toMatch(/profile\//));
+  it('테스트가 끝나면 업로드된 파일을 삭제한다.', async () => {
+    const res = await agent({
+      cookie: sessionCookie,
+      method: 'DELETE',
+      url: `/api/file/${json.id}`,
+    });
+
+    expect(res.body.id).toMatch(json.id);
+    expect(res.body.message).toMatch('OK');
+  })
+
+});
