@@ -1,5 +1,6 @@
 import { initStore } from '../redux/store';
 import withRedux from '../redux/withRedux';
+import { getUserCache } from '../utils/api-for-ssr';
 
 import { HomeLayout, BecomeHostLayout } from '../layouts';
 import {
@@ -13,7 +14,7 @@ import {
 
 class BecomeHost extends React.Component {
   render() {
-    const { loginUser, step } = this.props;
+    const { loginUser, step, tableCache } = this.props;
 
     let ChildComponent = StepIndexForm;
     let currentStep = 1;
@@ -21,13 +22,13 @@ class BecomeHost extends React.Component {
     if (step === 'menu') {
       ChildComponent = StepMenuForm;
       currentStep = 2;
-    } else if( step === 'location') {
+    } else if (step === 'location') {
       ChildComponent = StepLocationForm;
       currentStep = 3;
-    } else if( step === 'price') {
+    } else if (step === 'price') {
       ChildComponent = StepPriceForm;
       currentStep = 4;
-    } else if( step === 'calendar') {
+    } else if (step === 'calendar') {
       ChildComponent = StepCalendarForm;
       currentStep = 5;
     }
@@ -35,18 +36,28 @@ class BecomeHost extends React.Component {
 
     return (
       loginUser
-        ? (<BecomeHostLayout step={currentStep}><ChildComponent loginUser={loginUser} /></BecomeHostLayout>)
+        ? (<BecomeHostLayout step={currentStep}><ChildComponent loginUser={loginUser} cache={tableCache} /></BecomeHostLayout>)
         : (<HomeLayout><Home /></HomeLayout>)
     );
   }
 }
 
 
-BecomeHost.getInitialProps = async function ({ query: { step = 'index' }, store }) {
+BecomeHost.getInitialProps = async function ({ query: { step = 'index' }, store, isServer }) {
+
+  const { loginUser } = store.getState();
+  let tableCache = null;
+
+  if( loginUser ){
+    const sessionToken =  loginUser.sessionToken;
+    const response = await getUserCache('table', { isServer, sessionToken });
+    tableCache = { ...response.data };
+  }
 
   return {
     step,
-    loginUser: store.getState().loginUser
+    tableCache,
+    loginUser
   };
 };
 

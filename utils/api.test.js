@@ -2,8 +2,12 @@ import {
   _checkUserDuplicated,
   _registerUser,
   _loginUser,
-  _updateUser
+  _updateUser,
+  _saveTableCache,
 } from './api';
+import {
+  _getUserCache
+} from './api-for-ssr';
 
 
 describe('API', () => {
@@ -76,4 +80,37 @@ describe('API', () => {
       }
     })
   })
+
+
+  it('saveTableCache(values, options)', () => {
+    const updates = {
+      table: {
+        eventType: 'dinner',
+        spoonCount: 4,
+        location: 'XXXX'
+      }
+    };
+    const values = _saveTableCache(updates)
+
+    expect(values).toMatchObject({
+      endpoint: '/api/tables/temporary',
+      params: {
+        method: 'PUT',
+        body: JSON.stringify({ ...updates })
+      }
+    })
+  })
+
+  it('getUserCache(fieldName, options)', () => {
+
+    const fieldName = 'table';
+    const options = {};
+    const values = _getUserCache(fieldName, options)
+
+    expect(values).toMatchObject({
+      endpoint: `/api/tables/temporary?field=${fieldName}`,
+      params: { method: 'GET' }
+    })
+  })
+
 });

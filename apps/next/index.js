@@ -37,27 +37,17 @@ function route(resolve) {
   });
 
   // 호스팅하기
-  was.get('/become-a-host/:step', authentication, (req, res) => {
-    const { step } = req.params;
-    const { query = {} } = req;
+  function becomeHost(req, res) {
+    const { stepname } = req.params;
+    const { query: { step = 'index' } } = req;
 
     app.render(req, res, '/become-a-host', {
-      step,
-      pageName: 'become-a-host',
-      ...query
+      step: stepname || step,
+      pageName: 'become-a-host'
     });
-  });
-
-  // 페이지
-  was.get('/:pageName', authentication, (req, res) => {
-    const { pageName } = req.params;
-    const { query = {} } = req;
-
-    app.render(req, res, `/${pageName}`, {
-      pageName,
-      ...query
-    });
-  });
+  }
+  was.get('/become-a-host', authentication, becomeHost);
+  was.get('/become-a-host/:stepname', authentication, becomeHost);
 
   // 메인 페이지
   was.get('/', authentication, (req, res) => {

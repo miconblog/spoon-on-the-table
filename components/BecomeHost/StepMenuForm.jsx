@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { Form, Icon, Input, Button, Select, Divider, Row, Col } from 'antd';
 import PicturesWall from './PicturesWall';
+import { saveTableCache } from '../../utils/api';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -14,19 +15,35 @@ class StepMenuForm extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { validateFields } = this.props.form;
+    const { form: { validateFields }, loginUser, cache } = this.props;
 
     validateFields(async (err, values) => {
       if (!err) {
         console.log(JSON.stringify(values));
 
-        // TODO: 서버에 일단 저장
-        Router.push('/become-a-host/location')
+        this.setState({ loading: true });
+        await saveTableCache({ table: { ...cache.table, ...values } }, loginUser.sessionToken);
+        Router.push('/become-a-host?step=location', '/become-a-host/location');
       }
     });
   }
+  
+  handleGoBack = (e) =>{
+    e.preventDefault();
+    Router.push('/become-a-host?step=index', '/become-a-host');
+  }
+
   render() {
-    const { form: { getFieldDecorator }, loginUser } = this.props;
+    const { 
+      form: { getFieldDecorator }, 
+      loginUser, 
+      cache: { 
+        table: {
+          menu = '',
+          alcohol = 'none'
+        } 
+      } 
+    } = this.props;
     const { loading } = this.state;
 
     return (
@@ -41,7 +58,7 @@ class StepMenuForm extends React.Component {
         <Form onSubmit={this.handleSubmit} >
           <FormItem>
             {getFieldDecorator('menu', {
-              initialValue: '',
+              initialValue: menu,
               rules: [{ required: true, message: '설명은 반드시 입력해야합니다.' }]
             })(
               <Input.TextArea rows={5} placeholder='메뉴에 대한 설명을 자유롭게 넣어주세요.' />
@@ -52,8 +69,8 @@ class StepMenuForm extends React.Component {
             주류가 포함되어 있나요?
             </div>
           <FormItem>
-            {getFieldDecorator('alchole', {
-              initialValue: 'none',
+            {getFieldDecorator('alcohol', {
+              initialValue: alcohol,
               rules: [{ required: true, message: 'Please input your username!' }]
             })(
               <Select>
@@ -68,10 +85,10 @@ class StepMenuForm extends React.Component {
           <FormItem>
             <Row type="flex" justify="space-between">
               <Col>
-                <Link href="/become-a-host"><a className="ant-btn ant-type-ghost">이전</a></Link>
+                <a onClick={this.handleGoBack} href="/become-a-host" className="ant-btn ant-type-ghost">이전</a>
               </Col>
               <Col>
-                <Button type="primary" htmlType="submit">다음</Button>
+                <Button type="primary" htmlType="submit" icon={loading ? 'loading' : ''}>다음</Button>
               </Col>
             </Row>
           </FormItem>

@@ -6,6 +6,7 @@
   "repository": "",
   "scripts": {
     "test": "jest --forceExit",
+    "test-watch": "jest --watch",
     "dev": "node ./bin/www",
     "build": "next build",
     "start": "cross-env NODE_ENV=production node ./bin/www",
@@ -15,7 +16,7 @@
     "dashboard": "node ./bin/dashboard"
   },
   "jest": {
-    "verbose": false
+    "verbose": true
   },
   "dependencies": {
     "antd": "^3.4.1",
