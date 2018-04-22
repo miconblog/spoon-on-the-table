@@ -10,13 +10,17 @@ function checkStatus(response) {
   }
 }
 
-function fetchPromise({ endpoint, params }, sessionToken) {
+function fetchPromise({ endpoint, params }, options = {}) {
+
+  const { sessionToken = null } = options;
+  const headers = { 'Content-Type': 'application/json' }
+
+  if (sessionToken) {
+    headers['Cookie'] = `auth-token=${sessionToken}`;
+  }
 
   const values = Object.assign({
-    headers: {
-      'Content-Type': 'application/json',
-      'Cookie': `auth-token=${JSON.stringify({ token: sessionToken })}`
-    },
+    headers,
     credentials: 'same-origin',
   }, params);
 
@@ -93,7 +97,7 @@ export function _checkUserDuplicated({ email }) {
   }
 }
 
-// 유저 정보 업데이트
+// 유저 정보 업데이트 (인증필요)
 export function updateUser(id, values, dispatch) {
   return fetchPromise(_updateUser(id, values))
     .then(user => {
@@ -120,9 +124,9 @@ export function _updateUser(id, values) {
   }
 }
 
-// 테이블 임시저장
-export function saveTableCache(values, sessionToken) {
-  return fetchPromise(_saveTableCache(values), sessionToken)
+// 테이블 임시저장 (인증필요)
+export function saveTableCache(values, options) {
+  return fetchPromise(_saveTableCache(values), options)
 }
 export function _saveTableCache(values) {
   return {
@@ -130,6 +134,19 @@ export function _saveTableCache(values) {
     params: {
       method: 'PUT',
       body: JSON.stringify({ ...values })
+    }
+  }
+}
+
+// 사진 삭제 (인증필요)
+export function deletePhoto(id, options) {
+  return fetchPromise(_deletePhoto(id), options)
+}
+export function _deletePhoto(id) {
+  return {
+    endpoint: `/api/file/${id}`,
+    params: {
+      method: 'DELETE',
     }
   }
 }

@@ -4,6 +4,7 @@ import {
   _loginUser,
   _updateUser,
   _saveTableCache,
+  _deletePhoto,
 } from './api';
 import {
   _getUserCache
@@ -81,8 +82,7 @@ describe('API', () => {
     })
   })
 
-
-  it('saveTableCache(values, options)', () => {
+  it('saveTableCache(values, {sessionToken})', () => {
     const updates = {
       table: {
         eventType: 'dinner',
@@ -101,7 +101,7 @@ describe('API', () => {
     })
   })
 
-  it('getUserCache(fieldName, options)', () => {
+  it('getUserCache(fieldName, {sessionToken})', () => {
 
     const fieldName = 'table';
     const options = {};
@@ -110,6 +110,17 @@ describe('API', () => {
     expect(values).toMatchObject({
       endpoint: `/api/tables/temporary?field=${fieldName}`,
       params: { method: 'GET' }
+    })
+  })
+
+  it('deletePhoto(id, {sessionToken})', () => {
+
+    const id = 'photoId'
+    const values = _deletePhoto(id)
+
+    expect(values).toMatchObject({
+      endpoint: `/api/file/${id}`,
+      params: { method: 'DELETE' }
     })
   })
 
