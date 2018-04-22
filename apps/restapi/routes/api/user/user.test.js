@@ -83,11 +83,22 @@ describe('PUT /api/user/:id - 회원 정보 수정', () => {
   let createdUserId, createdUserCookie;
 
   beforeAll(async () => {
-    const res = await agent({
+
+    // 유저를 생성해보고, 
+    let res = await agent({
       method: 'POST',
       url: '/api/user/create',
       data: { email: 'update@test.com', username: '회원정보수정', password: '1' }
     });
+
+    // 이미 있으면 로그인한다.
+    if (res.status !== 200) {
+      res = await agent({
+        method: 'POST',
+        url: '/login',
+        data: { username: '회원정보수정', password: '1' }
+      });
+    }
 
     createdUserId = res.body.id;
     createdUserCookie = res.header['set-cookie'][0].split(';')[0];

@@ -86,11 +86,6 @@ export default (...args) => (Component) => {
         }
       }
 
-      // 불필요한 정보는 스토어에 넣지 말자!
-      //delete loginUser.sessionToken;
-      delete loginUser.ACL;
-      delete loginUser.photo.ACL;
-      delete loginUser.photo.author;
     } else {
       // for client..
       loginUser = store && store.getState().loginUser;
