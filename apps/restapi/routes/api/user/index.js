@@ -17,7 +17,7 @@ function login(req, res) {
 
     }, (error) => {
 
-      res.clearCookie('parse.session');
+      res.clearCookie('auth-token');
       res.json({
         error: {
           message: error.message
@@ -31,13 +31,12 @@ function login(req, res) {
 }
 
 function logout(req, res) {
-  const session = req.cookies['parse.session'];
-  const token = session ? JSON.parse(session).token : null;
+  const token = req.cookies['auth-token'];
 
   // 로그아웃 API를 이용하면 서버의 세션도 같이 지워준다.
   cloudReq('/logout', 'POST', token)
     .then((e) => {
-      res.clearCookie('parse.session');
+      res.clearCookie('auth-token');
       res.redirect('/');
     })
     .catch(err => {
@@ -143,7 +142,7 @@ function deleteUser(req, res) {
       // 파스 세션도 지워준다.
       await cloudReq('/logout', 'POST', sessionToken)
 
-      res.clearCookie('parse.session')
+      res.clearCookie('auth-token')
       return res.status(200).json({ user: user.toJSON(), message: 'OK' })
     })
     .catch((error) => {
@@ -152,11 +151,7 @@ function deleteUser(req, res) {
 }
 
 function setCookie(user, res) {
-  var val = JSON.stringify({
-    token: user.getSessionToken()
-  });
-
-  res.cookie('parse.session', val, {
+  res.cookie('auth-token', user.getSessionToken(), {
     path: '/',
     httpOnly: true
   });

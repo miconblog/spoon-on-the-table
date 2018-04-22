@@ -4,9 +4,7 @@ const { MSG } = require('./errors');
 
 function authentication(req, res, next) {
   //  console.log('TODO: 인증이 필요없는 페이지는 필터해야한다...-->', req.method, req.path)
-
-  const session = req.cookies['parse.session'];
-  const token = session ? JSON.parse(session).token : null;
+  const token = req.cookies['auth-token'];
 
   if (!token) {
     if (/^\/api/.test(req.originalUrl)) {
@@ -20,7 +18,7 @@ function authentication(req, res, next) {
       req.user = Parse.Object.fromJSON(userData.data);
       next();
     }, function error() {
-      res.clearCookie('parse.session');
+      res.clearCookie('auth-token');
       next();
     });
 }

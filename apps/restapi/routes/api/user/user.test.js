@@ -191,6 +191,6 @@ describe('DELETE /api/user/:id - 회원 탈퇴', () => {
 
     // clear set-cookie.
     expect(res.header).toHaveProperty('set-cookie');
-    expect(res.header['set-cookie'][0]).toMatch(/parse.session=;/);
+    expect(res.header['set-cookie'][0]).toMatch(/auth-token=;/);
   });
 })

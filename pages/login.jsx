@@ -24,6 +24,7 @@ class LoginForm extends React.Component {
           location.replace('/');
         } else {
           resetFields(['password']);
+          this.setState({ loading: false });
         }
 
       }
