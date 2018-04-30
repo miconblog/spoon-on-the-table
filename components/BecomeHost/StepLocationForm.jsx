@@ -3,13 +3,20 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { Form, Icon, Input, Button, Select, Divider, Row, Col } from 'antd';
 import { saveTableCache } from '../../utils/api';
+import SimpleMap from './SimpleMap';
+
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 class StepLocationForm extends React.Component {
   state = {
-    loading: false
+    loading: false,
+    curLocation: null,
+    eventLocation: {
+      lat: 59.955413,
+      lng: 30.337844
+    }
   };
 
   handleSubmit = (e) => {
@@ -25,9 +32,23 @@ class StepLocationForm extends React.Component {
     });
   }
 
-  handleGoBack = (e) =>{
+  handleChange = ({ lat, lng }) => {
+    this.setState({
+      eventLocation: {
+        lat, lng
+      }
+    });
+  }
+
+  handleGoBack = (e) => {
     e.preventDefault();
     Router.push('/become-a-host?step=menu', '/become-a-host/menu');
+  }
+
+  componentDidMount() {
+    if (navigator) {
+      navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => this.setState({ curLocation: { lat: latitude, lng: longitude } }));
+    }
   }
 
   render() {
@@ -46,7 +67,11 @@ class StepLocationForm extends React.Component {
       <div className="StepMenuForm">
         <strong>3단계</strong>
         <p>찾아오는 손님들을 위해 정확한 위치를 지정해주세요.</p>
-
+        <SimpleMap
+          eventLocation={this.state.eventLocation}
+          onChange={this.handleChange}
+        />
+        <Divider />
         <Form onSubmit={this.handleSubmit} >
           <FormItem>
             {getFieldDecorator('explain', {
@@ -63,7 +88,7 @@ class StepLocationForm extends React.Component {
                 <a onClick={this.handleGoBack} href="/become-a-host/menu" className="ant-btn ant-type-ghost">이전</a>
               </Col>
               <Col>
-              <Button type="primary" htmlType="submit" icon={loading ? 'loading' : ''}>계속</Button>
+                <Button type="primary" htmlType="submit" icon={loading ? 'loading' : ''}>계속</Button>
               </Col>
             </Row>
           </FormItem>
