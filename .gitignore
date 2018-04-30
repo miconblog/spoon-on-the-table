@@ -12,3 +12,5 @@ public/static
 *.lock
 package-lock.json
 .next
+
+.idea/

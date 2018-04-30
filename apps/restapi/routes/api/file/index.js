@@ -3,13 +3,7 @@ const express = require('express');
 const router = express.Router();
 const authentication = require('../../../../lib/authentication');
 const up2s3 = require('../../../middles/up2s3.direct');
-
-class Photo extends Parse.Object {
-  constructor() {
-    // Pass the ClassName to the Parse.Object constructor
-    super('Photo');
-  }
-}
+const Photo = require('../../../models/Photo');
 
 async function uploadFile(req, res) {
 
@@ -28,7 +22,17 @@ async function uploadFile(req, res) {
   res.status(200).json(photo.toJSON())
 }
 
+async function deleteFile(req, res) {
+  const { user, params: { photoId } } = req;
+  const sessionToken = user.getSessionToken();
+  const query = new Parse.Query(Photo);
+  const photo = await query.get(photoId);
+  await photo.destroy({ sessionToken });
+  res.status(200).json({ id: photoId, message: 'OK' })
+}
+
 router.post('/upload', authentication, up2s3, uploadFile);
+router.delete('/:photoId', authentication, deleteFile);
 module.exports = {
   router
 }

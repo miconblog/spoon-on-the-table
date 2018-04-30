@@ -6,6 +6,6 @@ const s3 = require('../../../lib/aws-s3')
  * 그러므로 S3 이미지 삭제는 사진 객체가 지워지기전에 실행되야한다.
  */
 Parse.Cloud.beforeDelete("Photo", async (request, response) => {
-  await s3.deleteObject(request.object.get('key'))
+  await s3.deleteFile(request.object.get('key'))
   response.success();
 });

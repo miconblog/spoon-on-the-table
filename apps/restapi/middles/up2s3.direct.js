@@ -11,6 +11,9 @@ function getFilename(from, user) {
     case 'profile':
       return `${from}/${buf.toString('hex')}`;
 
+    case 'table':
+      return `${from}/host-${buf.toString('hex')}`;
+
     default:
       return null;
   }

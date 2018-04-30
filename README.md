@@ -40,7 +40,20 @@
 
 ## Bug List
 
-- [v] 처음 페이지를 내려줄때 스타일이 만들어지지 않는 문제 있음.()
+- [v] 처음 페이지를 내려줄때 스타일이 만들어지지 않는 문제 있음.
+
+## 방송분량
+
+- [ ] eslint + prettier + husky + lint-staged 설정
+  - [ ] deprecated eslint-plugin-class-property@1.1.0: please use eslint-plugin-babel and babel/semi
+- [ ] /image/:photoId?size=xxx 형태로 던지면 원하는 형태로 리사이즈한다.
+- [ ] next.js 6.0 변경사항 리뷰
+- [ ] 구글 지도 SDK를 이용해 컴포넌트 직접 구현하기
+
+
+
+
+
 
 ### 나중에 확장해야 할 기능
 
