@@ -1,97 +1,59 @@
 import React from 'react';
+import withGoogleSDK from '../withGoogleSDK';
 
-let sdkLoaded = false;
-export default class SimpleMap extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-      loaded: false
-    };
-  }
-
-  static onLoad() {
-    sdkLoaded = true;
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    return {
-      loading: !sdkLoaded
-    };
-  }
+class SimpleMap extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
-
-    if (!nextState.loading) {
-      const { eventLocation } = nextProps;
-      console.log('컴포넌트를 랜더링하지 않고 맵만 그릴꺼야!', eventLocation);
-
-      // map.panTo(new google.maps.LatLng(eventLocation));
-
-    }
-
     return false;
   }
 
-  componentDidMount() {
 
-    if (typeof google === 'undefined') {
-      console.log('아직 구글맵이 로드되지 않았어!!');
-      return;
-    }
+  onLoad = (node) => {
 
-    console.log('구글맵이 이전에 로드되어 있어서 바로 지도를그린다.');
-    this.initMap();
-  }
+    // refs는 unload 될때도 호출되므로 node는 null 이 될수도 있다.
+    if (!node) { return null }
 
-  componentWillUnmount(){
+    const { eventLocation, sdk } = this.props;
 
-    console.log('unload', this.map, this.marker, this.node);
-    google.maps.event.clearInstanceListeners(this.marker);
-    google.maps.event.clearInstanceListeners(this.map);
-    this.marker = null;
-    this.map = null;
-    this.node = null;
-    console.log('unload', this.map, this.marker, this.node);
-
-  }
-
-  handlePin
-
-  initMap = () => {
-    const { eventLocation } = this.props;
-
-    this.map = new google.maps.Map(this.node, {
+    this.map = new sdk.Map(node, {
       zoom: 14,
       center: eventLocation
     });
-    this.marker = new google.maps.Marker({
+
+    this.marker = new sdk.Marker({
       position: eventLocation,
       map: this.map,
       draggable: true
     });
 
-    this.marker.addListener('dragend', (e) => {
-      console.log('change..', e);
-    });
+    // this.map.addListener('click', ({ latLng }) => {
+    //   this.marker.setPosition(latLng);
+    //   //this.props.onChange({ lat: latLng.lat(), lng: latLng.lng() });
+    // });
 
-    this.map.addListener('click', ({ latLng }) => {
+    // this.marker.addListener('dragend', (e) => {
+    //   console.log('change..', e);
+    // });
+  }
 
-      console.log(latLng);
+  componentWillUnmount() {
 
-      this.marker.setPosition(latLng);
+    const { sdk } = this.props;
 
-      //this.props.onChange({ lat: latLng.lat(), lng: latLng.lng() });
+    sdk.event.clearInstanceListeners(this.marker);
+    sdk.event.clearInstanceListeners(this.map);
 
-    });
-
+    this.marker = null;
+    this.map = null;
+    this.node = null;
   }
 
   render() {
     return (
-      <div style={{ height: '350px', width: '100%' }} ref={(node) => this.node = node} />
+      <div style={{ height: '350px', width: '100%' }} ref={this.onLoad} />
     );
   }
 
 }
+
+export default withGoogleSDK(SimpleMap);
