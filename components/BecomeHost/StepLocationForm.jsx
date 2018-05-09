@@ -58,6 +58,7 @@ class StepLocationForm extends React.Component {
       cache: {
         table: {
           explain = '',
+          nearBy
         }
       }
     } = this.props;
@@ -68,7 +69,7 @@ class StepLocationForm extends React.Component {
         <strong>3단계</strong>
         <p>찾아오는 손님들을 위해 정확한 위치를 지정해주세요.</p>
         <SimpleMap
-          eventLocation={this.state.eventLocation}
+          eventLocation={nearBy.location}
           onChange={this.handleChange}
         />
         <Divider />
