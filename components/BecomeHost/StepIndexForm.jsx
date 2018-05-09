@@ -1,22 +1,30 @@
 import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Form, Icon, Input, Button, Select, AutoComplete } from 'antd';
+import { Form, Icon, Input, Button, Select } from 'antd';
 import { saveTableCache } from '../../utils/api';
+import AutoAddressComplete from './AutoAddressComplete';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 class StepIndexForm extends React.Component {
   state = {
+    nearBy: null,
     loading: false
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
+    const { nearBy } = this.state;
     const { form: { validateFields }, loginUser, cache } = this.props;
 
     validateFields(async (err, values) => {
+
+      if( nearBy ){
+        values.nearBy = {...nearBy};
+      }
+
       if (!err) {
         this.setState({ loading: true });
         await saveTableCache({ table: { ...cache.table, ...values } }, loginUser.sessionToken);
@@ -32,12 +40,13 @@ class StepIndexForm extends React.Component {
         table: {
           eventType = 'dinner',
           spoonCount = 4,
-          location = ''
+          nearBy
         }
       }
     } = this.props;
     const { loading } = this.state;
 
+    console.log(this.props.cache)
     return (
       <React.Fragment>
         <h2>{loginUser.firstName}님 안녕하세요! </h2>
@@ -78,16 +87,11 @@ class StepIndexForm extends React.Component {
               )}
             </FormItem>
             <FormItem style={{ marginBottom: 10 }}>
-              {getFieldDecorator('location', {
-                initialValue: location,
-                rules: [{ required: true, message: '호스팅할 대략적인 위치를 검색해주세요.' }]
-              })(
-                <AutoComplete
-                  dataSource={[]}
-                  style={{ width: 270 }}
-                  placeholder="어느 동에 사시나요? 예) 서초동"
-                />
-              )}
+              <AutoAddressComplete
+                showLoading={false}
+                value={nearBy}
+                onSelect={(nearBy) => this.setState({ nearBy })}
+              />
             </FormItem>
             <FormItem>
               <Button type="primary" htmlType="submit" icon={loading ? 'loading' : ''}>계속</Button>
