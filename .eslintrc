@@ -3,7 +3,9 @@
   "env":{
     "node": true,
     "browser": true,
-    "es6": true
+    "es6": true,
+    "jest/globals": true,
+    "google": true
   },
   "parser": "babel-eslint",
   "parserOptions": {
@@ -17,8 +19,10 @@
   },
   "plugins": [
     "react",
+    "jest",
     "class-property",
-    "prefer-object-spread"
+    "prefer-object-spread",
+    "transform-es2015-modules-commonjs"
   ],
   "extends": [
     "eslint:recommended",

@@ -11,11 +11,22 @@
       }
     ]
   ],
-  "presets": ["next/babel"],
-  "ignore": [],
   "env": {
+    "development": {
+      "presets": [
+        "next/babel"
+      ]
+    },
     "test": {
-      "plugins": ["transform-es2015-modules-commonjs"]
+      "presets": [
+        "@babel/preset-env",
+        "@babel/preset-react"
+      ]
+    },
+    "production": {
+      "presets": [
+        "next/babel"
+      ]
     }
   }
 }
