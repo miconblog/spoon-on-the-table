@@ -1,12 +1,34 @@
 import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Form, Icon, Input, Button, Select } from 'antd';
+import { Form, Icon, Input, Button, Select, Alert } from 'antd';
 import { saveTableCache } from '../../utils/api';
 import AutoAddressComplete from './AutoAddressComplete';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
+
+const WelcomeHosting = ({ firstName }) => (
+  <>
+    <h2>{firstName}님 안녕하세요! </h2>
+    <p>회원님의 테이블 등록을 도와드릴께요!</p>
+  </>
+)
+
+const ProfileRequired = () => (
+  <Alert
+    type="info"
+    message="호스트 정보가 필요합니다."
+    description={(
+      <>
+        <p>호스팅하려면 프로필 정보를 먼저 수정하셔야합니다.</p>
+        <Link href={'/my/profile'}><a>내 프로필 정보 바로가기</a></Link>
+      </>
+    )}
+    showIcon
+    style={{ marginBottom: 30 }}
+  />
+)
 
 class StepIndexForm extends React.Component {
   state = {
@@ -21,8 +43,8 @@ class StepIndexForm extends React.Component {
 
     validateFields(async (err, values) => {
 
-      if( nearBy ){
-        values.nearBy = {...nearBy};
+      if (nearBy) {
+        values.nearBy = { ...nearBy };
       }
 
       if (!err) {
@@ -46,15 +68,17 @@ class StepIndexForm extends React.Component {
     } = this.props;
     const { loading } = this.state;
 
-    console.log(this.props.cache)
+    console.log(loginUser, this.props.cache)
     return (
       <React.Fragment>
-        <h2>{loginUser.firstName}님 안녕하세요! </h2>
-        <p>회원님의 테이블 등록을 도와드릴께요!</p>
-
+        {
+          loginUser.firstName
+            ? <WelcomeHosting {...loginUser} />
+            : <ProfileRequired />
+        }
+        
         <div>
-          <strong>1단계</strong>
-          <p>어떤 종류의 테이블을 만들 예정인가요?</p>
+          <h4>어떤 종류의 테이블을 만들 예정인가요?</h4>
 
           <Form onSubmit={this.handleSubmit} >
             <FormItem style={{ marginBottom: 0, display: 'inline-block', width: 'auto' }}>
@@ -93,8 +117,14 @@ class StepIndexForm extends React.Component {
                 onSelect={(nearBy) => this.setState({ nearBy })}
               />
             </FormItem>
+
             <FormItem>
-              <Button type="primary" htmlType="submit" icon={loading ? 'loading' : ''}>계속</Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                icon={loading ? 'loading' : ''}
+                disabled={!loginUser.phone}
+              >계속</Button>
             </FormItem>
           </Form>
 
