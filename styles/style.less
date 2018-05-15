@@ -90,28 +90,31 @@ main {
 .responsive {
 
   .container {
+    
     margin: 0 auto;
 
     // xl≥1200px lg≥992px md≥768px sm≥576px xs<576px
 
     @media (min-width: 1080px){
-      width: 1080px;
+      width: 1040px;
     }
 
     @media (min-width: 768px) and (max-width: 1080px){
-      width: 800px;
+      width: 728px;
     }
 
     @media (min-width: 576px) and (max-width: 768px){
-      width: 600px;
+      width: 536px;
     }
 
     @media (max-width: 576px){
-      width: 500px;
+      width: 480px;
     }
 
     @media (max-width: 500px){
+      min-width: 320px;
       width: 100%;
+      padding: 10px 20px;
     }
   }
 }
