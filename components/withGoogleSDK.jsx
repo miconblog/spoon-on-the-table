@@ -1,6 +1,6 @@
 import React from 'react';
 
-let isCalled = false;
+export let isCalled = false;
 const appKey = 'AIzaSyDvfz98iKE6C3TIDNBTphKG4ol5o-Mdzt4';
 const URL = `https://maps.googleapis.com/maps/api/js?key=${appKey}`;
 
@@ -49,7 +49,9 @@ export default function withGoogleMap(Component) {
         ) : null;
       }
 
-      return <Component {...props} sdk={google.maps} />
+      const sdk = (typeof google !== 'undefined') ? google.maps : {}
+
+      return <Component {...props} sdk={sdk} />
     }
   };
 
