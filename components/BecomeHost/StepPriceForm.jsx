@@ -1,10 +1,17 @@
 import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Form, Icon, Input, Button, Divider, Row, Col } from 'antd';
+import { Form, Icon, Input, Button, Divider, Row, Col, Select, Radio, Alert } from 'antd';
 import { saveTableCache } from '../../utils/api';
 
 const FormItem = Form.Item;
+const Option = Select.Option;
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
+
+const times = (count) => {
+  return new Array(count).fill(1).map((n, i) => n + i);
+};
 
 class StepPriceForm extends React.Component {
   state = {
@@ -24,7 +31,7 @@ class StepPriceForm extends React.Component {
     });
   }
 
-  handleGoBack = (e) =>{
+  handleGoBack = (e) => {
     e.preventDefault();
     Router.push('/become-a-host?step=location', '/become-a-host/location');
   }
@@ -35,28 +42,60 @@ class StepPriceForm extends React.Component {
       loginUser,
       cache: {
         table: {
-          price = '0',
+          price = 0,
+          spoonCount,
+          minPerson=1
         }
       }
     } = this.props;
-    const { loading } = this.state;
-
-    console.log( this.props.cache.table)
+    const { loading, isFree } = this.state;
 
     return (
       <div className="StepMenuForm">
-        <strong>4단계</strong>
-        <p>가격을 정해주세요.</p>
+        <p>테이블 가격을 정해주세요!</p>
 
         <Form onSubmit={this.handleSubmit} >
+
+          <Alert message="현재는 무료만 가능합니다." type="info" closeText="닫기" />
           <FormItem>
             {getFieldDecorator('price', {
-              initialValue: price,
-              rules: [{ required: true}]
+              initialValue: price
             })(
-              <Input placeholder='가격은 얼마로 할까요?' />
+              <Select>
+                <Option value={0}>무료</Option>
+              </Select>
             )}
           </FormItem>
+
+          <div>
+            <p><strong>{spoonCount}인용</strong> 테이블을 구성하고 있습니다.</p>
+            <p>최소 몇명의 손님을 필요로 하나요?</p>
+          </div>
+          <FormItem>
+            {getFieldDecorator('minPerson', {
+              initialValue: minPerson
+            })(
+              <Select>
+                {times(spoonCount).map((value, idx) => {
+                  return <Option key={value} value={value}>{value}명</Option>
+                })
+                }
+              </Select>
+            )}
+          </FormItem>
+
+          <Alert
+            message="예상 수익"
+            description={(
+              <>
+                <p>*무료 이벤트는 수수료가 없습니다.</p>
+                <p>예상 수익은 <strong>0원</strong>입니다</p>
+              </>
+            )}
+            type="success"
+            showIcon
+            style={{ marginBottom: 30 }}
+          />
 
           <FormItem>
             <Row type="flex" justify="space-between">

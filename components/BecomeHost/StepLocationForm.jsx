@@ -12,7 +12,6 @@ const Option = Select.Option;
 class StepLocationForm extends React.Component {
   state = {
     loading: false,
-    curLocation: null,
     eventLocation: {
       lat: 59.955413,
       lng: 30.337844
@@ -45,11 +44,15 @@ class StepLocationForm extends React.Component {
     Router.push('/become-a-host?step=menu', '/become-a-host/menu');
   }
 
-  componentDidMount() {
-    if (navigator) {
-      navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => this.setState({ curLocation: { lat: latitude, lng: longitude } }));
-    }
-  }
+  // componentDidMount() {
+  //   if (navigator) {
+  //     navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => this.setState({ curLocation: { lat: latitude, lng: longitude } }));
+  //   }
+  // }
+
+  // componentWillUnmount() {
+  //   // TODO 
+  // }
 
   render() {
     const {
