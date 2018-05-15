@@ -6,9 +6,7 @@ export const reducer = (state, { type, payload }) => {
     case 'UPDATE_LOGIN_USER':
       return ({
         ...state,
-        ...{
-          loginUser: payload.loginUser
-        }
+        loginUser: { ...state.loginUser, ...payload.loginUser }
       });
 
     case 'COLLAPSE_SIDE_MENU':
