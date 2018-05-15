@@ -40,6 +40,8 @@ describe('GET /api/tables/temporary - 작업중인 모든 캐시 정보를 가�
     expect(res.status).toBe(200);
     expect(res.body.data).not.toBeUndefined();
     expect(res.body.data).toHaveProperty('id');
+    expect(res.body.data).toHaveProperty('table');
+    expect(res.body.data.table).not.toBeUndefined();
   });
 
 });
@@ -95,6 +97,7 @@ describe('작업중이 테이블 캐시 가져오기 ', () => {
     expect(res.status).toBe(200);
     expect(res.body.data).not.toBeUndefined();
     expect(res.body.data).toHaveProperty('table');
+    expect(res.body.data.table).not.toBeUndefined();
     expect(res.body.data.table.spoonCount).toBe(4);
 
   });

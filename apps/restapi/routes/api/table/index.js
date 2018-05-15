@@ -19,6 +19,7 @@ async function getUserCache(req, res) {
   if (!cache) {
     cache = new UserCache();
     cache.set('member', user);
+    cache.set('table', {});
     await cache.save();
   }
 
