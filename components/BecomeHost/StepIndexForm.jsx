@@ -32,23 +32,18 @@ const ProfileRequired = () => (
 
 class StepIndexForm extends React.Component {
   state = {
-    nearBy: null,
     loading: false
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { nearBy } = this.state;
     const { form: { validateFields }, loginUser, cache } = this.props;
 
     validateFields(async (err, values) => {
-
-      if (nearBy) {
-        values.nearBy = { ...nearBy };
-      }
-
       if (!err) {
-        this.setState({ loading: true });
+        // setState 함수에 state 객체를 넘기면 상태 변경은 배치작업을 통해 몰아서 한번에 동작하기 때문에 사실 언제 실행될지 모르다.
+        // 대신 콜백을 넣어주면 배치로 돌지 않고 상태를 바로 업데이트할수 있다.   
+        this.setState(() => ({ loading: true }));
         await saveTableCache({ table: { ...cache.table, ...values } }, loginUser.sessionToken);
         Router.push('/become-a-host?step=menu', '/become-a-host/menu');
       }
@@ -68,7 +63,6 @@ class StepIndexForm extends React.Component {
     } = this.props;
     const { loading } = this.state;
 
-    console.log(loginUser, this.props.cache)
     return (
       <React.Fragment>
         {
@@ -76,15 +70,14 @@ class StepIndexForm extends React.Component {
             ? <WelcomeHosting {...loginUser} />
             : <ProfileRequired />
         }
-        
+
         <div>
           <h4>어떤 종류의 테이블을 만들 예정인가요?</h4>
 
           <Form onSubmit={this.handleSubmit} >
             <FormItem style={{ marginBottom: 0, display: 'inline-block', width: 'auto' }}>
               {getFieldDecorator('eventType', {
-                initialValue: eventType,
-                rules: [{ required: true, message: 'Please input your username!' }]
+                initialValue: eventType
               })(
                 <Select style={{ width: 100, marginRight: 10 }}>
                   <Option value="breakfast">아침식사</Option>
@@ -97,8 +90,7 @@ class StepIndexForm extends React.Component {
             </FormItem>
             <FormItem style={{ marginBottom: 0, display: 'inline-block', width: 'auto' }}>
               {getFieldDecorator('spoonCount', {
-                initialValue: spoonCount,
-                rules: [{ required: true, message: 'Please input your username!' }]
+                initialValue: spoonCount
               })(
                 <Select style={{ width: 160 }}>
                   <Option value={1}>최대 1명 가능</Option>
@@ -111,11 +103,21 @@ class StepIndexForm extends React.Component {
               )}
             </FormItem>
             <FormItem style={{ marginBottom: 10 }}>
-              <AutoAddressComplete
-                showLoading={false}
-                value={nearBy}
-                onSelect={(nearBy) => this.setState({ nearBy })}
-              />
+              {getFieldDecorator('nearBy', {
+                initialValue: nearBy,
+                rules: [{ required: true, message: '주소를 검색해주세요!' }]
+              })(
+                <AutoAddressComplete
+                  showLoading={false}
+                  onSelect={(nearBy) => {
+                    this.props.form.setFields({
+                      nearBy: {
+                        value: nearBy
+                      }
+                    });
+                  }}
+                />
+              )}
             </FormItem>
 
             <FormItem>
