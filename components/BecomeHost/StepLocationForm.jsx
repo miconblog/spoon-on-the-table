@@ -12,10 +12,6 @@ const Option = Select.Option;
 class StepLocationForm extends React.Component {
   state = {
     loading: false,
-    eventLocation: {
-      lat: 59.955413,
-      lng: 30.337844
-    }
   };
 
   handleSubmit = (e) => {
@@ -31,28 +27,19 @@ class StepLocationForm extends React.Component {
     });
   }
 
-  handleChange = ({ lat, lng }) => {
-    this.setState({
-      eventLocation: {
-        lat, lng
-      }
-    });
+  handleChange = async ({ lat, lng }) => {
+    const { loginUser, cache } = this.props;
+    cache.table.nearBy.location = {
+      lat, lng
+    };
+
+    await saveTableCache({ table: { ...cache.table } }, loginUser.sessionToken);
   }
 
   handleGoBack = (e) => {
     e.preventDefault();
     Router.push('/become-a-host?step=menu', '/become-a-host/menu');
   }
-
-  // componentDidMount() {
-  //   if (navigator) {
-  //     navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => this.setState({ curLocation: { lat: latitude, lng: longitude } }));
-  //   }
-  // }
-
-  // componentWillUnmount() {
-  //   // TODO 
-  // }
 
   render() {
     const {
@@ -69,7 +56,6 @@ class StepLocationForm extends React.Component {
 
     return (
       <div className="StepMenuForm">
-        <strong>3단계</strong>
         <p>찾아오는 손님들을 위해 정확한 위치를 지정해주세요.</p>
         <SimpleMap
           eventLocation={nearBy.location}
@@ -80,7 +66,7 @@ class StepLocationForm extends React.Component {
           <FormItem>
             {getFieldDecorator('explain', {
               initialValue: explain,
-              rules: [{ required: true, message: '설명은 반드시 입력해야합니다.' }]
+              rules: [{ required: true, message: '자세한 설명이 필요합니다.' }]
             })(
               <Input.TextArea rows={5} placeholder='골목이 복잡하거나 대중교통이 있다면 자세한 설명을 남겨주세요.' />
             )}

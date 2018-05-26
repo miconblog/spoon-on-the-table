@@ -7,7 +7,6 @@ class SimpleMap extends React.Component {
     return false;
   }
 
-
   onLoad = (node) => {
 
     // refs는 unload 될때도 호출되므로 node는 null 이 될수도 있다.
@@ -16,7 +15,8 @@ class SimpleMap extends React.Component {
     const { eventLocation, sdk } = this.props;
 
     this.map = new sdk.Map(node, {
-      zoom: 14,
+      fullscreenControl: false,
+      zoom: 15,
       center: eventLocation
     });
 
@@ -26,14 +26,14 @@ class SimpleMap extends React.Component {
       draggable: true
     });
 
-    // this.map.addListener('click', ({ latLng }) => {
-    //   this.marker.setPosition(latLng);
-    //   //this.props.onChange({ lat: latLng.lat(), lng: latLng.lng() });
-    // });
+    this.map.addListener('rightclick', ({ latLng }) => {
+      this.marker.setPosition(latLng);
+      this.props.onChange({ lat: latLng.lat(), lng: latLng.lng() });
+    });
 
-    // this.marker.addListener('dragend', (e) => {
-    //   console.log('change..', e);
-    // });
+    this.marker.addListener('dragend', ({ latLng }) => {
+      this.props.onChange({ lat: latLng.lat(), lng: latLng.lng() });
+    });
   }
 
   componentWillUnmount() {
@@ -50,7 +50,7 @@ class SimpleMap extends React.Component {
 
   render() {
     return (
-      <div style={{ height: '350px', width: '100%' }} ref={this.onLoad} />
+      <div style={{ height: '500px', width: '100%' }} ref={this.onLoad} />
     );
   }
 

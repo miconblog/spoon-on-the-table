@@ -1,7 +1,7 @@
 import React from 'react';
 
 export let isCalled = false;
-const appKey = 'AIzaSyDvfz98iKE6C3TIDNBTphKG4ol5o-Mdzt4';
+const appKey = 'AIzaSyCXtmdO_GLwzjMFowULioeAaDH_MD9fLTA';
 const URL = `https://maps.googleapis.com/maps/api/js?key=${appKey}`;
 
 export default function withGoogleMap(Component) {
@@ -43,7 +43,7 @@ export default function withGoogleMap(Component) {
         return showLoading ? (
           <div style={{ height: `${height}px`, width: '100%', display: 'flex' }}>
             <div style={{ alignSelf: 'center', textAlign: 'center', flex: 1 }}>
-              <span style={{ color: 'gray' }}>Loading google map...</span>
+              <span style={{ color: 'gray' }}>잠시만 기다려주세요...</span>
             </div>
           </div>
         ) : null;
