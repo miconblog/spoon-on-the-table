@@ -1,0 +1,42 @@
+.ImageList {
+  .image-list {
+    .image-list-card {
+      cursor: pointer;
+
+      &.selected {
+        background-color: cornflowerblue;
+      }
+
+      .item-info {
+        .uploading {
+          position: absolute;
+          left: 30px;
+          top: 25px;
+          display: block;
+        }
+      }
+
+      .item-actions {
+        opacity: 0;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        color: #fff;
+        z-index: 1;
+      }      
+
+      &:hover {
+        .item-info {
+          background-color: rgba(0,0,0,.5);
+        }
+        .item-actions {
+          opacity: 1;
+
+          &:hover {
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+}

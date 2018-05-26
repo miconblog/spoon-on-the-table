@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { Form, Icon, Input, Button, Select, Divider, Row, Col } from 'antd';
-import PicturesWall from './PicturesWall';
+import ImageList from './ImageList';
 import { saveTableCache } from '../../utils/api';
 
 const FormItem = Form.Item;
@@ -39,6 +39,7 @@ class StepMenuForm extends React.Component {
       loginUser,
       cache: {
         table: {
+          title = '',
           menu = '',
           alcohol = 'none'
         }
@@ -48,17 +49,22 @@ class StepMenuForm extends React.Component {
 
     return (
       <div className="StepMenuForm">
-        <strong>2단계</strong>
-        <p>테이블에는 어떤 음식들이 올라가나요? 사진과 함께 설명을 넣어주세요.</p>
-
-        <PicturesWall
-          cache={this.props.cache.table}
-          sessionToken={loginUser.sessionToken}
-        />
-
-        <Divider />
-
         <Form onSubmit={this.handleSubmit} >
+          <strong>테이블 제목</strong>
+          <FormItem>
+            {getFieldDecorator('title', {
+              initialValue: title,
+              rules: [{ required: true, message: '테이블 제목이 필요합니다.' }]
+            })(
+              <Input placeholder='테이블 제목을 입력해주세요.' />
+            )}
+          </FormItem>
+
+          <p>테이블에는 어떤 음식들이 올라가나요? 사진과 함께 설명을 넣어주세요.</p>
+          <ImageList
+            cache={this.props.cache.table}
+            sessionToken={loginUser.sessionToken}
+          />
           <FormItem>
             {getFieldDecorator('menu', {
               initialValue: menu,
