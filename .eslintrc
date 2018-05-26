@@ -19,8 +19,8 @@
   },
   "plugins": [
     "react",
+    "babel",
     "jest",
-    "class-property",
     "prefer-object-spread",
     "transform-es2015-modules-commonjs"
   ],
@@ -37,9 +37,8 @@
     "no-unused-vars": 0,
     "no-console": 0,
     "no-unexpected-multiline": "warn",
-    "class-property": 0,
-    "prefer-object-spread/prefer-object-spread": 2,
-    "semi": 1
+    "babel/semi": 1,
+    "prefer-object-spread/prefer-object-spread": 2
   },
   "settings": {
     "react": {
