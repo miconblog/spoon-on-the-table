@@ -1,3 +1,4 @@
+import React from 'react';
 import { initStore } from '../redux/store';
 import withRedux from '../redux/withRedux';
 import { getUserCache } from '../utils/api-for-ssr';
@@ -9,8 +10,10 @@ import {
   StepMenuForm,
   StepLocationForm,
   StepPriceForm,
-  StepCalendarForm
+  StepCalendarForm,
 } from '../components/BecomeHost';
+
+import Relay from '../components/RelayContext';
 
 class BecomeHost extends React.Component {
   render() {
@@ -33,23 +36,38 @@ class BecomeHost extends React.Component {
       currentStep = 5;
     }
 
-
-    return (
-      loginUser
-        ? (<BecomeHostLayout step={currentStep}><ChildComponent loginUser={loginUser} cache={tableCache} /></BecomeHostLayout>)
-        : (<HomeLayout><Home /></HomeLayout>)
+    return loginUser ? (
+      <BecomeHostLayout step={currentStep}>
+        <Relay.Provider
+          value={{
+            cache: tableCache,
+            handler: (newValue) => {
+              tableCache.test = 'xxxx';
+              this.forceUpdate();
+            },
+          }}
+        >
+          <ChildComponent loginUser={loginUser} cache={tableCache} />
+        </Relay.Provider>
+      </BecomeHostLayout>
+    ) : (
+      <HomeLayout>
+        <Home />
+      </HomeLayout>
     );
   }
 }
 
-
-BecomeHost.getInitialProps = async function ({ query: { step = 'index' }, store, isServer }) {
-
+BecomeHost.getInitialProps = async ({
+  query: { step = 'index' },
+  store,
+  isServer,
+}) => {
   const { loginUser } = store.getState();
   let tableCache = null;
 
-  if( loginUser ){
-    const sessionToken =  loginUser.sessionToken;
+  if (loginUser) {
+    const { sessionToken } = loginUser;
     const response = await getUserCache('table', { isServer, sessionToken });
     tableCache = { ...response.data };
   }
@@ -57,7 +75,7 @@ BecomeHost.getInitialProps = async function ({ query: { step = 'index' }, store,
   return {
     step,
     tableCache,
-    loginUser
+    loginUser,
   };
 };
 

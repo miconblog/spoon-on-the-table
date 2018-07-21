@@ -30,7 +30,7 @@ module.exports = withLess({
     }
 
     if (dev) {
-      config.devtool = 'cheap-source-map';
+      config.devtool = 'source-map';
     }
 
     // disable soucemaps of babel-loader

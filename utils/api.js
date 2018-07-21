@@ -150,3 +150,17 @@ export function _deletePhoto(id) {
     }
   }
 }
+
+// 테이블 생성 (인증필요)
+export function addTable(values) {
+  return fetchPromise(_addTable(values), options)
+}
+export function _addTable(values) {
+  return {
+    endpoint: `/api/tables`,
+    params: {
+      method: 'POST',
+      ...values
+    }
+  }
+}

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Upload, Icon, Spin, Popconfirm } from 'antd';
-import { saveTableCache, deletePhoto } from '../../utils/api';
-import './ImageList.less'
+import { Upload, Icon, Spin, Popconfirm, Button } from 'antd';
+import './PhotoList.less'
 
 const Card = ({ file, onSelect, onRemove, isSelected }) => (
   <div className={`image-list-card ant-upload-list-item ant-upload-list-picture-card ${isSelected ? 'selected' : ''}`}>
@@ -42,7 +41,7 @@ export default class ImageList extends React.Component {
   constructor(props) {
     super(props);
 
-    const { photos = [] } = props.cache;
+    const { photos } = props;
 
     this.state = {
       previewVisible: false,
@@ -79,17 +78,13 @@ export default class ImageList extends React.Component {
   }
 
   handleRemoveCard = async (file) => {
-    const { cache, sessionToken } = this.props;
     const photos = this.state.fileList.filter(f => f.id !== file.id)
     this.setState({ fileList: photos });
-
-    await saveTableCache({ table: { ...cache, photos } }, sessionToken);
-    await deletePhoto(file.id, { sessionToken: this.props.sessionToken });
+    this.props.onRemove(file, photos);
   }
 
   handleChange = async ({ fileList }) => {
 
-    const { cache, sessionToken } = this.props;
     const images = fileList.map(({ id, uid, status, name, url, thumbUrl, response }) => {
 
       const image = { id, uid, status, name, url, thumbUrl };
@@ -102,12 +97,13 @@ export default class ImageList extends React.Component {
 
       return image
     });
-
-    const photos = images.map(img => ({ id: img.id, name: img.name, url: img.url }));
-
-    await saveTableCache({ table: { ...cache, photos } }, sessionToken);
-
     this.setState({ fileList: images })
+
+    const uploaded = images.every(img => img.status === 'done');
+    if (uploaded) {
+      const photos = images.map(img => ({ id: img.id, name: img.name, url: img.url }));
+      this.props.onChange(photos);
+    }
   }
 
   render() {
@@ -119,13 +115,14 @@ export default class ImageList extends React.Component {
       </div>
     );
     return (
-      <div className="ImageList clearfix">
+      <div className="PhotoList clearfix">
         <FileList
           files={fileList}
           selectedId={selectedId}
           onSelect={this.handleSelectCard}
           onRemove={this.handleRemoveCard}
         />
+        <Button onClick={() => this.props.onClick()}>컨텍스트 테스트</Button>
         <Upload
           name="file"
           action="/api/file/upload"

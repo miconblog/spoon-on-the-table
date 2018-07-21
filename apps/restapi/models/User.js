@@ -1,4 +1,5 @@
 const Parse = require('parse/node');
+
 class User extends Parse.User {
   constructor() {
     super('_User');
@@ -13,10 +14,14 @@ class User extends Parse.User {
     'firstName',
     'phone',
     'sessionToken',
-    'username',
+    'username'
   ]) {
 
     const json = { id: this.id };
+
+    if (typeof attrs === 'string') {
+      return json;
+    }
 
     attrs.forEach(name => {
       if (this.get(name)) {

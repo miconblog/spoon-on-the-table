@@ -1,7 +1,15 @@
 const Parse = require('parse/node');
+
 class UserCache extends Parse.Object {
-  constructor() {
+  constructor(user) {
     super('UserCache');
+
+    if (user) {
+      const acl = new Parse.ACL(user);
+      console.log('UserCache...', user)
+      this.set('member', user);
+      this.setACL(acl);
+    }
   }
 
   toJSON(attrs = ['table', 'test']) {

@@ -1,6 +1,6 @@
 const Parse = require('parse/node');
 class Photo extends Parse.Object {
-  constructor() {
+  constructor(user) {
     super('Photo');
   }
 
