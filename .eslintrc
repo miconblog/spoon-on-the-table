@@ -4,7 +4,9 @@
     "node": true,
     "browser": true,
     "es6": true,
-    "jest/globals": true,
+    "jest/globals": true
+  },
+  "globals": {
     "google": true
   },
   "parser": "babel-eslint",
@@ -21,24 +23,15 @@
     "react",
     "babel",
     "jest",
-    "prefer-object-spread",
-    "transform-es2015-modules-commonjs"
+    "prefer-object-spread"
   ],
   "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended"
+    "airbnb"
   ],
   "rules": {
-    "comma-dangle": 0,
     "react/prop-types": 0,
-    "react/react-in-jsx-scope": 0,
-    "react/jsx-uses-vars": 1,
-    "react/display-name": 0,
-    "no-unused-vars": 0,
-    "no-console": 0,
-    "no-unexpected-multiline": "warn",
-    "babel/semi": 1,
-    "prefer-object-spread/prefer-object-spread": 2
+    "react/jsx-one-expression-per-line": 0,
+    "object-curly-newline":"off"
   },
   "settings": {
     "react": {
