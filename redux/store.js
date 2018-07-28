@@ -4,28 +4,28 @@ import { createStore, applyMiddleware } from 'redux';
 export const reducer = (state, { type, payload }) => {
   switch (type) {
     case 'UPDATE_LOGIN_USER':
-      return ({
+      return {
         ...state,
-        loginUser: { ...state.loginUser, ...payload.loginUser }
-      });
+        loginUser: { ...state.loginUser, ...payload.loginUser },
+      };
 
     case 'COLLAPSE_SIDE_MENU':
-      return ({
+      return {
         ...state,
         ...{
-          collapsed: payload
-        }
-      })
+          collapsed: payload,
+        },
+      };
 
     default:
       return state;
   }
 };
 
-export const initStore = (initialState = {}) => {
-  return createStore(
-    reducer, initialState,
+export const initStore = (initialState = {}) =>
+  createStore(
+  reducer,
+  initialState,
 
-    (typeof window !== 'undefined' && window.devToolsExtension) ? window.devToolsExtension() : f => f
-  );
-};
+  (typeof window !== 'undefined' && window.devToolsExtension) ? window.devToolsExtension() : f => f,
+);

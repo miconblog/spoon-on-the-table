@@ -1,8 +1,10 @@
 /* eslint-disable react/no-unused-prop-types */
 import React from 'react';
 import omit from 'lodash/omit';
-import { DayPickerRangeController } from 'react-dates';
+import { DayPickerRangeController, isInclusivelyAfterDay } from 'react-dates';
 import { START_DATE, END_DATE } from 'react-dates/constants';
+import moment from 'moment';
+
 import 'react-dates/initialize';
 import './DateRangePicker.less';
 
@@ -47,6 +49,7 @@ class DateRangePicker extends React.Component {
     return (
       <DayPickerRangeController
         {...props}
+        isOutsideRange={day => !isInclusivelyAfterDay(day, moment())}
         hideKeyboardShortcutsPanel
         onDatesChange={this.onDatesChange}
         onFocusChange={this.onFocusChange}

@@ -1,15 +1,23 @@
-import { connect } from 'react-redux';
+import React from 'react';
 import Link from 'next/link';
-import { Button, Icon, Divider, Menu } from 'antd';
+import {
+  Button, Icon, Divider, Menu,
+} from 'antd';
 import './SideMenu.less';
+import { logoutUser } from '../../utils/api';
+
+function logout({ domEvent }) {
+  domEvent.preventDefault();
+  domEvent.stopPropagation();
+
+  logoutUser().then(() => {
+    window.location.replace('/');
+  });
+}
 
 export default ({ selectedKey, onSelect }) => (
   <aside id="sidebar" className="SideMenu">
-    <Menu
-      mode="inline"
-      selectedKeys={[selectedKey]}
-      onSelect={onSelect}
-    >
+    <Menu mode="inline" selectedKeys={[selectedKey]} onSelect={onSelect}>
       <Menu.Item key="info">
         <Icon type="user" />
         <span>개인정보</span>
@@ -36,11 +44,10 @@ export default ({ selectedKey, onSelect }) => (
         <span>사용 언어</span>
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item>
-        <Link href='/logout'>
-          <a style={{ display: 'inline-block' }}><Icon type="logout" /><span>로그아웃</span></a>
-        </Link>
+      <Menu.Item onClick={logout}>
+        <Icon type="logout" />
+        <span>로그아웃</span>
       </Menu.Item>
     </Menu>
   </aside>
-)
+);

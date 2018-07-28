@@ -2,8 +2,11 @@ import React from 'react';
 import Router from 'next/router';
 import { Form, Row, Col, Button } from 'antd';
 import moment from 'moment';
-import { saveTableCache } from '../../utils/api';
+import { saveTableCache, addTable } from '../../utils/api';
 import DateRangePicker from './DateRangePicker';
+import 'moment/locale/ko';
+
+moment.locale('ko');
 
 const FormItem = Form.Item;
 
@@ -30,6 +33,7 @@ class StepCalendarForm extends React.PureComponent {
   };
 
   componentWillUnmount = () => {
+    console.log('unmount');
     window.removeEventListener('resize', this.updateDimensions);
   };
 
@@ -65,8 +69,12 @@ class StepCalendarForm extends React.PureComponent {
           loginUser.sessionToken,
         );
 
-        console.log('cache', cache);
-        // Router.push('/my/tables')
+
+        await addTable(loginUser.sessionToken);
+
+
+        // console.log('cache', cache);
+        Router.push('/my/tables');
       }
     });
   };
@@ -117,7 +125,10 @@ class StepCalendarForm extends React.PureComponent {
 
     return (
       <div className="StepMenuForm">
-        <p>초대 가능한 날짜를 지정해주세요. 지정한 날짜 외에는 이벤트가 노출되지 않습니다.</p>
+        <p>
+          초대 가능한 날짜를 지정해주세요. 지정한 날짜 외에는 이벤트가 노출되지
+          않습니다.
+        </p>
 
         <div style={{ textAlign: 'center', padding: '20px 0' }}>
           <DateRangePicker
@@ -128,9 +139,16 @@ class StepCalendarForm extends React.PureComponent {
             onDatesChange={this.handleDatesChange}
             numberOfMonths={numberOfMonths}
           />
+
+          <Row type="flex" justify="center">
+            {startDate && <div>{moment(startDate).format('LL')}</div>}
+            {<span> ~ </span>}
+            {endDate && <div>{moment(endDate).format('LL')}</div>}
+          </Row>
         </div>
 
         <Form onSubmit={this.handleSubmit}>
+
           <FormItem>
             <Row type="flex" justify="space-between">
               <Col>

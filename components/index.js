@@ -15,5 +15,5 @@ export {
   SiteMap,
   TableList,
   PrefetchLink,
-  TableSpoonLogo
+  TableSpoonLogo,
 };
