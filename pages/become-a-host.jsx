@@ -13,50 +13,38 @@ import {
   StepCalendarForm,
 } from '../components/BecomeHost';
 
-import Relay from '../components/RelayContext';
+const BecomeHost = (props) => {
+  const { loginUser, step, tableCache } = props;
 
-class BecomeHost extends React.Component {
-  render() {
-    const { loginUser, step, tableCache } = this.props;
+  console.log(tableCache);
 
-    let ChildComponent = StepIndexForm;
-    let currentStep = 1;
+  let ChildComponent = StepIndexForm;
+  let currentStep = 1;
 
-    if (step === 'menu') {
-      ChildComponent = StepMenuForm;
-      currentStep = 2;
-    } else if (step === 'location') {
-      ChildComponent = StepLocationForm;
-      currentStep = 3;
-    } else if (step === 'price') {
-      ChildComponent = StepPriceForm;
-      currentStep = 4;
-    } else if (step === 'calendar') {
-      ChildComponent = StepCalendarForm;
-      currentStep = 5;
-    }
-
-    return loginUser ? (
-      <BecomeHostLayout step={currentStep}>
-        <Relay.Provider
-          value={{
-            cache: tableCache,
-            handler: (newValue) => {
-              tableCache.test = 'xxxx';
-              this.forceUpdate();
-            },
-          }}
-        >
-          <ChildComponent loginUser={loginUser} cache={tableCache} />
-        </Relay.Provider>
-      </BecomeHostLayout>
-    ) : (
-      <HomeLayout>
-        <Home />
-      </HomeLayout>
-    );
+  if (step === 'menu') {
+    ChildComponent = StepMenuForm;
+    currentStep = 2;
+  } else if (step === 'location') {
+    ChildComponent = StepLocationForm;
+    currentStep = 3;
+  } else if (step === 'price') {
+    ChildComponent = StepPriceForm;
+    currentStep = 4;
+  } else if (step === 'calendar') {
+    ChildComponent = StepCalendarForm;
+    currentStep = 5;
   }
-}
+
+  return loginUser ? (
+    <BecomeHostLayout step={currentStep}>
+      <ChildComponent loginUser={loginUser} cache={tableCache} />
+    </BecomeHostLayout>
+  ) : (
+    <HomeLayout>
+      <Home />
+    </HomeLayout>
+  );
+};
 
 BecomeHost.getInitialProps = async ({
   query: { step = 'index' },
