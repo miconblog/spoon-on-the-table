@@ -1,10 +1,9 @@
-import HomeLayout from './home';
-import MyPageLayout from './mypage';
+import HomeLayout from './HomeLayout';
+import UsersLayout from './UsersLayout';
 import BecomeHostLayout from './become-host';
+import HostAdminLayout from './HostAdminLayout';
 import '../styles/style.less';
 
 export {
-  HomeLayout,
-  MyPageLayout,
-  BecomeHostLayout
+  HomeLayout, UsersLayout, BecomeHostLayout, HostAdminLayout,
 };

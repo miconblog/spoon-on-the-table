@@ -1,0 +1,60 @@
+.HostAdminLayout {
+  .Sider {
+    min-height: 100vh;
+    box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+    position: relative;
+    z-index: 10;
+
+    .logo {
+      height: 64px;
+      position: relative;
+      line-height: 64px;
+      padding-left: 24px;
+      transition: all 0.3s;
+      background: #002140;
+      overflow: hidden;
+
+      a {
+        display: inline;
+
+        img {
+          display: inline-block;
+          height: 32px;
+          vertical-align: middle;
+        }
+  
+        h1 {
+          color: #fff;
+          font-size: 20px;
+          margin: 0 0 0 12px;
+          font-family: 'Myriad Pro', 'Helvetica Neue', Arial, Helvetica,
+            sans-serif;
+          font-weight: 600;
+          display: inline-block;
+          vertical-align: middle;
+        }
+      }
+
+      
+    }
+  }
+
+  .Header {
+    background: #fff;
+    padding: 0 12px 0 0;
+    box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+    position: relative;
+
+    .trigger {
+      font-size: 20px;
+      line-height: 64px;
+      cursor: pointer;
+      transition: all 0.3s, padding 0s;
+      padding: 0 24px;
+    }
+  }
+
+  .Content {
+    height: 100%;
+  }
+}
