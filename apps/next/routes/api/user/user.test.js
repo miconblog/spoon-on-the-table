@@ -5,15 +5,15 @@ import parseapp from '../../../../parse';
 const agent = withServer(restapi);
 let test_server = null;
 
-beforeAll(() => test_server = parseapp.listen(9000));
-afterAll(done => test_server.close(done))
+beforeAll(() => (test_server = parseapp.listen(9000)));
+afterAll(done => test_server.close(done));
 
 describe('POST /api/user/duplicate - 회원 중복 조회', () => {
   it('중복된 이메일이 있으면 200 상태를 에러 메시지를 반환한다.', async () => {
     const res = await agent({
       method: 'POST',
       url: '/api/user/duplicate',
-      data: { email: 'realrap2@naver.com' }
+      data: { email: 'realrap2@naver.com' },
     });
 
     expect(res.status).toBe(200);
@@ -24,17 +24,15 @@ describe('POST /api/user/duplicate - 회원 중복 조회', () => {
     const res = await agent({
       method: 'POST',
       url: '/api/user/duplicate',
-      data: { email: 'realrap@naver.com' }
+      data: { email: 'realrap@naver.com' },
     });
 
     expect(res.status).toBe(202);
     expect(res.body.message).toBe('OK, you can use it');
   });
-
 });
 
 describe('POST /api/user/create - 회원 가입', () => {
-
   // 가입시키고, 수정하고, 삭제
   let createdUserId = '';
   let createdUserCookie = '';
@@ -43,7 +41,7 @@ describe('POST /api/user/create - 회원 가입', () => {
     await agent({
       cookie: createdUserCookie,
       method: 'DELETE',
-      url: `/api/user/${createdUserId}`
+      url: `/api/user/${createdUserId}`,
     });
   });
 
@@ -51,19 +49,18 @@ describe('POST /api/user/create - 회원 가입', () => {
     const res = await agent({
       method: 'POST',
       url: '/api/user/create',
-      data: { email: 'realrap2@naver.com' }
+      data: { email: 'realrap2@naver.com' },
     });
 
     expect(res.status).toBe(400);
     expect(res.body.message).toBe('인자가 부족하다');
   });
 
-
   it('회원 가입에 성공하면 세션은 쿠키로 내려오고, 상태 코드는 201을 반환한다.', async () => {
     const res = await agent({
       method: 'POST',
       url: '/api/user/create',
-      data: { email: 'create@test.com', username: '회원가입', password: '1' }
+      data: { email: 'create@test.com', username: '회원가입', password: '1' },
     });
 
     expect(res.status).toBe(201);
@@ -71,24 +68,26 @@ describe('POST /api/user/create - 회원 가입', () => {
     expect(res.body).toHaveProperty('id');
     createdUserId = res.body.id;
 
-    // set-cookie 
+    // set-cookie
     expect(res.header).toHaveProperty('set-cookie');
     createdUserCookie = res.header['set-cookie'][0].split(';')[0];
   });
-
 });
 
 describe('PUT /api/user/:id - 회원 정보 수정', () => {
-
-  let createdUserId, createdUserCookie;
+  let createdUserId;
+  let createdUserCookie;
 
   beforeAll(async () => {
-
-    // 유저를 생성해보고, 
+    // 유저를 생성해보고,
     let res = await agent({
       method: 'POST',
       url: '/api/user/create',
-      data: { email: 'update@test.com', username: '회원정보수정', password: '1' }
+      data: {
+        email: 'update@test.com',
+        username: '회원정보수정',
+        password: '1',
+      },
     });
 
     // 이미 있으면 로그인한다.
@@ -96,7 +95,7 @@ describe('PUT /api/user/:id - 회원 정보 수정', () => {
       res = await agent({
         method: 'POST',
         url: '/login',
-        data: { username: '회원정보수정', password: '1' }
+        data: { username: '회원정보수정', password: '1' },
       });
     }
 
@@ -108,14 +107,14 @@ describe('PUT /api/user/:id - 회원 정보 수정', () => {
     await agent({
       cookie: createdUserCookie,
       method: 'DELETE',
-      url: `/api/user/${createdUserId}`
+      url: `/api/user/${createdUserId}`,
     });
-  })
+  });
 
   it('로그인한 유저가 아니면 회원 정보를 변경할 수 없다.', async () => {
     const res = await agent({
       method: 'PUT',
-      url: `/api/user/${createdUserId}`
+      url: `/api/user/${createdUserId}`,
     });
 
     expect(res.status).toBe(403);
@@ -126,7 +125,7 @@ describe('PUT /api/user/:id - 회원 정보 수정', () => {
       cookie: createdUserCookie,
       method: 'PUT',
       url: `/api/user/${createdUserId}`,
-      data: { firstName: 'test', fullName: 'test user' }
+      data: { firstName: 'test', fullName: 'test user' },
     });
 
     expect(res.status).toBe(200);
@@ -139,7 +138,7 @@ describe('PUT /api/user/:id - 회원 정보 수정', () => {
       cookie: createdUserCookie,
       method: 'PUT',
       url: `/api/user/${createdUserId}`,
-      data: { password: 'change' }
+      data: { password: 'change' },
     });
 
     expect(res.status).toBe(200);
@@ -147,7 +146,7 @@ describe('PUT /api/user/:id - 회원 정보 수정', () => {
     // 비밀번호는 유저 정보에 내려오면 안됨!
     expect(res.body).not.toHaveProperty('password');
 
-    // set-cookie 
+    // set-cookie
     expect(res.header).toHaveProperty('set-cookie');
     const newCookie = res.header['set-cookie'][0].split(';')[0];
 
@@ -156,26 +155,25 @@ describe('PUT /api/user/:id - 회원 정보 수정', () => {
   });
 
   it('변경후 내려받는 유저 정보에는 비밀번호는 없어야한다.', async () => {
-
     const res = await agent({
       cookie: createdUserCookie,
       method: 'PUT',
       url: `/api/user/${createdUserId}`,
-      data: { phone: '000-0000-0000' }
+      data: { phone: '000-0000-0000' },
     });
     expect(res.body).not.toHaveProperty('password');
   });
-})
+});
 
 describe('DELETE /api/user/:id - 회원 탈퇴', () => {
-
-  let createdUserId, createdUserCookie;
+  let createdUserId;
+  let createdUserCookie;
 
   beforeAll(async () => {
     const res = await agent({
       method: 'POST',
       url: '/api/user/create',
-      data: { email: 'delete@test.com', username: '회원탈퇴', password: '1' }
+      data: { email: 'delete@test.com', username: '회원탈퇴', password: '1' },
     });
 
     createdUserId = res.body.id;
@@ -185,7 +183,7 @@ describe('DELETE /api/user/:id - 회원 탈퇴', () => {
   it('로그인한 유저가 아니면 회원 탈퇴를 할 수 없다.', async () => {
     const res = await agent({
       method: 'DELETE',
-      url: `/api/user/${createdUserId}`
+      url: `/api/user/${createdUserId}`,
     });
     expect(res.status).toBe(403);
   });
@@ -194,7 +192,7 @@ describe('DELETE /api/user/:id - 회원 탈퇴', () => {
     const res = await agent({
       cookie: createdUserCookie,
       method: 'DELETE',
-      url: `/api/user/${createdUserId}`
+      url: `/api/user/${createdUserId}`,
     });
 
     expect(res.status).toBe(200);
@@ -204,4 +202,4 @@ describe('DELETE /api/user/:id - 회원 탈퇴', () => {
     expect(res.header).toHaveProperty('set-cookie');
     expect(res.header['set-cookie'][0]).toMatch(/auth-token=;/);
   });
-})
+});

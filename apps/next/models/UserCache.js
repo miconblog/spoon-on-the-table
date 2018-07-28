@@ -6,14 +6,13 @@ class UserCache extends Parse.Object {
 
     if (user) {
       const acl = new Parse.ACL(user);
-      console.log('UserCache...', user)
+      console.log('UserCache...', user);
       this.set('member', user);
       this.setACL(acl);
     }
   }
 
   toJSON(attrs = ['table', 'test']) {
-
     const json = { id: this.id };
 
     attrs.forEach(name => {

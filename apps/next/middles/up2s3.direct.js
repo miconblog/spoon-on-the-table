@@ -27,8 +27,10 @@ function up2s3(req, res, next) {
   const busboy = new Busboy({ headers: req.headers });
   let fileFrom = '';
 
-  busboy.on('field', function (name, value) {
-    if (name === 'from') { fileFrom = value };
+  busboy.on('field', (name, value) => {
+    if (name === 'from') {
+      fileFrom = value;
+    }
   });
 
   busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
@@ -52,14 +54,14 @@ function up2s3(req, res, next) {
           ...resp,
           size: parseInt(req.headers['content-length'], 10),
           mimetype,
-          originalname: filename
+          originalname: filename,
         };
 
         next();
       })
-      .catch(ex => next(new Error(MSG.UNKNOWN_S3)))
+      .catch(ex => next(new Error(MSG.UNKNOWN_S3)));
   });
-  req.pipe(busboy)
+  req.pipe(busboy);
 }
 
 module.exports = up2s3;

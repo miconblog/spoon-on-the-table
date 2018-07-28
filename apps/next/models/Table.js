@@ -13,12 +13,22 @@ class Table extends Parse.Object {
   }
 
   toJSON() {
-
     const json = { id: this.id };
     const attrs = [
-      'title', 'alcohol', 'startDate', 'endDate', 'eventType',
-      'explainTheWay', 'explainTheMenu', 'minPerson', 'maxPerson',
-      'address', 'geoPoint', 'photos', 'price', 'host'
+      'title',
+      'alcohol',
+      'startDate',
+      'endDate',
+      'eventType',
+      'explainTheWay',
+      'explainTheMenu',
+      'minPerson',
+      'maxPerson',
+      'address',
+      'geoPoint',
+      'photos',
+      'price',
+      'host',
     ];
 
     attrs.forEach(name => {

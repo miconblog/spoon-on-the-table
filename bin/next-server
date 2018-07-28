@@ -1,0 +1,12 @@
+const nextapp = require('../apps/next');
+
+nextapp().then(server => {
+  console.log('----> server', server);
+  server.listen(3000, (err) => {
+    if (err) throw err;
+    console.info('> Ready on http://localhost:3000');
+  }) 
+}).catch(ex => {
+  console.error('nextapp catch....', ex);
+  process.exit(1);
+});

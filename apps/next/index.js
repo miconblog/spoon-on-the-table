@@ -1,72 +1,102 @@
 const isDevelopment = process.env.NODE_ENV !== 'production';
 const express = require('express');
 const next = require('next');
-const app = next({ dev: isDevelopment });
+const routesWithoutNext = require('./routes');
 
-const handle = app.getRequestHandler();
+const nextApp = next({ dev: isDevelopment });
+const nextHandle = nextApp.getRequestHandler();
+
 const authentication = require('../lib/authentication');
 
-function route(resolve) {
+module.exports = function() {
+  return nextApp
+    .prepare()
+    .then(() => {
+      const server = express();
 
-  const was = require('../restapi');
+      server.use(routesWithoutNext);
 
-  // NOTICE: nginx가 있다면 정적 파일을 서빙하는 주체는 바뀔수 있다.
-  was.use(express.static('./apps/next/public'));
-  was.use('/antd', express.static('node_modules/antd/dist'));
+      // 상세 페이지 라우팅
+      server.get('/tables/:id', authentication, (req, res) => {
+        nextApp.render(req, res, '/post', {
+          id: req.params.id,
+        });
+      });
 
-  // 상세 페이지 라우팅
-  was.get('/tables/:id', authentication, (req, res) => {
-    app.render(req, res, '/post', {
-      id: req.params.id
-    });
-  });
+      // 일반 유저 로그인 페이지
+      server.get('/users/:pageName*', authentication, (req, res) => {
+        const { pageName } = req.params;
+        const { query = {} } = req;
+        let userId = req.params[0];
 
-  // 마이 페이지 라우팅
-  was.get('/my/:pageName', authentication, (req, res) => {
-    const { pageName } = req.params;
-    const { query = {} } = req;
+        if (!req.user) {
+          return res.redirect('/sign');
+        }
 
-    if (!req.user) {
-      return res.redirect('/sign')
-    }
+        if (userId) {
+          userId = userId.substr(1, userId.length);
 
-    app.render(req, res, `/my-${pageName}`, {
-      pageName,
-      ...query
-    });
-  });
+          // 유저 아이디와 URL로 접근한 서브 아이디가 다르면 에러다! redirect!!
+          if (userId !== req.user.id) {
+            return res.redirect('/');
+          }
+        }
 
-  // 호스팅하기
-  function becomeHost(req, res) {
-    const { stepname } = req.params;
-    const { query: { step = 'index' } } = req;
+        console.log('/users/pageName', req.user.toJSON());
 
-    app.render(req, res, '/become-a-host', {
-      step: stepname || step,
-      pageName: 'become-a-host'
-    });
-  }
-  was.get('/become-a-host', authentication, becomeHost);
-  was.get('/become-a-host/:stepname', authentication, becomeHost);
+        let sectionName = query.section || 'profile';
+        if (pageName === 'edit_verification') {
+          sectionName = 'verification';
+        }
 
-  // 메인 페이지
-  was.get('/', authentication, (req, res) => {
-    return handle(req, res);
-  });
+        return nextApp.render(req, res, `/users/${pageName}`, {
+          pageName,
+          userId,
+          ...query,
+          section: sectionName,
+        });
+      });
 
-  // 나머지 모든 라우팅
-  was.get('*', (req, res) => {
-    return handle(req, res);
-  });
+      // 호스트 전용 페이지
+      server.get('/host/:pageName', authentication, (req, res) => {
+        const { pageName } = req.params;
+        const { query = {} } = req;
 
-  resolve(was);
-}
+        if (!req.user) {
+          return res.redirect('/sign');
+        }
 
-module.exports = () => new Promise((resolve) => {
-  app.prepare()
-    .then(route(resolve))
+        return nextApp.render(req, res, `/host-${pageName}`, {
+          pageName,
+          ...query,
+        });
+      });
+
+      // 호스팅하기
+      function becomeHost(req, res) {
+        const { stepname } = req.params;
+        const {
+          query: { step = 'index' },
+        } = req;
+
+        nextApp.render(req, res, '/become-a-host', {
+          step: stepname || step,
+          pageName: 'become-a-host',
+        });
+      }
+      server.get('/become-a-host', authentication, becomeHost);
+      server.get('/become-a-host/:stepname', authentication, becomeHost);
+
+      // 메인 페이지
+      server.get('/', authentication, (req, res) => nextHandle(req, res));
+
+      // 나머지 모든 라우팅
+      server.get('*', (req, res) => nextHandle(req, res));
+
+      return server;
+    })
     .catch((ex) => {
-      console.error(ex.stack);
+      console.error('catch....', ex);
       process.exit(1);
     });
-});
+};

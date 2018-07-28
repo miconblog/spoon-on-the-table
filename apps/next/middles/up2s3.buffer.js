@@ -6,28 +6,28 @@ const s3upload = require('./lib/s3-upload');
 
 /**
  * multipart 업로드를 가로채서 S3에 업로드해주는 미들웨어
- * 
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
  */
 function up2s3(req, res, next) {
-
   if (!is(req, ['multipart'])) return next();
 
   const busboy = new Busboy({ headers: req.headers });
   let buf = null;
 
-  busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
-
+  busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
     file.on('data', (data) => {
-      if (!buf) { buf = data }
+      if (!buf) {
+        buf = data;
+      }
       buf = Buffer.concat([buf, data]);
     });
 
     file.on('end', () => {
       try {
-        s3upload(filename, buf, function (resp) {
+        s3upload(filename, buf, (resp) => {
           req.s3 = { ...resp, size, mimetype, originalname };
           next();
         });
@@ -35,7 +35,7 @@ function up2s3(req, res, next) {
         throw new Error(err);
         next();
       }
-    })
+    });
   });
 
   req.pipe(busboy);

@@ -5,18 +5,19 @@ class User extends Parse.User {
     super('_User');
   }
 
-  toJSON(attrs = [
-    'lastName',
-    'fullName',
-    'photo',
-    'sex',
-    'email',
-    'firstName',
-    'phone',
-    'sessionToken',
-    'username'
-  ]) {
-
+  toJSON(
+    attrs = [
+      'lastName',
+      'fullName',
+      'photo',
+      'sex',
+      'email',
+      'firstName',
+      'phone',
+      'sessionToken',
+      'username',
+    ],
+  ) {
     const json = { id: this.id };
 
     if (typeof attrs === 'string') {

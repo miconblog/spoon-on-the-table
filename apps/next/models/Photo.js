@@ -1,11 +1,11 @@
 const Parse = require('parse/node');
+
 class Photo extends Parse.Object {
   constructor(user) {
     super('Photo');
   }
 
   toJSON() {
-
     const json = { id: this.id };
     const attrs = ['image', 'key', 'size'];
 

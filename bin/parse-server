@@ -1,0 +1,7 @@
+const parseapp = require('../apps/parse');
+
+// run parse-server
+parseapp.listen(9000, (err) => {
+  if (err) throw err;
+  console.info('> run parse-server on http://localhost:9000/parse');
+});

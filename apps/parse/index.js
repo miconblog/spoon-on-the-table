@@ -1,6 +1,8 @@
 const express = require('express');
-const ParseServer = require('parse-server').ParseServer;
-const { appId, serverURL, masterKey, fileKey } = require('../lib/env');
+const { ParseServer } = require('parse-server');
+const {
+  appId, serverURL, masterKey, fileKey,
+} = require('../lib/env');
 
 const parseServer = new ParseServer({
   databaseURI: 'mongodb://localhost:27017/dev', // Connection string for your MongoDB database
@@ -8,10 +10,10 @@ const parseServer = new ParseServer({
   appId,
   masterKey, // Keep this key secret!
   fileKey,
-  serverURL // Don't forget to change to https if needed
+  serverURL, // Don't forget to change to https if needed
 });
 
 const app = express();
 app.use('/parse', parseServer);
 
-module.exports = app
+module.exports = app;
