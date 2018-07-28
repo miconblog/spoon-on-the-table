@@ -5,6 +5,7 @@ import {
   _updateUser,
   _saveTableCache,
   _deletePhoto,
+  _addTable
 } from './api';
 import {
   _getUserCache
@@ -124,4 +125,60 @@ describe('API', () => {
     })
   })
 
+  it('addTable(values, {sessionToken})', () => {
+
+    const values = _addTable({
+      title: "한식이 땡기나요? 먹어요! 한식!",
+      alcohol: "none",
+      startDate: "2018-05-31T12:00:00+09:00",
+      endDate: "2018-06-04T12:00:00+09:00",
+      eventType: "breakfast",
+      explainTheWay: "h",
+      explainTheMenu: "ㅇㄹ",
+      minPerson: 2,
+      maxPerson: 4,
+      nearBy: {
+        address: "대한민국 경기도 고양시 일산동구 장항동",
+        id: "ChIJk5yUbRaFfDURK4MzOzsqBos",
+        location: { lat: 37.66140446015512, lng: 126.7651607844391 }
+      },
+      photos: [
+        { uid: 0, id: "w4w0OGZBc8", name: "20151110151611_IMG_0890.JPG", status: "done", thumbUrl: "/image/w4w0OGZBc8" },
+        { uid: 0, id: "N2D4BQGyv7", name: "20151110151611_IMG_0890.JPG", status: "done", thumbUrl: "/image/N2D4BQGyv7" },
+        { uid: 0, id: "N3Pm6PRgbm", name: "20151110151611_IMG_0890.JPG", status: "done", thumbUrl: "/image/N3Pm6PRgbm" },
+        { uid: 0, id: "otKzFTC8YX", name: "20151110151611_IMG_0890.JPG", status: "done", thumbUrl: "/image/otKzFTC8YX" },
+      ],
+      price: 0,
+    })
+
+    expect(values).toMatchObject({
+      endpoint: `/api/tables`,
+      params: {
+        method: 'POST',
+        body: JSON.stringify({
+          title: "한식이 땡기나요? 먹어요! 한식!",
+          alcohol: "none",
+          startDate: "2018-05-31T12:00:00+09:00",
+          endDate: "2018-06-04T12:00:00+09:00",
+          eventType: "breakfast",
+          explainTheWay: "h",
+          explainTheMenu: "ㅇㄹ",
+          minPerson: 2,
+          maxPerson: 4,
+          address: "대한민국 경기도 고양시 일산동구 장항동",
+          geoPoint: { lat: 37.66140446015512, lng: 126.7651607844391 },
+          photos: [
+            { objectId: "w4w0OGZBc8", __type: "Pointer", className: "Photo" },
+            { objectId: "N2D4BQGyv7", __type: "Pointer", className: "Photo" },
+            { objectId: "N3Pm6PRgbm", __type: "Pointer", className: "Photo" },
+            { objectId: "otKzFTC8YX", __type: "Pointer", className: "Photo" },
+          ],
+          price: 0,
+        })
+      }
+
+    })
+  })
+
 });
+

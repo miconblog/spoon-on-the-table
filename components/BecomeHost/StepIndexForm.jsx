@@ -56,7 +56,7 @@ class StepIndexForm extends React.Component {
       cache: {
         table: {
           eventType = 'dinner',
-          spoonCount = 4,
+          maxPerson = 4,
           nearBy
         }
       }
@@ -89,8 +89,8 @@ class StepIndexForm extends React.Component {
               )}
             </FormItem>
             <FormItem style={{ marginBottom: 0, display: 'inline-block', width: 'auto' }}>
-              {getFieldDecorator('spoonCount', {
-                initialValue: spoonCount
+              {getFieldDecorator('maxPerson', {
+                initialValue: maxPerson
               })(
                 <Select style={{ width: 160 }}>
                   <Option value={1}>최대 1명 가능</Option>

@@ -43,7 +43,7 @@ class StepPriceForm extends React.Component {
       cache: {
         table: {
           price = 0,
-          spoonCount,
+          maxPerson,
           minPerson=1
         }
       }
@@ -68,7 +68,7 @@ class StepPriceForm extends React.Component {
           </FormItem>
 
           <div>
-            <p><strong>{spoonCount}인용</strong> 테이블을 구성하고 있습니다.</p>
+            <p><strong>{maxPerson}인용</strong> 테이블을 구성하고 있습니다.</p>
             <p>최소 몇명의 손님을 필요로 하나요?</p>
           </div>
           <FormItem>
@@ -76,7 +76,7 @@ class StepPriceForm extends React.Component {
               initialValue: minPerson
             })(
               <Select>
-                {times(spoonCount).map((value, idx) => {
+                {times(maxPerson).map((value, idx) => {
                   return <Option key={value} value={value}>{value}명</Option>
                 })
                 }

@@ -47,7 +47,7 @@ class StepLocationForm extends React.Component {
       loginUser,
       cache: {
         table: {
-          explain = '',
+          explainTheWay = '',
           nearBy
         }
       }
@@ -64,8 +64,8 @@ class StepLocationForm extends React.Component {
         <Divider />
         <Form onSubmit={this.handleSubmit} >
           <FormItem>
-            {getFieldDecorator('explain', {
-              initialValue: explain,
+            {getFieldDecorator('explainTheWay', {
+              initialValue: explainTheWay,
               rules: [{ required: true, message: '자세한 설명이 필요합니다.' }]
             })(
               <Input.TextArea rows={5} placeholder='골목이 복잡하거나 대중교통이 있다면 자세한 설명을 남겨주세요.' />

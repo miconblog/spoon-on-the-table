@@ -34,6 +34,10 @@ export default function withGoogleMap(Component) {
 
     }
 
+    // TODO: SDK가 로드되기전에 컴포넌트가 unmount 되면 this.setState 호출을 막아야한다.
+    componentWillUnmount() {
+    }
+
     render() {
 
       const { loading } = this.state;

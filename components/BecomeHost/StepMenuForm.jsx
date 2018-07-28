@@ -2,16 +2,36 @@ import React from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import { Form, Icon, Input, Button, Select, Divider, Row, Col } from 'antd';
-import ImageList from './ImageList';
-import { saveTableCache } from '../../utils/api';
+import PhotoList from './PhotoList';
+import { saveTableCache, deletePhoto } from '../../utils/api';
+
+import Relay from '../RelayContext';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 class StepMenuForm extends React.Component {
-  state = {
-    loading: false
-  };
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      loading: false,
+      photos: props.cache.table.photos || []
+    };
+  }
+
+  handleChangePhotos = async (photos) => {
+    const { cache, loginUser: { sessionToken } } = this.props;
+    await saveTableCache({ table: { ...cache.table, photos } }, sessionToken);
+    // this.setState({ photos });
+  }
+
+  handleDeletePhoto = async (file, photos) => {
+    const { cache, loginUser: { sessionToken } } = this.props;
+    await saveTableCache({ table: { ...cache.table, photos } }, sessionToken);
+    await deletePhoto(file.id, { sessionToken: this.props.sessionToken });
+    // this.setState({ photos });
+  }
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -19,7 +39,10 @@ class StepMenuForm extends React.Component {
 
     validateFields(async (err, values) => {
       if (!err) {
-        console.log(JSON.stringify(values));
+
+        values.photos = [...this.state.photos];
+
+        console.log(cache.table, values);
 
         this.setState({ loading: true });
         await saveTableCache({ table: { ...cache.table, ...values } }, loginUser.sessionToken);
@@ -40,71 +63,85 @@ class StepMenuForm extends React.Component {
       cache: {
         table: {
           title = '',
-          menu = '',
-          alcohol = 'none'
+          explainTheMenu = '',
+          alcohol = 'none',
         }
       }
     } = this.props;
     const { loading } = this.state;
 
+
+
     return (
-      <div className="StepMenuForm">
-        <Form onSubmit={this.handleSubmit} >
-          <strong>테이블 제목</strong>
-          <FormItem>
-            {getFieldDecorator('title', {
-              initialValue: title,
-              rules: [{ required: true, message: '테이블 제목이 필요합니다.' }]
-            })(
-              <Input placeholder='테이블 제목을 입력해주세요.' />
-            )}
-          </FormItem>
+      <Relay.Consumer>
+        {({cache, handler}) => {
 
-          <p>테이블에는 어떤 음식들이 올라가나요? 사진과 함께 설명을 넣어주세요.</p>
-          <ImageList
-            cache={this.props.cache.table}
-            sessionToken={loginUser.sessionToken}
-          />
-          <FormItem>
-            {getFieldDecorator('menu', {
-              initialValue: menu,
-              rules: [{ required: true, message: '설명은 반드시 입력해야합니다.' }]
-            })(
-              <Input.TextArea rows={5} placeholder='메뉴에 대한 설명을 자유롭게 넣어주세요.' />
-            )}
-          </FormItem>
+          console.log('cache', cache.test );
 
-          <div>
-            주류가 포함되어 있나요?
+          return (
+            <div className="StepMenuForm">
+              <Form onSubmit={this.handleSubmit} >
+                <strong>테이블 제목</strong>
+                <FormItem>
+                  {getFieldDecorator('title', {
+                    initialValue: title,
+                    rules: [{ required: true, message: '테이블 제목이 필요합니다.' }]
+                  })(
+                    <Input placeholder='테이블 제목을 입력해주세요.' />
+                  )}
+                </FormItem>
+
+                <p>테이블에는 어떤 음식들이 올라가나요? 사진과 함께 설명을 넣어주세요.</p>
+                <PhotoList
+                  photos={[...this.state.photos]}
+                  onClick={handler}
+                  onRemove={this.handleDeletePhoto}
+                  onChange={this.handleChangePhotos}
+                />
+                <FormItem>
+                  {getFieldDecorator('explainTheMenu', {
+                    initialValue: explainTheMenu,
+                    rules: [{ required: true, message: '설명은 반드시 입력해야합니다.' }]
+                  })(
+                    <Input.TextArea rows={5} placeholder='메뉴에 대한 설명을 자유롭게 넣어주세요.' />
+                  )}
+                </FormItem>
+
+                <div>
+                  주류가 포함되어 있나요?
             </div>
-          <FormItem>
-            {getFieldDecorator('alcohol', {
-              initialValue: alcohol,
-              rules: [{ required: true, message: 'Please input your username!' }]
-            })(
-              <Select>
-                <Option value="none">주류는 포함되어 있지않습니다. (반입금지)</Option>
-                <Option value="share">주류는 포함되어 있지않으나 가지고 오시면 같이 마셔야 합니다.</Option>
-                <Option value="include">주류가 포함되어 있으므로 따로 가지고 오지마세요.</Option>
-                <Option value="include,share">주류가 포함되어 있지만 가지고 오셔서 나눠마셔도 됩니다.</Option>
-              </Select>
-            )}
-          </FormItem>
+                <FormItem>
+                  {getFieldDecorator('alcohol', {
+                    initialValue: alcohol,
+                    rules: [{ required: true, message: 'Please input your username!' }]
+                  })(
+                    <Select>
+                      <Option value="none">주류는 포함되어 있지않습니다. (반입금지)</Option>
+                      <Option value="share">주류는 포함되어 있지않으나 가지고 오시면 같이 마셔야 합니다.</Option>
+                      <Option value="include">주류가 포함되어 있으므로 따로 가지고 오지마세요.</Option>
+                      <Option value="include,share">주류가 포함되어 있지만 가지고 오셔서 나눠마셔도 됩니다.</Option>
+                    </Select>
+                  )}
+                </FormItem>
 
-          <FormItem>
-            <Row type="flex" justify="space-between">
-              <Col>
-                <a onClick={this.handleGoBack} href="/become-a-host" className="ant-btn ant-type-ghost">이전</a>
-              </Col>
-              <Col>
-                <Button type="primary" htmlType="submit" icon={loading ? 'loading' : ''}>다음</Button>
-              </Col>
-            </Row>
-          </FormItem>
+                <FormItem>
+                  <Row type="flex" justify="space-between">
+                    <Col>
+                      <a onClick={this.handleGoBack} href="/become-a-host" className="ant-btn ant-type-ghost">이전</a>
+                    </Col>
+                    <Col>
+                      <Button type="primary" htmlType="submit" icon={loading ? 'loading' : ''}>다음</Button>
+                    </Col>
+                  </Row>
+                </FormItem>
 
 
-        </Form>
-      </div>
+              </Form>
+            </div>
+          )}
+        }
+
+      </Relay.Consumer>
     );
   }
 }
