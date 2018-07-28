@@ -8,17 +8,20 @@ import TableList from '../components/TableList';
 import { initStore } from '../redux/store';
 import withRedux from '../redux/withRedux';
 
-const Index = props => (
-  <HomeLayout>
-    <TableList {...props} />
-    <Divider />
-    <About />
-    <Divider />
-    <SiteMap />
-  </HomeLayout>
-);
+const Index = (props) => {
+  const { loginUser, children, section } = props;
+  return (
+    <HomeLayout loginUser={loginUser}>
+      <TableList {...props} />
+      <Divider />
+      <About />
+      <Divider />
+      <SiteMap />
+    </HomeLayout>
+  );
+};
 
-Index.getInitialProps = async function () {
+Index.getInitialProps = async function({ isServer, store }) {
   const res = await fetch('https://api.tvmaze.com/search/shows?q=batman');
   const data = await res.json();
 
@@ -30,8 +33,11 @@ Index.getInitialProps = async function () {
     rows.push(data.slice(i * size, (i + 1) * size));
   }
 
+  console.log('isServer', isServer, store.getState());
+
   return {
     rows,
+    loginUser: store.getState().loginUser,
   };
 };
 

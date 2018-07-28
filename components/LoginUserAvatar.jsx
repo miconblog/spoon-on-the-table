@@ -1,6 +1,7 @@
 import React from 'react';
-import { Dropdown, Menu, message, Icon, Avatar } from 'antd';
+import { Dropdown, Menu, Icon, Avatar } from 'antd';
 import PropTypes from 'prop-types';
+import { logoutUser } from '../utils/api';
 import './LoginUserAvatar.less';
 
 const propTypes = {
@@ -10,13 +11,17 @@ const propTypes = {
 };
 const defaultProps = {};
 
-function handleMenuClick(e) {
-  message.info('Click on menu item.');
-  console.log('click', e);
+function logout({ domEvent }) {
+  domEvent.preventDefault();
+  domEvent.stopPropagation();
+
+  logoutUser().then(() => {
+    window.location.replace('/');
+  });
 }
 
 const menu = (
-  <Menu onClick={handleMenuClick}>
+  <Menu onClick={logout}>
     <Menu.Item key="logout">
       <Icon type="logout" />로그아웃
     </Menu.Item>

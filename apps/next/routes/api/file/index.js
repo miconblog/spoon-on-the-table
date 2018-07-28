@@ -7,9 +7,7 @@ const up2s3 = require('../../../middles/up2s3.direct');
 const Photo = require('../../../models/Photo');
 
 async function uploadFile(req, res) {
-  const {
-    Location, key, size, mimetype, filename, originalname,
-  } = req.s3;
+  const { Location, key, size, tags /* mimetype, filename, originalname */ } = req.s3;
 
   // 파일이 하나 업로드되면 무조건 Photo 객체에 추가한다.
   const photo = new Photo();
@@ -17,12 +15,17 @@ async function uploadFile(req, res) {
   photoACL.setPublicReadAccess(true);
   photo.setACL(photoACL);
 
-  await photo.save({
-    key,
-    size,
-    author: req.user,
-    image: Location,
-  });
+  try {
+    await photo.save({
+      key,
+      size,
+      author: req.user,
+      image: Location,
+      tags,
+    });
+  } catch (e) {
+    console.error(e);
+  }
 
   res.status(200).json(photo.toJSON());
 }

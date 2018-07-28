@@ -1,7 +1,45 @@
 .UsersEditMediaForm {
-  .PhotoFormItem {
-    min-height: 190px;
-    max-width: 150px;
-    text-align: center;
+  .col-profile-image {
+    padding: 0 10px 0px 0px;
+
+    form {
+      min-width: auto;
+      width: auto;
+    }
+
+    .btn-change-photo {
+      margin-top: 10px;
+      text-align: center;
+    }
+  }
+
+  .col-image-list {
+    ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+
+      li {
+        cursor: pointer;
+        border: 1px solid transparent;
+        margin: 1px 2px 0 0;
+
+        &:hover {
+          border: 1px solid#1890ff;
+        }
+      }
+    }
+
+    .btn-upload {
+      width: 52px;
+      height: 52px;
+      border-radius: 0;
+      margin: 1px 0 0 2px;
+      transition: 0s;
+
+      &:hover {
+        transition: 0s;
+      }
+    }
   }
 }

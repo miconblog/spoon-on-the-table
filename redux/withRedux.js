@@ -82,7 +82,6 @@ export default (...args) => (Component) => {
     let loginUser = null;
 
     if (isServer && req.user) {
-      console.log('!!!!!!', isServer, loginUser);
       // for server
       try {
         await req.user.get('photo').fetch();

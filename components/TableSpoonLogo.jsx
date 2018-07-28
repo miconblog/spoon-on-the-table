@@ -1,15 +1,10 @@
 import React from 'react';
-import Router from 'next/router';
-import Link from 'next/link';
+import PrefetchLink from './PrefetchLink';
 
 const TableSpoonLogo = () => (
-  <a
-    href="/"
-    onMouseEnter={() => Router.prefetch('/')}
-    onClick={() => Router.push('/')}
-  >
+  <PrefetchLink href="/">
     <h1 className="logo-title">TableSpoon</h1>
-  </a>
+  </PrefetchLink>
 );
 
 export default TableSpoonLogo;

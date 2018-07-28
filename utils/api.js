@@ -21,16 +21,15 @@ function fetchPromise({ endpoint, params }, options = {}) {
       headers,
       credentials: 'same-origin',
     },
-    params,
+    params
   );
-
 
   console.log('fetch Promise...', endpoint, values);
 
   return fetch(endpoint, values)
     .then(checkStatus)
     .then(res => res.json())
-    .catch((ex) => {
+    .catch(ex => {
       console.log('fetch...error', ex);
     });
 }
@@ -47,7 +46,7 @@ export function makeCheckUserDuplicatedParams({ email }) {
 }
 export function checkUserDuplicated(params) {
   return fetchPromise(makeCheckUserDuplicatedParams(params)).then(
-    json => !!json.error,
+    json => !!json.error
   );
 }
 
@@ -86,7 +85,7 @@ export function makeLoginUserParams({ email, password }) {
   };
 }
 export function loginUser(params) {
-  return fetchPromise(makeLoginUserParams(params)).then((json) => {
+  return fetchPromise(makeLoginUserParams(params)).then(json => {
     if (json.error) {
       notification.error({
         message: '로그인 실패!',
@@ -105,7 +104,7 @@ export function logoutUser() {
     params: {
       method: 'POST',
     },
-  }).then((json) => {
+  }).then(json => {
     if (json.error) {
       notification.error({
         message: '로그인 실패!',
@@ -116,7 +115,6 @@ export function logoutUser() {
     return json;
   });
 }
-
 
 export function makeUpdateUserParams(id, values) {
   return {
@@ -131,7 +129,7 @@ export function makeUpdateUserParams(id, values) {
 // 유저 정보 업데이트 (인증필요)
 export function updateUser(id, values, dispatch) {
   return fetchPromise(makeUpdateUserParams(id, values))
-    .then((user) => {
+    .then(user => {
       notification.success({
         message: '프로필 정보 수정',
         description: '정상적으로 수정되었습니다.',
@@ -187,6 +185,17 @@ export function makeAddTableParams() {
 // 테이블 생성 (인증필요)
 export function addTable(options) {
   const params = makeAddTableParams();
-  console.log('---->', params);
   return fetchPromise(params, options);
+}
+
+export function loadUserProfilePhotos(options) {
+  return fetchPromise(
+    {
+      endpoint: '/api/user/profile-photos',
+      params: {
+        method: 'GET',
+      },
+    },
+    options,
+  );
 }

@@ -1,7 +1,5 @@
-import { connect } from 'react-redux';
 import React from 'react';
-import Link from 'next/link';
-import { Form, Icon, Upload, Button, message } from 'antd';
+import { Card, Row, Col, Form, Icon, Upload, Button, message } from 'antd';
 import updateUser from './updateUser';
 import './UsersEditMediaForm.less';
 
@@ -14,8 +12,16 @@ class UsersEditMediaForm extends React.Component {
     this.state = {
       loading: false,
       image: props.defaultImage,
+      photos: [...props.photos],
     };
   }
+
+  isChanged = () => {
+    const { defaultImage } = this.props;
+    const { image } = this.state;
+
+    return image !== defaultImage;
+  };
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -75,48 +81,72 @@ class UsersEditMediaForm extends React.Component {
 
     if (status === 'done') {
       this.setState({ ...response });
-      this.props.onUpload && this.props.onUpload({ ...response });
     } else if (status === 'error') {
       message.error(`${info.file.name} file upload failed.`);
     }
   };
 
+  handleChangePhoto = (photo) => {
+    this.setState({
+      image: photo.image,
+    });
+  };
+
   render() {
-    const { image, loading } = this.state;
-
-    const props = {
-      name: 'file',
-      action: '/api/file/upload',
-      data: {
-        from: 'profile',
-      },
-      withCredentials: true,
-      showUploadList: false,
-      beforeUpload: this.handleBeforeUpload,
-      onChange: this.handleChange,
-    };
-
-    const isChanged = !loading && image !== this.props.defaultImage;
+    const { photos, image, loading } = this.state;
 
     return (
-      <Form className="UsersEditMediaForm" onSubmit={this.handleSubmit}>
-        <FormItem className="PhotoFormItem">
-          <div>
-            <img
-              alt="profile photo"
-              style={{ width: '150px' }}
-              src={this.state.image}
-            />
-          </div>
-          <Upload {...props}>
-            {!isChanged && (
-              <Button disabled={loading}>
-                <Icon type={loading ? 'loading' : 'picture'} /> 사진 업로드
-              </Button>
-            )}
-          </Upload>
-        </FormItem>
-      </Form>
+      <main className="UsersEditMediaForm">
+        <Card title="프로필 사진">
+          <Row className="pannel-body" type="flex" justify="start">
+            <Col className="col-profile-image">
+              <div>
+                <img alt="profile" style={{ width: '150px' }} src={image} />
+              </div>
+              <Form onSubmit={this.handleSubmit}>
+                <FormItem className="btn-change-photo">
+                  <Button type="primary" disabled={!this.isChanged()}>
+                  프로필 사진 변경
+                  </Button>
+                </FormItem>
+              </Form>
+            </Col>
+            <Col className="col-image-list">
+              <ul>
+                {photos.map((photo, idx) => (
+                  <li
+                    key={photo.id}
+                    onClick={() => this.setState({ image: photo.image })}
+                  >
+                    <img
+                      width={50}
+                      height={50}
+                      alt={`profile ${idx + 1}`}
+                      src={photo.image}
+                    />
+                  </li>
+                ))}
+
+                <Upload
+                  name="file"
+                  action="/api/file/upload"
+                  data={{
+                    from: 'profile',
+                  }}
+                  withCredentials
+                  showUploadList={false}
+                  beforeUpload={this.handleBeforeUpload}
+                  onChange={this.handleChange}
+                >
+                  <Button disabled={loading} className="btn-upload">
+                    <Icon type={loading ? 'loading' : 'camera'} />
+                  </Button>
+                </Upload>
+              </ul>
+            </Col>
+          </Row>
+        </Card>
+      </main>
     );
   }
 }

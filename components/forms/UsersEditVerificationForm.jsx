@@ -1,6 +1,6 @@
 import React from 'react';
-import Link from 'next/link';
-import { Form, Input, Icon, Switch, Col, Button } from 'antd';
+import { Card, Row, Form, Input, Icon, Switch, Col, Button } from 'antd';
+import './UsersEditVerificationForm.less';
 
 const FormItem = Form.Item;
 
@@ -26,32 +26,24 @@ class UsersEditVerificationForm extends React.Component {
     } = this.props;
 
     return (
-      <Form onSubmit={this.handleSubmit} style={{ paddingLeft: '20px' }}>
-        <FormItem>
-          <Col span={16}>
-            <Button
-              icon="facebook"
-              className="full-width-button"
-              style={{
-                backgroundColor: '#4267b2',
-                color: '#fff',
-                height: '40px',
-              }}
-            >
-              페이스북 연동
-            </Button>
-          </Col>
-          <Col span={4} />
-          <Col span={4}>
-            <Switch
-              style={{ width: '80px' }}
-              checkedChildren="연동해제"
-              unCheckedChildren="연동하기"
-              onChange={this.handleChange}
-            />
-          </Col>
-        </FormItem>
-      </Form>
+      <main className="UsersEditVerificationForm">
+        <Card title="인증 현황">
+          <Row type="flex" justify="space-around">
+            <Col>
+              <Button icon="facebook" className="btn-facebook">
+                페이스북 연동
+              </Button>
+            </Col>
+            <Col>
+              <Switch
+                className="sw-facebook"
+                onChange={this.handleChange}
+              />
+            </Col>
+          </Row>
+          <Form onSubmit={this.handleSubmit} />
+        </Card>
+      </main>
     );
   }
 }

@@ -8,14 +8,14 @@ function getFilename(from, user) {
   const buf = crypto.randomBytes(12);
 
   switch (from) {
-    case 'profile':
-      return `${from}/${buf.toString('hex')}`;
+  case 'profile':
+    return `${from}/${buf.toString('hex')}`;
 
-    case 'table':
-      return `${from}/host-${buf.toString('hex')}`;
+  case 'table':
+    return `${from}/host-${buf.toString('hex')}`;
 
-    default:
-      return null;
+  default:
+    return null;
   }
 }
 
@@ -49,19 +49,20 @@ function up2s3(req, res, next) {
     }
 
     s3.upload(hashname, file)
-      .then(resp => {
+      .then((resp) => {
         req.s3 = {
           ...resp,
           size: parseInt(req.headers['content-length'], 10),
           mimetype,
+          tags: [fileFrom],
           originalname: filename,
         };
 
-        next();
+        return next();
       })
-      .catch(ex => next(new Error(MSG.UNKNOWN_S3)));
+      .catch(() => next(new Error(MSG.UNKNOWN_S3)));
   });
-  req.pipe(busboy);
+  return req.pipe(busboy);
 }
 
 module.exports = up2s3;

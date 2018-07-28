@@ -1,12 +1,19 @@
 const isDevelopment = process.env.NODE_ENV !== 'production';
+const Parse = require('parse/node');
 const express = require('express');
 const next = require('next');
+const { appId, serverURL } = require('../lib/env');
 const routesWithoutNext = require('./routes');
 
 const nextApp = next({ dev: isDevelopment });
 const nextHandle = nextApp.getRequestHandler();
 
+const nextUsersRouter = require('./nextRoutes/users')(nextApp);
 const authentication = require('../lib/authentication');
+
+// Parse SDK 초기화
+Parse.initialize(appId);
+Parse.serverURL = serverURL;
 
 module.exports = function() {
   return nextApp
@@ -24,38 +31,8 @@ module.exports = function() {
       });
 
       // 일반 유저 로그인 페이지
-      server.get('/users/:pageName*', authentication, (req, res) => {
-        const { pageName } = req.params;
-        const { query = {} } = req;
-        let userId = req.params[0];
-
-        if (!req.user) {
-          return res.redirect('/sign');
-        }
-
-        if (userId) {
-          userId = userId.substr(1, userId.length);
-
-          // 유저 아이디와 URL로 접근한 서브 아이디가 다르면 에러다! redirect!!
-          if (userId !== req.user.id) {
-            return res.redirect('/');
-          }
-        }
-
-        console.log('/users/pageName', req.user.toJSON());
-
-        let sectionName = query.section || 'profile';
-        if (pageName === 'edit_verification') {
-          sectionName = 'verification';
-        }
-
-        return nextApp.render(req, res, `/users/${pageName}`, {
-          pageName,
-          userId,
-          ...query,
-          section: sectionName,
-        });
-      });
+      server.get('/users/edit/:section', authentication, nextUsersRouter);
+      server.get('/users/edit', authentication, nextUsersRouter);
 
       // 호스트 전용 페이지
       server.get('/host/:pageName', authentication, (req, res) => {
