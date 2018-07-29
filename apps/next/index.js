@@ -13,7 +13,7 @@ const nextApp = next({ dev: isDevelopment });
 const nextHandle = nextApp.getRequestHandler();
 const nextUsersRouter = require('./nextRoutes/users')(nextApp);
 const nextHomeRouter = require('./nextRoutes/home')(nextApp);
-const nextBecomHostRouter = require('./nextRoutes/become-host')(nextApp);
+const nextCreateHostingRouter = require('./nextRoutes/create-table-hosting')(nextApp);
 const nextHostOnlyRouter = require('./nextRoutes/host-only')(nextApp);
 
 // Parse SDK 초기화
@@ -43,8 +43,8 @@ module.exports = function() {
       server.get('/host/:pageName', authentication, nextHostOnlyRouter);
       
       // 호스팅하기 & 테이블 등록
-      server.get('/become-a-host/:stepname', authentication, nextBecomHostRouter);
-      server.get('/become-a-host', authentication, nextBecomHostRouter);
+      server.get('/become-a-host/:stepname', authentication, nextCreateHostingRouter);
+      server.get('/become-a-host', authentication, nextCreateHostingRouter);
 
       // 메인 페이지
       server.get('/', authentication, nextHomeRouter);

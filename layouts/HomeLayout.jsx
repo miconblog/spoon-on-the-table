@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Row, Col, Avatar } from 'antd';
+import { Layout, Row, Col, Avatar, Menu, Dropdown, Icon } from 'antd';
 import HomeFooter from '../components/HomeFooter';
 import TableSpoonLogo from '../components/TableSpoonLogo';
 import PrefetchLink from '../components/PrefetchLink';
@@ -7,19 +7,39 @@ import './HomeLayout.less';
 
 const { Content, Header } = Layout;
 
+const HostMenus = (
+  <Menu className="host-menu">
+    <Menu.Item key="0">
+      <PrefetchLink href="/become-a-host">테이블 이벤트 만들기</PrefetchLink>
+    </Menu.Item>
+    <Menu.Item key="1">
+      <PrefetchLink href="/host/tables">테이블 이벤트 관리</PrefetchLink>
+    </Menu.Item>
+  </Menu>
+);
+
 const HomeLayout = ({ loginUser, children }) => {
-  console.log('HomeLayout', loginUser);
   return (
     <Layout className="HomeLayout">
       <Header className="header">
         <TableSpoonLogo />
         <Row className="nav" type="flex" justify="space-between">
-          <Col>
-            {!loginUser && <PrefetchLink href="/#about">소개</PrefetchLink>}
-          </Col>
-          <Col>
-            <PrefetchLink href="/become-a-host">호스팅하기</PrefetchLink>
-          </Col>
+          {!loginUser && (
+            <Col>
+              <PrefetchLink href="/#about">소개</PrefetchLink>
+            </Col>
+          )}
+          <Dropdown
+            trigger={['click']}
+            overlay={HostMenus}
+            placement="bottomRight"
+          >
+            <Col className="item dropdown">
+              <span className="ant-dropdown-link">
+                호스트 <Icon type="down" />
+              </span>
+            </Col>
+          </Dropdown>
           <Col>
             {loginUser ? (
               <PrefetchLink href="/users/edit">

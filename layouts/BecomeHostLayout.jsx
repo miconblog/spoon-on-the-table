@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter } from 'next/router';
 import { Layout, Row, Col, Icon, Progress } from 'antd';
 import TableSpoonLogo from '../components/TableSpoonLogo';
-import LoginUserAvatar from '../components/LoginUserAvatar';
 import PrefetchLink from '../components/PrefetchLink';
 import './BecomeHostLayout.less';
 
@@ -38,7 +37,6 @@ const BecomeHostLayout = ({ router, loginUser, step, children }) => (
               </PrefetchLink>
             );
           })}
-          <LoginUserAvatar loginUser={loginUser} />
         </Col>
       </Row>
     </Header>

@@ -11,6 +11,11 @@
 
     .nav {
       float: right;
+      color: #fff;
+
+      .item.dropdown {
+        position: relative;
+      }
   
       div {
         padding: 0 10px;
@@ -26,7 +31,7 @@
         }
 
         &:hover{
-          a {
+          a, span {
             transition: 0s;
             color: #222222;
           }
@@ -35,4 +40,8 @@
       }
     }
   }
+}
+
+.host-menu {
+  transition: 0s;
 }

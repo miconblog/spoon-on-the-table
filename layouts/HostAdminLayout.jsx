@@ -75,9 +75,6 @@ class HostAdminLayout extends React.PureComponent {
             <Row className="nav" type="flex" justify="space-between">
               <Col>
                 <Switch defaultChecked onChange={this.handleSwitchChanged} />
-                {/* <PrefetchLink className="user-photo" href="/users/edit">
-                  <Avatar src={loginUser.photo.image} />
-                </PrefetchLink> */}
               </Col>
             </Row>
           </Header>
