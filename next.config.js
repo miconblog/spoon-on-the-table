@@ -1,9 +1,10 @@
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
 const { ANALYZE } = process.env;
-const withLess = require('@zeit/next-less')
+const withLess = require('@zeit/next-less');
 
 /**
- * 클래스 스타일을 만들어 컴포넌트에 삽입하는 CSS 모듈 옵션을 ON 하려면 아래 속성을 추가해야한다. 
+ * 클래스 스타일을 만들어 컴포넌트에 삽입하는 CSS 모듈 옵션을 ON 하려면 아래 속성을 추가해야한다.
  * {
  *   cssModules: true,
  *   cssLoaderOptions: {
@@ -22,11 +23,13 @@ module.exports = withLess({
   },
   webpack(config, { dev }) {
     if (ANALYZE) {
-      config.plugins.push(new BundleAnalyzerPlugin({
-        analyzerMode: 'server',
-        analyzerPort: 8888,
-        openAnalyzer: true,
-      }));
+      config.plugins.push(
+        new BundleAnalyzerPlugin({
+          analyzerMode: 'server',
+          analyzerPort: 8888,
+          openAnalyzer: true,
+        }),
+      );
     }
 
     if (dev) {

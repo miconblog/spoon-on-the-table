@@ -1,39 +1,46 @@
 import React from 'react';
-import Link from 'next/link';
-import fetch from 'isomorphic-unfetch';
-import { Button, Divider } from 'antd';
+import { Divider } from 'antd';
 import { HomeLayout } from '../layouts';
-import { About, SiteMap } from '../components';
-import TableList from '../components/TableList';
 import { initStore } from '../redux/store';
+import About from '../components/About';
+import SiteMap from '../components/SiteMap';
+import TableList from '../components/TableList';
 import withRedux from '../redux/withRedux';
+import { loadTables } from '../utils/api';
 
-const Index = props => (
-  <HomeLayout>
-    <TableList {...props} />
-    <Divider />
-    <About />
-    <Divider />
-    <SiteMap />
-  </HomeLayout>
-);
+const Index = (props) => {
+  const { loginUser } = props;
 
-Index.getInitialProps = async function () {
-  const res = await fetch('https://api.tvmaze.com/search/shows?q=batman');
-  const data = await res.json();
+  console.log('HomeMain', loginUser);
+  return (
+    <HomeLayout loginUser={loginUser}>
+      <TableList {...props} />
+      <Divider />
+      <About />
+      <Divider />
+      <SiteMap />
+    </HomeLayout>
+  );
+};
 
-  const size = 3;
-  const rows = [];
-  const MAX_ROWS = Math.ceil(data.length / size);
+Index.getInitialProps = async function({ isServer, query, store }) {
+  let tables = [];
+  if (isServer) {
+    tables = [...query.tables];
+  } else {
+    try {
+      const res = await loadTables();
 
-  for (let i = 0; i < MAX_ROWS; ++i) {
-    rows.push(data.slice(i * size, (i + 1) * size));
+      tables = [...res.tables];
+    } catch (e) {
+      tables = [];
+    }
   }
 
   return {
-    rows,
+    tables,
+    loginUser: store.getState().loginUser,
   };
 };
 
-// Redux 스토어를 Index.props에 주입한다.
 export default withRedux(initStore)(Index);

@@ -122,12 +122,10 @@ async function createTable(req, res) {
 }
 
 async function getTables(req, res) {
-  console.log('------> get Tables...');
-
   const query = new Parse.Query(Table);
   const tables = await query.find();
 
-  res.json(tables.map(t => t.toJSON()));
+  res.json({ tables: tables.map(t => t.toJSON()) });
 }
 
 // 개인정보수정은 로그인한 본인만 할 수 있음.

@@ -1,0 +1,70 @@
+.TableList {
+  margin: 0 auto;
+  position: relative;
+  max-width: 1064px;
+  padding: 20px 0;
+
+  .head {
+    padding: 0 10px;
+  }
+
+  .ant-spin-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    //justify-content: center;
+  }
+
+  .ant-list-item {
+    width: 245px;
+    margin: 0 10px;
+
+    .ant-card-body {
+      min-height: 150px;
+      background-color: ghostwhite;
+    }
+    
+    .meta {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .event-type {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      //opacity: .9;
+    }
+
+    .date {
+      font-family: Spoqa Han Sans,sans-serif;
+      font-size: 12px;
+      font-weight: bold;
+      color: #888;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #000;
+    }
+
+    .price {
+      text-align: right;
+      position: absolute;
+      bottom: 10px;
+    }
+  }
+
+  .ant-card-cover {
+    img {
+      height: 130px;
+    }
+  }
+
+  .host-photo {
+    position: absolute;
+    top: 80px;
+    right: 15px;
+  }
+}

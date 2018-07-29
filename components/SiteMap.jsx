@@ -1,8 +1,9 @@
-import Link from 'next/link'
-import { Button, Row, Col } from 'antd'
+import React from 'react';
+import { Row, Col } from 'antd';
+import './SiteMap.less';
 
 export default () => (
-  <Row id='site-map'>
+  <Row className="SiteMap">
     <Col span={8}>
       <h4>테이블스푼</h4>
       <ul>
@@ -30,16 +31,5 @@ export default () => (
         <li>개인정보 보호정책</li>
       </ul>
     </Col>
-
-    <style jsx>{`
-      h4 {
-        font-weight: bold;
-      }
-
-      ul {
-        list-style: none;
-        padding: 0;
-      }
-    `}</style>
   </Row>
-)
+);

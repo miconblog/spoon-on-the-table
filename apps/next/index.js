@@ -1,12 +1,24 @@
 const isDevelopment = process.env.NODE_ENV !== 'production';
+const Parse = require('parse/node');
 const express = require('express');
 const next = require('next');
-const routesWithoutNext = require('./routes');
+const { appId, serverURL } = require('../lib/env');
+const authentication = require('../lib/authentication');
 
+// Express 라우터 설정 for local API
+const expressRouter = require('./routes');
+
+// Next 라우터 설정 for SSR
 const nextApp = next({ dev: isDevelopment });
 const nextHandle = nextApp.getRequestHandler();
+const nextUsersRouter = require('./nextRoutes/users')(nextApp);
+const nextHomeRouter = require('./nextRoutes/home')(nextApp);
+const nextBecomHostRouter = require('./nextRoutes/become-host')(nextApp);
+const nextHostOnlyRouter = require('./nextRoutes/host-only')(nextApp);
 
-const authentication = require('../lib/authentication');
+// Parse SDK 초기화
+Parse.initialize(appId);
+Parse.serverURL = serverURL;
 
 module.exports = function() {
   return nextApp
@@ -14,7 +26,7 @@ module.exports = function() {
     .then(() => {
       const server = express();
 
-      server.use(routesWithoutNext);
+      server.use(expressRouter);
 
       // 상세 페이지 라우팅
       server.get('/tables/:id', authentication, (req, res) => {
@@ -24,72 +36,19 @@ module.exports = function() {
       });
 
       // 일반 유저 로그인 페이지
-      server.get('/users/:pageName*', authentication, (req, res) => {
-        const { pageName } = req.params;
-        const { query = {} } = req;
-        let userId = req.params[0];
+      server.get('/users/edit/:section', authentication, nextUsersRouter);
+      server.get('/users/edit', authentication, nextUsersRouter);
 
-        if (!req.user) {
-          return res.redirect('/sign');
-        }
-
-        if (userId) {
-          userId = userId.substr(1, userId.length);
-
-          // 유저 아이디와 URL로 접근한 서브 아이디가 다르면 에러다! redirect!!
-          if (userId !== req.user.id) {
-            return res.redirect('/');
-          }
-        }
-
-        console.log('/users/pageName', req.user.toJSON());
-
-        let sectionName = query.section || 'profile';
-        if (pageName === 'edit_verification') {
-          sectionName = 'verification';
-        }
-
-        return nextApp.render(req, res, `/users/${pageName}`, {
-          pageName,
-          userId,
-          ...query,
-          section: sectionName,
-        });
-      });
-
-      // 호스트 전용 페이지
-      server.get('/host/:pageName', authentication, (req, res) => {
-        const { pageName } = req.params;
-        const { query = {} } = req;
-
-        if (!req.user) {
-          return res.redirect('/sign');
-        }
-
-        return nextApp.render(req, res, `/host-${pageName}`, {
-          pageName,
-          ...query,
-        });
-      });
-
-      // 호스팅하기
-      function becomeHost(req, res) {
-        const { stepname } = req.params;
-        const {
-          query: { step = 'index' },
-        } = req;
-
-        nextApp.render(req, res, '/become-a-host', {
-          step: stepname || step,
-          pageName: 'become-a-host',
-        });
-      }
-      server.get('/become-a-host', authentication, becomeHost);
-      server.get('/become-a-host/:stepname', authentication, becomeHost);
+      // 호스트 전용
+      server.get('/host/:pageName', authentication, nextHostOnlyRouter);
+      
+      // 호스팅하기 & 테이블 등록
+      server.get('/become-a-host/:stepname', authentication, nextBecomHostRouter);
+      server.get('/become-a-host', authentication, nextBecomHostRouter);
 
       // 메인 페이지
-      server.get('/', authentication, (req, res) => nextHandle(req, res));
-
+      server.get('/', authentication, nextHomeRouter);
+      
       // 나머지 모든 라우팅
       server.get('*', (req, res) => nextHandle(req, res));
 

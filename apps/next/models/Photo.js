@@ -9,12 +9,11 @@ class Photo extends Parse.Object {
     const json = { id: this.id };
     const attrs = ['image', 'key', 'size'];
 
-    attrs.forEach(name => {
+    attrs.forEach((name) => {
       if (this.get(name)) {
         json[name] = this.get(name);
       }
     });
-
     return json;
   }
 }

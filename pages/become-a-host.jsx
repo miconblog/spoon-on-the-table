@@ -36,7 +36,7 @@ const BecomeHost = (props) => {
   }
 
   return loginUser ? (
-    <BecomeHostLayout step={currentStep}>
+    <BecomeHostLayout loginUser={loginUser} step={currentStep}>
       <ChildComponent loginUser={loginUser} cache={tableCache} />
     </BecomeHostLayout>
   ) : (
@@ -46,11 +46,7 @@ const BecomeHost = (props) => {
   );
 };
 
-BecomeHost.getInitialProps = async ({
-  query: { step = 'index' },
-  store,
-  isServer,
-}) => {
+BecomeHost.getInitialProps = async ({ query: { step = 'index' }, store, isServer }) => {
   const { loginUser } = store.getState();
   let tableCache = null;
 
