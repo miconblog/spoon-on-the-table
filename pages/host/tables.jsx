@@ -1,6 +1,5 @@
 import React from 'react';
 import moment from 'moment';
-import fetch from 'isomorphic-unfetch';
 import { List, Breadcrumb, Card, Avatar, Icon } from 'antd';
 import { initStore } from '../../redux/store';
 import withRedux from '../../redux/withRedux';

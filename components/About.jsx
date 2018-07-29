@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import { Button } from 'antd';
 import './About.less';
 
 const About = () => (

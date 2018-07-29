@@ -12,7 +12,7 @@ module.exports = nextApp => async (req, res) => {
   } catch (ex) {
     tables = [];
   }
-  nextApp.render(req, res, '/home/main', {
+  nextApp.render(req, res, '/', {
     tables,
   });
 };

@@ -212,3 +212,12 @@ export function loadUserHostedTables(options) {
     options,
   );
 }
+
+export function loadTables() {
+  return fetchPromise({
+    endpoint: '/api/tables',
+    params: {
+      method: 'GET',
+    },
+  });
+}
