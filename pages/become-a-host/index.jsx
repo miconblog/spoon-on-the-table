@@ -1,9 +1,9 @@
 import React from 'react';
-import { initStore } from '../redux/store';
-import withRedux from '../redux/withRedux';
-import { getUserCache } from '../utils/api-for-ssr';
+import { initStore } from '../../redux/store';
+import withRedux from '../../redux/withRedux';
+import { getUserCache } from '../../utils/api-for-ssr';
 
-import { HomeLayout, BecomeHostLayout } from '../layouts';
+import { HomeLayout, BecomeHostLayout } from '../../layouts';
 import {
   Home,
   StepIndexForm,
@@ -11,9 +11,9 @@ import {
   StepLocationForm,
   StepPriceForm,
   StepCalendarForm,
-} from '../components/BecomeHost';
+} from '../../components/BecomeHost';
 
-const BecomeHost = (props) => {
+const BecomeAHost = (props) => {
   const { loginUser, step, tableCache } = props;
 
   console.log(tableCache);
@@ -46,7 +46,7 @@ const BecomeHost = (props) => {
   );
 };
 
-BecomeHost.getInitialProps = async ({ query: { step = 'index' }, store, isServer }) => {
+BecomeAHost.getInitialProps = async ({ query: { step = 'index' }, store, isServer }) => {
   const { loginUser } = store.getState();
   let tableCache = null;
 
@@ -64,4 +64,4 @@ BecomeHost.getInitialProps = async ({ query: { step = 'index' }, store, isServer
 };
 
 // High Ordered Componet 고차함수: (컴포넌트)=>랩핑컴포넌트
-export default withRedux(initStore)(BecomeHost);
+export default withRedux(initStore)(BecomeAHost);
