@@ -188,10 +188,23 @@ export function addTable(options) {
   return fetchPromise(params, options);
 }
 
+// (유저전용) 프로필 사진 가져오기
 export function loadUserProfilePhotos(options) {
   return fetchPromise(
     {
       endpoint: '/api/user/profile-photos',
+      params: {
+        method: 'GET',
+      },
+    },
+    options,
+  );
+}
+
+export function loadUserHostedTables(options) {
+  return fetchPromise(
+    {
+      endpoint: '/api/user/hosted-tables',
       params: {
         method: 'GET',
       },

@@ -21,13 +21,15 @@ function logout({ domEvent }) {
 }
 
 const menu = (
-  <Menu onClick={logout}>
-    <Menu.Item key="logout">
-      <Icon type="logout" />로그아웃
-    </Menu.Item>
-  </Menu>
+  <div>
+    <div>안녕하세요!</div>
+    <Menu>
+      <Menu.Item key="logout" onClick={logout}>
+        <Icon type="logout" />로그아웃
+      </Menu.Item>
+    </Menu>
+  </div>
 );
-
 
 export default function LoginUserAvatar(props) {
   const { loginUser } = props;
@@ -36,11 +38,7 @@ export default function LoginUserAvatar(props) {
       <div className="LoginUserAvatar">
         <Dropdown overlay={menu} trigger={['click']}>
           <span className="dropdown-trigger">
-            <Avatar
-              size="small"
-              src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"
-            />
-            <span className="host-name">{loginUser.fullName}</span>
+            <Avatar src={loginUser.photo.image} />
           </span>
         </Dropdown>
       </div>

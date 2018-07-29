@@ -5,6 +5,7 @@ const requestParse = require('../../../../lib/request-parse');
 const authentication = require('../../../../lib/authentication');
 const ParseUser = require('../../../models/User');
 const Photo = require('../../../models/Photo');
+const Table = require('../../../models/Table');
 
 const router = express.Router();
 
@@ -120,6 +121,8 @@ router.post('/create', bodyParser.json(), createUser);
 router.put('/:id', authentication, bodyParser.json(), updateUser);
 router.delete('/:id', authentication, deleteUser);
 
+
+// 프로필 사진을 가져온다.
 router.get('/profile-photos', authentication, async (req, res) => {
   const pq = new Parse.Query(Photo);
   pq.equalTo('author', req.user);
@@ -135,5 +138,23 @@ router.get('/profile-photos', authentication, async (req, res) => {
 
   res.status(200).json({ photos });
 });
+
+// 호스팅하고 있는 테이블 목록 가져오기
+router.get('/hosted-tables', authentication, async (req, res)=>{
+  const pq = new Parse.Query(Table);
+  pq.equalTo('host', req.user);
+  pq.include('photos');
+
+  let tables = [];
+  try {
+    const results = await pq.find();
+    tables = results.map(r => r.toJSON());
+  } catch (ex) {
+    tables = [];
+  }
+
+  res.status(200).json({ tables });
+});
+
 
 module.exports = router;

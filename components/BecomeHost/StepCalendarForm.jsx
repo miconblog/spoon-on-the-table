@@ -71,10 +71,7 @@ class StepCalendarForm extends React.PureComponent {
 
 
         await addTable(loginUser.sessionToken);
-
-
-        // console.log('cache', cache);
-        Router.push('/my/tables');
+        Router.push('/host/tables');
       }
     });
   };

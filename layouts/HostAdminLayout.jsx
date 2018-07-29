@@ -1,11 +1,12 @@
 import React from 'react';
-import { Layout, Menu, Icon } from 'antd';
-import LoginUserAvatar from '../components/LoginUserAvatar';
+import { withRouter } from 'next/router';
+import { Layout, Menu, Icon, Row, Col, Switch } from 'antd';
+import PrefetchLink from '../components/PrefetchLink';
 import './HostAdminLayout.less';
 
 const { Header, Sider, Content } = Layout;
 
-export default class HostAdminLayout extends React.PureComponent {
+class HostAdminLayout extends React.PureComponent {
   state = {
     collapsed: false,
   };
@@ -15,6 +16,13 @@ export default class HostAdminLayout extends React.PureComponent {
     this.setState({
       collapsed: !collapsed,
     });
+  };
+
+  handleSwitchChanged = (checked) => {
+    const { router } = this.props;
+    if (!checked) {
+      router.push('/users/edit');
+    }
   };
 
   render() {
@@ -62,7 +70,18 @@ export default class HostAdminLayout extends React.PureComponent {
               onClick={this.toggle}
             />
 
-            {loginUser && <LoginUserAvatar loginUser={loginUser} />}
+            <Row
+              className="nav"
+              type="flex"
+              justify="space-between"
+            >
+              <Col>
+                <Switch defaultChecked onChange={this.handleSwitchChanged} />
+                {/* <PrefetchLink className="user-photo" href="/users/edit">
+                  <Avatar src={loginUser.photo.image} />
+                </PrefetchLink> */}
+              </Col>
+            </Row>
           </Header>
           <Content className="Content">{children}</Content>
         </Layout>
@@ -70,3 +89,5 @@ export default class HostAdminLayout extends React.PureComponent {
     );
   }
 }
+
+export default withRouter(HostAdminLayout);

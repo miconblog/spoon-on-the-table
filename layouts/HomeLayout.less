@@ -1,0 +1,38 @@
+.HomeLayout {
+  background-color: #fff;
+
+  .header {
+    border-bottom: 1px solid #d4dadf;
+    box-shadow: 0 1px 1px 0 rgba(116, 129, 141, 0.1);
+    a, .logo-title {
+      color: #fff;
+    }
+
+
+    .nav {
+      float: right;
+  
+      div {
+        padding: 0 10px;
+        min-width: 60px;
+        text-align: center;
+        cursor: pointer;
+        
+        &:last-child {
+          margin-right: 0;
+        }
+        a {
+          transition: 0s;
+        }
+
+        &:hover{
+          a {
+            transition: 0s;
+            color: #222222;
+          }
+          background-color: #ffffff;
+        }
+      }
+    }
+  }
+}

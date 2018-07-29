@@ -32,7 +32,7 @@ class Table extends Parse.Object {
     ];
 
     attrs.forEach(name => {
-      if (this.get(name)) {
+      if (typeof this.get(name) !== 'undefined') {
         json[name] = this.get(name);
       }
     });
