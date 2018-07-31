@@ -1,4 +1,4 @@
-import Home from './Home';
+import BecomeAHost from './BecomeAHost';
 import StepIndexForm from './StepIndexForm';
 import StepMenuForm from './StepMenuForm';
 import StepLocationForm from './StepLocationForm';
@@ -6,10 +6,10 @@ import StepPriceForm from './StepPriceForm';
 import StepCalendarForm from './StepCalendarForm';
 
 export {
-  Home,
+  BecomeAHost,
   StepIndexForm,
   StepMenuForm,
   StepLocationForm,
   StepPriceForm,
-  StepCalendarForm
-}
+  StepCalendarForm,
+};

@@ -26,6 +26,7 @@ export default ({ tables }) => {
               <Avatar
                 size="large"
                 className="host-photo"
+                alt="avatar"
                 src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"
               />
 

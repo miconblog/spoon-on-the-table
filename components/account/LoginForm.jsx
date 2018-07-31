@@ -79,30 +79,6 @@ class LoginForm extends React.Component {
             로그인
           </Button>
         </FormItem>
-
-        <style jsx>
-          {`
-            .field-label {
-              display: block;
-              font-size: 15px;
-              font-weight: bold;
-              color: #4a4a4a;
-              margin-bottom: 7px;
-
-              span {
-                display: 'inline-block';
-                margin-left: 2px;
-                color: #d0021b;
-              }
-            }
-
-            .desc {
-              font-size: 12px;
-              color: #777777;
-              margin: 25px 0 7px 0;
-            }
-          `}
-        </style>
       </Form>
     );
   }

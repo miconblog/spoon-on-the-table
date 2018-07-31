@@ -1,20 +1,20 @@
 import React from 'react';
-import Router from 'next/router';
+import { withRouter } from 'next/router';
 
-const PrefetchLink = ({ children, href = '/', as = null }) => (
+const PrefetchLink = ({ children, href = '/', as = null, router }) => (
   <a
     href={as || href}
     onMouseEnter={() => {
-      Router.prefetch(href);
+      router.prefetch(href);
     }}
     onClick={(e) => {
       e.preventDefault();
       e.stopPropagation();
 
       if (as) {
-        Router.push(href, as);
+        router.push(href, as);
       } else {
-        Router.push(href);
+        router.push(href);
       }
     }}
   >
@@ -22,4 +22,4 @@ const PrefetchLink = ({ children, href = '/', as = null }) => (
   </a>
 );
 
-export default PrefetchLink;
+export default withRouter(PrefetchLink);

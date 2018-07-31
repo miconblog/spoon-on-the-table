@@ -56,6 +56,7 @@ const HostTables = props => (
                 <Avatar
                   size="large"
                   className="host-photo"
+                  alt="avatar"
                   src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"
                 />
                 <Card.Meta

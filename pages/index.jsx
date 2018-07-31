@@ -11,7 +11,6 @@ import { loadTables } from '../utils/api';
 const Index = (props) => {
   const { loginUser } = props;
 
-  console.log('HomeMain', loginUser);
   return (
     <HomeLayout loginUser={loginUser}>
       <TableList {...props} />

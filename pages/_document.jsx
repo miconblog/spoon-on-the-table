@@ -9,10 +9,11 @@ export default class MyDocument extends Document {
 
   render() {
     return (
-      <html>
+      <html lang="ko">
         <Head>
-          <title>CodingNight 🤔</title>
+          <title>CodingNight</title>
           <meta charSet="utf-8" />
+          <meta name="description" content="Share your meals and culture" />
           <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"

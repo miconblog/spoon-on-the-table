@@ -15,7 +15,7 @@ const Menus = [
   },
 ];
 
-const BecomeHostLayout = ({ router, loginUser, step, children }) => (
+const BecomeHostLayout = ({ router, step, children }) => (
   <Layout className="BecomeHostLayout responsive">
     <Header className="dark">
       <TableSpoonLogo />

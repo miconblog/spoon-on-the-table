@@ -3,7 +3,7 @@ import Link from 'next/link';
 import './About.less';
 
 const About = () => (
-  <div className="About">
+  <div id="about" className="About">
     <h2>
       <strong>TableSpoon</strong>을<br />소개합니다.
     </h2>
@@ -30,8 +30,8 @@ const About = () => (
         세상을 여행하는 또다른 방법 <strong>TableSpoon</strong>과 함께 하세요!
       </p>
     </div>
-    <Link href="/become-a-host">
-      <a className="ant-btn ant-btn-primary ant-btn-lg">호스팅하기</a>
+    <Link prefetch href="/become-a-host">
+      <a href="/become-a-host" className="ant-btn ant-btn-primary ant-btn-lg">호스팅하기</a>
     </Link>
   </div>
 );

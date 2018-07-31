@@ -21,7 +21,7 @@ function fetchPromise({ endpoint, params }, options = {}) {
       headers,
       credentials: 'same-origin',
     },
-    params
+    params,
   );
 
   console.log('fetch Promise...', endpoint, values);

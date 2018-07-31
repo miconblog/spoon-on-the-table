@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Row, Col, Avatar, Menu, Dropdown, Icon } from 'antd';
+import { Layout, Row, Col, Avatar, Menu, Dropdown, Icon, Badge } from 'antd';
 import HomeFooter from '../components/HomeFooter';
 import TableSpoonLogo from '../components/TableSpoonLogo';
 import PrefetchLink from '../components/PrefetchLink';
@@ -18,35 +18,41 @@ const HostMenus = (
   </Menu>
 );
 
-const HomeLayout = ({ loginUser, children }) => {
+const HomeLayout = ({ loginUser, children, hideIntro = false }) => {
+  const isShowIntro = !loginUser && !hideIntro;
+
   return (
     <Layout className="HomeLayout">
       <Header className="header">
         <TableSpoonLogo />
         <Row className="nav" type="flex" justify="space-between">
-          {!loginUser && (
+          {isShowIntro && (
             <Col>
-              <PrefetchLink href="/#about">소개</PrefetchLink>
+              <a href="/#about">소개</a>
             </Col>
           )}
-          <Dropdown
-            trigger={['click']}
-            overlay={HostMenus}
-            placement="bottomRight"
-          >
-            <Col className="item dropdown">
-              <span className="ant-dropdown-link">
-                호스트 <Icon type="down" />
-              </span>
-            </Col>
-          </Dropdown>
+          {loginUser && (
+            <Dropdown
+              trigger={['click']}
+              overlay={HostMenus}
+              placement="bottomRight"
+            >
+              <Col className="item dropdown">
+                <span className="ant-dropdown-link">
+                  <Badge status="processing" /> 호스트 <Icon type="down" />
+                </span>
+              </Col>
+            </Dropdown>
+          )}
           <Col>
             {loginUser ? (
               <PrefetchLink href="/users/edit">
                 <Avatar src={loginUser.photo.image} />
               </PrefetchLink>
             ) : (
-              <PrefetchLink href="/sign">가입/로그인</PrefetchLink>
+              <PrefetchLink href="/sign">
+                <a href="/sign">가입/로그인</a>
+              </PrefetchLink>
             )}
           </Col>
         </Row>
