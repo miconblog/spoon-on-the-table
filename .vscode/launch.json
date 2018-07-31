@@ -12,13 +12,7 @@
       "type": "node",
       "request": "launch",
       "name": "Next: Node",
-      "program": "${workspaceRoot}/server.js",
-      "runtimeExecutable": "node",
-      "runtimeArgs": [
-        "--inspect"
-      ],
-      "port": 9229,
-      "console": "integratedTerminal"
+      "program": "${workspaceFolder}/bin/next-server.js",
     },
     {
       // Note; this config requires node 8.4 or higher
