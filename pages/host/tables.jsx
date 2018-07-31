@@ -85,17 +85,11 @@ HostTables.getInitialProps = async function({
 
   if (!isServer) {
     const res = await loadUserHostedTables(loginUser);
-
-    console.log('---8888---', res);
-
     return {
       items: res.tables,
       loginUser,
     };
   }
-
-  console.log('---99999---', tables);
-
 
   return {
     items: tables,

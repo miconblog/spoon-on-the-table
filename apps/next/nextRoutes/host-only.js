@@ -21,8 +21,6 @@ module.exports = nextApp => async (req, res) => {
     tables = [];
   }
 
-  console.log('---host-only', tables[0].photos[0]);
-
   return nextApp.render(req, res, `/host/${pageName}`, {
     pageName,
     ...query,

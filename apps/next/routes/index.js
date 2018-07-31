@@ -8,7 +8,6 @@ const errors = require('../../lib/errors');
 const router = express.Router();
 
 function errorHandler(err, req, res, next) {
-  console.log('----', err);
 
   if (err.message) {
     const { code, message } = errors[err.message];

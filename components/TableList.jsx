@@ -1,6 +1,5 @@
 import React from 'react';
 import moment from 'moment';
-import _ from 'lodash';
 import { Card, List, Tag, Avatar } from 'antd';
 import './TableList.less';
 import 'moment/locale/ko';
@@ -8,10 +7,6 @@ import 'moment/locale/ko';
 moment.locale('ko');
 
 export default ({ tables }) => {
-  console.log(tables);
-
-  const items = _.flatten([tables, tables, tables, tables, tables]);
-
   return (
     <div className="TableList">
       <div className="head">
@@ -19,10 +14,14 @@ export default ({ tables }) => {
       </div>
       <List
         className="event-list"
-        dataSource={items}
-        renderItem={item => (
+        dataSource={tables}
+        renderItem={(item) => (
           <List.Item>
-            <Card bordered cover={<img alt="cover" src={`/image/${item.photos[0].id}`} />}>
+            <Card
+              hoverable
+              bordered
+              cover={<img alt="cover" src={`/image/${item.photos[0].id}`} />}
+            >
               <Avatar
                 size="large"
                 className="host-photo"

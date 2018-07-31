@@ -3,7 +3,6 @@ const requestParse = require('./request-parse');
 const { MSG } = require('./errors');
 
 function authentication(req, res, next) {
-  //  console.log('TODO: 인증이 필요없는 페이지는 필터해야한다...-->', req.method, req.path)
   const sessionToken = req.cookies['auth-token'];
 
   if (!sessionToken) {

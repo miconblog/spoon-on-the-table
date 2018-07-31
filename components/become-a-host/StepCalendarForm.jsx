@@ -33,7 +33,6 @@ class StepCalendarForm extends React.PureComponent {
   };
 
   componentWillUnmount = () => {
-    console.log('unmount');
     window.removeEventListener('resize', this.updateDimensions);
   };
 

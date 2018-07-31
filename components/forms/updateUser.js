@@ -19,14 +19,16 @@ export default function updateUser(id, values, dispatch) {
     body: JSON.stringify({ ...values }),
   })
     .then(checkStatus)
-    .then(res => res.json())
+    .then((res) => res.json())
     .then((user) => {
       notification.success({
         message: '프로필 정보 수정',
         description: '정상적으로 수정되었습니다.',
       });
-      dispatch
-        && dispatch({ type: 'UPDATE_LOGIN_USER', payload: { loginUser: user } });
+
+      if (dispatch) {
+        dispatch({ type: 'UPDATE_LOGIN_USER', payload: { loginUser: user } });
+      }
     })
     .catch((error) => {
       notification.success({

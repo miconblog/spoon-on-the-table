@@ -50,9 +50,7 @@ const HomeLayout = ({ loginUser, children, hideIntro = false }) => {
                 <Avatar src={loginUser.photo.image} />
               </PrefetchLink>
             ) : (
-              <PrefetchLink href="/sign">
-                <a href="/sign">가입/로그인</a>
-              </PrefetchLink>
+              <PrefetchLink href="/sign">가입/로그인</PrefetchLink>
             )}
           </Col>
         </Row>

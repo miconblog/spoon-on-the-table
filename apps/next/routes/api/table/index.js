@@ -66,8 +66,6 @@ async function createTable(req, res) {
   const { user } = req;
   const sessionToken = user.getSessionToken();
 
-  console.log('------> POST createTable...');
-
   // 유저 캐시 조회
   const query = new Parse.Query(UserCache);
   query.equalTo('member', user);

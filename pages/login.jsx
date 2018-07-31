@@ -20,12 +20,11 @@ const AccountLogin = props => (
 );
 
 AccountLogin.getInitialProps = async ({ isServer, query, res }) => {
-  console.log('----AccountLogin', isServer, query);
 
   if (!query || !query.email) {
     return res.redirect('/sign');
   }
-  
+
   return {
     email: query.email,
   };

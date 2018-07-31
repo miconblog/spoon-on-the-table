@@ -9,7 +9,7 @@ import {
   StepLocationForm,
   StepPriceForm,
   StepCalendarForm,
-} from '../../components/BecomeHost';
+} from '../../components/become-a-host';
 import { loadTableCache } from '../../utils/api';
 
 const BecomeAHostPage = (props) => {

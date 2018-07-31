@@ -24,7 +24,6 @@ class SignForm extends React.Component {
 
         try {
           const success = await checkUserDuplicated(values);
-          console.log('유저 매일 체크', success, email);
 
           if (success) {
             router.push(`/login?email=${email}`, '/login');
