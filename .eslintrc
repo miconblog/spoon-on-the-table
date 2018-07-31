@@ -29,7 +29,8 @@
     "space-before-function-paren":"off",
     "object-curly-newline":"off",
     "jsx-a11y/click-events-have-key-events":"off",
-    "jsx-a11y/no-noninteractive-element-interactions":"off"
+    "jsx-a11y/no-noninteractive-element-interactions":"off",
+    "arrow-parens":"off"
   },
   "settings": {
     "react": {
