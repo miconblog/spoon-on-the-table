@@ -15,6 +15,14 @@ export default ({ tables }) => {
       <List
         className="event-list"
         dataSource={tables}
+        grid={{
+          gutter: 15,
+          xs: 1,
+          sm: 2,
+          md: 3,
+          lg: 3,
+          xl: 4,
+        }}
         renderItem={(item) => (
           <List.Item>
             <Card
