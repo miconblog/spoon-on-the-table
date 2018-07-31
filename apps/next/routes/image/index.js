@@ -13,6 +13,8 @@ async function resizeImage(req, res) {
   if (photo) {
     const key = photo.get('key');
     const image = await s3.readFile(key);
+    res.setHeader('Expires', new Date(Date.now() + 2592000000).toUTCString());
+    res.setHeader('Cache-Control', 'public, max-age=2592000');
     res.send(image);
   } else {
     res.send('');

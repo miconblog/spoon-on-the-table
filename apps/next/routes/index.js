@@ -1,4 +1,5 @@
 const express = require('express');
+const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const apiRouter = require('./api');
 const imageRouter = require('./image');
@@ -16,6 +17,9 @@ function errorHandler(err, req, res, next) {
 
   return next(err);
 }
+
+// GZIP
+router.use(compression());
 
 // 쿠키 파서
 router.use(cookieParser());
