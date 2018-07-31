@@ -37,10 +37,10 @@ async function getUserCache(req, res) {
   return res.json({ data: cache.toJSON() });
 }
 
-async function saveUserTableCache(req, res) {
+async function updateUserCache(req, res) {
   const {
     user,
-    body: { table, test = false },
+    body: { table, tablePhotos, hasPhoto = false },
   } = req;
   const sessionToken = user.getSessionToken();
 
@@ -51,8 +51,8 @@ async function saveUserTableCache(req, res) {
   const cache = await query.first({ sessionToken });
   cache.set('table', table);
 
-  if (test) {
-    cache.set('test', test);
+  if (hasPhoto) {
+    cache.set('tablePhotos', tablePhotos);
   }
 
   await cache.save(null, {
@@ -73,7 +73,8 @@ async function createTable(req, res) {
   query.equalTo('member', user);
   const cache = await query.first({ sessionToken });
   // 테이블 캐시 유효성 확인
-  const tableCache = cache.get('table');
+  const table = cache.get('table');
+  let photos = cache.get('tablePhotos');
   const isValid = [
     'title',
     'alcohol',
@@ -85,17 +86,16 @@ async function createTable(req, res) {
     'minPerson',
     'maxPerson',
     'nearBy',
-    'photos',
     'price',
-  ].every(attr => typeof tableCache[attr] !== 'undefined');
+  ].every((attr) => typeof table[attr] !== 'undefined');
 
   // 테이블 정보 유효성 확인
-  if (!isValid || tableCache.photos.length === 0) {
+  if (!isValid || photos.length === 0) {
     return res.json({ error: { message: 'invalid process' } });
   }
 
   // 사진은 최소 한장.
-  tableCache.photos = tableCache.photos.map(p => ({
+  photos = photos.map((p) => ({
     objectId: p.id,
     __type: 'Pointer',
     className: 'Photo',
@@ -105,33 +105,35 @@ async function createTable(req, res) {
   const {
     address,
     location: { lat, lng },
-  } = tableCache.nearBy;
-  tableCache.address = address;
-  tableCache.geoPoint = new Parse.GeoPoint([lat, lng]);
-  delete tableCache.nearBy;
+  } = table.nearBy;
+  table.address = address;
+  table.geoPoint = new Parse.GeoPoint([lat, lng]);
+  delete table.nearBy;
+  delete table.step;
 
   // 테이블 만들기
-  const table = new Table(user);
-  await table.save({ ...tableCache }, { sessionToken });
+  const tableEvent = new Table(user);
+  await tableEvent.save({ ...table, photos }, { sessionToken });
 
   // 테이블 캐시 삭제
   cache.set('table', {});
+  cache.set('tablePhotos', []);
   await cache.save(null, { sessionToken });
 
-  return res.json(table.toJSON());
+  return res.json(tableEvent.toJSON());
 }
 
 async function getTables(req, res) {
   const query = new Parse.Query(Table);
   const tables = await query.find();
 
-  res.json({ tables: tables.map(t => t.toJSON()) });
+  res.json({ tables: tables.map((t) => t.toJSON()) });
 }
 
 // 개인정보수정은 로그인한 본인만 할 수 있음.
 router.get('/', getTables);
 router.post('/', authentication, createTable);
 router.get('/temporary', authentication, getUserCache);
-router.put('/temporary', authentication, bodyParser.json(), saveUserTableCache);
+router.put('/temporary', authentication, bodyParser.json(), updateUserCache);
 
 module.exports = router;

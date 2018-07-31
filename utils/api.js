@@ -21,15 +21,15 @@ function fetchPromise({ endpoint, params }, options = {}) {
       headers,
       credentials: 'same-origin',
     },
-    params,
+    params
   );
 
   console.log('fetch Promise...', endpoint, values);
 
   return fetch(endpoint, values)
     .then(checkStatus)
-    .then(res => res.json())
-    .catch(ex => {
+    .then((res) => res.json())
+    .catch((ex) => {
       console.log('fetch...error', ex);
     });
 }
@@ -46,7 +46,7 @@ export function makeCheckUserDuplicatedParams({ email }) {
 }
 export function checkUserDuplicated(params) {
   return fetchPromise(makeCheckUserDuplicatedParams(params)).then(
-    json => !!json.error
+    (json) => !!json.error
   );
 }
 
@@ -66,7 +66,7 @@ export function makeRegisterUserParams({ email, password }) {
 }
 export function registerUser(params) {
   return fetchPromise(makeRegisterUserParams(params))
-    .then(json => !!json.error)
+    .then((json) => !!json.error)
     .catch(() => {
       notification.success({
         message: '회원가입 실패!',
@@ -85,7 +85,7 @@ export function makeLoginUserParams({ email, password }) {
   };
 }
 export function loginUser(params) {
-  return fetchPromise(makeLoginUserParams(params)).then(json => {
+  return fetchPromise(makeLoginUserParams(params)).then((json) => {
     if (json.error) {
       notification.error({
         message: '로그인 실패!',
@@ -104,7 +104,7 @@ export function logoutUser() {
     params: {
       method: 'POST',
     },
-  }).then(json => {
+  }).then((json) => {
     if (json.error) {
       notification.error({
         message: '로그인 실패!',
@@ -129,7 +129,7 @@ export function makeUpdateUserParams(id, values) {
 // 유저 정보 업데이트 (인증필요)
 export function updateUser(id, values, dispatch) {
   return fetchPromise(makeUpdateUserParams(id, values))
-    .then(user => {
+    .then((user) => {
       notification.success({
         message: '프로필 정보 수정',
         description: '정상적으로 수정되었습니다.',
@@ -147,45 +147,57 @@ export function updateUser(id, values, dispatch) {
     });
 }
 
-export function makeSaveTableCacheParams(values) {
-  return {
-    endpoint: '/api/tables/temporary',
-    params: {
-      method: 'PUT',
-      body: JSON.stringify({ ...values }),
-    },
-  };
-}
 // 테이블 임시저장 (인증필요)
 export function saveTableCache(values, options) {
-  return fetchPromise(makeSaveTableCacheParams(values), options);
+  return fetchPromise(
+    {
+      endpoint: '/api/tables/temporary',
+      params: {
+        method: 'PUT',
+        body: JSON.stringify({ ...values }),
+      },
+    },
+    options
+  );
 }
 
-export function makeDeletePhotoParams(id) {
-  return {
-    endpoint: `/api/file/${id}`,
-    params: {
-      method: 'DELETE',
+// 임시저장값 불러오기 (인증필요)
+export function loadTableCache(options) {
+  return fetchPromise(
+    {
+      endpoint: '/api/tables/temporary',
+      params: {
+        method: 'GET',
+      },
     },
-  };
+    options
+  );
 }
+
 // 사진 삭제 (인증필요)
 export function deletePhoto(id, options) {
-  return fetchPromise(makeDeletePhotoParams(id), options);
+  return fetchPromise(
+    {
+      endpoint: `/api/file/${id}`,
+      params: {
+        method: 'DELETE',
+      },
+    },
+    options
+  );
 }
 
-export function makeAddTableParams() {
-  return {
-    endpoint: '/api/tables',
-    params: {
-      method: 'POST',
-    },
-  };
-}
 // 테이블 생성 (인증필요)
 export function addTable(options) {
-  const params = makeAddTableParams();
-  return fetchPromise(params, options);
+  return fetchPromise(
+    {
+      endpoint: '/api/tables',
+      params: {
+        method: 'POST',
+      },
+    },
+    options
+  );
 }
 
 // (유저전용) 프로필 사진 가져오기
@@ -197,10 +209,11 @@ export function loadUserProfilePhotos(options) {
         method: 'GET',
       },
     },
-    options,
+    options
   );
 }
 
+// (호스트 전용) 호스트가 등록한 테이블 이벤트 불러오기
 export function loadUserHostedTables(options) {
   return fetchPromise(
     {
@@ -209,10 +222,11 @@ export function loadUserHostedTables(options) {
         method: 'GET',
       },
     },
-    options,
+    options
   );
 }
 
+// (일반) 등록된 테이블 이벤트 모두 불러오기
 export function loadTables() {
   return fetchPromise({
     endpoint: '/api/tables',

@@ -12,7 +12,7 @@ class UserCache extends Parse.Object {
     }
   }
 
-  toJSON(attrs = ['table', 'test']) {
+  toJSON(attrs = ['table', 'tablePhotos']) {
     const json = { id: this.id };
 
     attrs.forEach(name => {

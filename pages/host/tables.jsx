@@ -10,7 +10,7 @@ import './HostManageEvent.less';
 
 moment.locale('ko');
 
-const HostTables = props => (
+const HostTables = (props) => (
   <HostAdminLayout {...props}>
     <div className="HostManageEvent">
       <div className="PageHeader">
@@ -40,12 +40,14 @@ const HostTables = props => (
             xxl: 3,
           }}
           dataSource={props.items}
-          renderItem={item => (
+          renderItem={(item) => (
             <List.Item>
               <Card
                 bordered
                 style={{ width: '100%' }}
-                cover={<img alt="example" src={`/image/${item.photos[0].id}`} />}
+                cover={
+                  <img alt="example" src={`/image/${item.photos[0].id}`} />
+                }
                 actions={[
                   <span>
                     <Icon type="picture" /> 2
@@ -80,17 +82,23 @@ HostTables.getInitialProps = async function({
   query: { tables },
 }) {
   const { loginUser } = store.getState();
-  let items = [];
 
-  if (isServer) {
-    items = tables;
-  } else {
+  if (!isServer) {
     const res = await loadUserHostedTables(loginUser);
-    items = res.tables;
+
+    console.log('---8888---', res);
+
+    return {
+      items: res.tables,
+      loginUser,
+    };
   }
 
+  console.log('---99999---', tables);
+
+
   return {
-    items,
+    items: tables,
     loginUser,
   };
 };

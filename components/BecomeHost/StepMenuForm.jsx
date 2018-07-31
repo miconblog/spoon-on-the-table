@@ -10,29 +10,26 @@ const { Option } = Select;
 class StepMenuForm extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       loading: false,
-      photos: props.cache.table.photos || [],
+      photos: props.cache.tablePhotos || [],
     };
   }
 
   handleChangePhotos = async (photos) => {
     const {
-      cache,
       loginUser: { sessionToken },
     } = this.props;
-    await saveTableCache({ table: { ...cache.table, photos } }, sessionToken);
-    // this.setState({ photos });
+    await saveTableCache({ tablePhotos: photos, hasPhoto: true }, sessionToken);
   };
 
   handleDeletePhoto = async (file, photos) => {
     const {
-      cache,
       loginUser: { sessionToken },
     } = this.props;
-    await saveTableCache({ table: { ...cache.table, photos } }, sessionToken);
+    await saveTableCache({ tablePhotos: photos, hasPhoto: true }, sessionToken);
     await deletePhoto(file.id, { sessionToken });
-    // this.setState({ photos });
   };
 
   handleSubmit = (e) => {
@@ -45,16 +42,12 @@ class StepMenuForm extends React.Component {
 
     validateFields(async (err, values) => {
       if (!err) {
-        const { photos } = this.state;
         const clone = { ...values };
-        clone.photos = [...photos];
-
-        console.log(cache.table, clone);
 
         this.setState({ loading: true });
         await saveTableCache(
           { table: { ...cache.table, ...clone } },
-          loginUser.sessionToken,
+          loginUser.sessionToken
         );
         Router.push('/become-a-host?step=location', '/become-a-host/location');
       }
@@ -104,7 +97,7 @@ class StepMenuForm extends React.Component {
               <Input.TextArea
                 rows={5}
                 placeholder="메뉴에 대한 설명을 자유롭게 넣어주세요."
-              />,
+              />
             )}
           </FormItem>
 
@@ -129,7 +122,7 @@ class StepMenuForm extends React.Component {
                 <Option value="include,share">
                   주류가 포함되어 있지만 가지고 오셔서 나눠마셔도 됩니다.
                 </Option>
-              </Select>,
+              </Select>
             )}
           </FormItem>
 

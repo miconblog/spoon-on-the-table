@@ -1,7 +1,6 @@
 import React from 'react';
 import { initStore } from '../../redux/store';
 import withRedux from '../../redux/withRedux';
-import { getUserCache } from '../../utils/api-for-ssr';
 import { HomeLayout, BecomeHostLayout } from '../../layouts';
 import {
   BecomeAHost,
@@ -11,9 +10,10 @@ import {
   StepPriceForm,
   StepCalendarForm,
 } from '../../components/BecomeHost';
+import { loadTableCache } from '../../utils/api';
 
 const BecomeAHostPage = (props) => {
-  const { loginUser, step, tableCache } = props;
+  const { loginUser, step, cache } = props;
 
   let ChildComponent = StepIndexForm;
   let currentStep = 1;
@@ -34,7 +34,7 @@ const BecomeAHostPage = (props) => {
 
   return loginUser ? (
     <BecomeHostLayout loginUser={loginUser} step={currentStep}>
-      <ChildComponent loginUser={loginUser} cache={tableCache} />
+      <ChildComponent loginUser={loginUser} cache={cache} />
     </BecomeHostLayout>
   ) : (
     <HomeLayout hideIntro>
@@ -44,22 +44,25 @@ const BecomeAHostPage = (props) => {
 };
 
 BecomeAHostPage.getInitialProps = async ({
-  query: { step = 'index' },
+  query: { step = 'index', cache },
   store,
   isServer,
 }) => {
   const { loginUser } = store.getState();
-  let tableCache = null;
 
-  if (loginUser) {
-    const { sessionToken } = loginUser;
-    const response = await getUserCache('table', { isServer, sessionToken });
-    tableCache = { ...response.data };
+  // 클라이언트 라우팅이면 서버에 임시 저장한 값을 다시 불러온다.
+  if (!isServer) {
+    const res = await loadTableCache(loginUser);
+    return {
+      step,
+      cache: res.data,
+      loginUser,
+    };
   }
 
   return {
     step,
-    tableCache,
+    cache,
     loginUser,
   };
 };

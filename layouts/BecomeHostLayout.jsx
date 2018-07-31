@@ -6,16 +6,7 @@ import PrefetchLink from '../components/PrefetchLink';
 import './BecomeHostLayout.less';
 
 const { Header, Content } = Layout;
-const Menus = [
-  {
-    href: '/host/tables',
-    as: '/host/tables',
-    title: '호스트',
-    icon: 'solution',
-  },
-];
-
-const BecomeHostLayout = ({ router, step, children }) => (
+const BecomeHostLayout = ({ step, children }) => (
   <Layout className="BecomeHostLayout responsive">
     <Header className="dark">
       <TableSpoonLogo />
@@ -26,17 +17,9 @@ const BecomeHostLayout = ({ router, step, children }) => (
         style={{ maxWidth: '1000px', margin: '0 auto' }}
       >
         <Col>
-          {Menus.map(({ href, as, title, icon }) => {
-            const style = {
-              color: router.pathname === href ? 'red' : 'black',
-            };
-
-            return (
-              <PrefetchLink key={title} style={style} href={href} as={as}>
-                <Icon type={icon} /> {title}
-              </PrefetchLink>
-            );
-          })}
+          <PrefetchLink href="/">
+            <Icon type="close" /> 취소
+          </PrefetchLink>
         </Col>
       </Row>
     </Header>

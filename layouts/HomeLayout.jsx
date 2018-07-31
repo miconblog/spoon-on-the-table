@@ -10,10 +10,10 @@ const { Content, Header } = Layout;
 const HostMenus = (
   <Menu className="host-menu">
     <Menu.Item key="0">
-      <PrefetchLink href="/become-a-host">테이블 이벤트 만들기</PrefetchLink>
+      <PrefetchLink href="/become-a-host">새로운 이벤트 만들기</PrefetchLink>
     </Menu.Item>
     <Menu.Item key="1">
-      <PrefetchLink href="/host/tables">테이블 이벤트 관리</PrefetchLink>
+      <PrefetchLink href="/host/tables">예약 관리하기</PrefetchLink>
     </Menu.Item>
   </Menu>
 );
@@ -39,7 +39,7 @@ const HomeLayout = ({ loginUser, children, hideIntro = false }) => {
             >
               <Col className="item dropdown">
                 <span className="ant-dropdown-link">
-                  <Badge status="processing" /> 호스트 <Icon type="down" />
+                  <Badge status="processing" /> 호스트
                 </span>
               </Col>
             </Dropdown>
