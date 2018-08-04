@@ -1,49 +1,64 @@
 # Spoon on the table
 
+Parse-Server + Next.js + React 구조의 SSR 프로젝트
+
 ## 오늘 다룰 내용
 
 ## Todo List
 
 > v 완료, 0 진행중, - 고민중
 
+- [ ] 상세페이지 보기
 - [ ] Storybook 설정
-  - [ ] 페이스북으로 연결해서 로그인하면 회원가입페이지로 이동한다.
-- [0] 회원가입 페이지
+- [ ] 소셜 인증: 페이스북으로 연결해서 로그인하면 회원가입페이지로 이동한다.
+- [ ] 회원 이메일 인증
   - [ ] 회원가입후 메일이 유효한지 확인하는 메일을 보낸다.
   - [ ] 회원가입후 로그아웃 시켜준다. (메일이 유효하지 않으면 로그인을 시켜주지 않는다. 에러메시지로 확인을 보내줌..) / 정책문제
-- [ ] 홈 페이지
-- [0] 호스팅하기 페이지
-- [ ] 나의 테이블 생성 페이지
-- [ ] 프로필 페이지
-  - [0] 프로필 이미지를 수정할 수 있다.
-- [0] 객체를 커스텀해서 toJSON 함수 오버라이딩하기
 - [ ] 결제모듈 붙이기
-
-## 방송분량
-
-- [ ] 테스트 코드 정리하는 방송
-- [ ] eslint + prettier + husky + lint-staged 설정
-  - [ ] deprecated eslint-plugin-class-property@1.1.0: please use eslint-plugin-babel and babel/semi
-- [ ] /image/:photoId?size=xxx 형태로 던지면 원하는 형태로 리사이즈한다.
-- [ ] next.js 6.0 변경사항 리뷰
-- [ ] 구글 지도 SDK를 이용해 컴포넌트 직접 구현하기
-- [ ] Next.js <Link prefect> 와 Routing API를 이용해 prefetch 하기
-
-### 나중에 확장해야 할 기능
-
 - [ ] 지역, 시간, 좌석수로 검색하기
 - [ ] 홈스테이 호스트 추가하기
 - [ ] 지도에서 검색하기
-- [ ] 포맷터 다시 만들어 공유하기 (율무님 요청사항)
-- [ ] 통합테스트와 유닛테스트 분리: 의미없는 테스트 제거
+
+## 방송 주제
+
+- [ ] Jest와 Enzyme 테스트 환경 정리
+  - 테스트란 무엇인가?
+  - 우리는 무엇을 테스트 할것인가?
+  - 코드 커버리지와 분기 커버리지
+  - 커버리지 리포트
+  - 통합테스트와 유닛테스트 분리: 의미없는 테스트 제거
+
+- [ ] 커밋전에 스타일 통일하기
+  - 이런게 왜 필요하냐? --> 스타일가지고 싸우지 좀 마!
+  - eslint + prettier + husky + lint-staged 설정
+  - deprecated eslint-plugin-class-property@1.1.0: please use eslint-plugin-babel and babel/semi
+  - 포맷터 만들어 공유하기
+  - AirBnB 와 ESLint 스타일 가이드 (빡시다 다 따를 필욘없다.)
+  - 에디터와 포맷팅을 맞추는것도 중요하다.
+
+- [ ] 이미지 서버 만들기
+  - 이런 서버가 왜 필요해?
+  - 리사이즈 /image/:photoId?size=xxx 형태로 던지면 원하는 형태로 리사이즈한다.
+  - 오리엔테이션 바로 잡기
+  - 매번 호출할때마다 하면 비효율이다 캐시하자! 아니 새로 저장하자!
+
+- [ ] Next.js 의 프리패칭
+  - 프리패칭이란?
+  - 뭐가 좋아?
+  - 하는 방법은? with Link, Routing API
+
+- [ ] 배포 자동화
+  - githook 받기
+  - 빌드 서버
+  - 배포 환경은 어떻게 해야하나?
+  - 테라포밍
 
 ## 초기 프로젝트 설정
 
 프로젝트는 Node.js 기반의 Express 서버에 PaserServer와 PaserDashboard를 일단 붙여놨다.
 React Server-Side 랜더링을 위해서 After.js를 선택했다가 다시 Next.js로 변경했다.
 
-After.js는 Next.js에 React-Router를 붙인 개념으로 이해하면된다. 하지만 아직은 설정에 허들이 많아서 삽질하다가 접었다.
-쓰다보니 Next.js 훨씬 간편했다.
+After.js는 Next.js에 React-Router를 붙인 개념으로 이해하면된다. 하지만 아직은 설정에 허들이 많아서 삽질하다가 접었다. 쓰다보니 Next.js 훨씬 간편했다.
 
 폴더구조는 Next.js가 추구하는 방향 그대로 따랐다.
 
