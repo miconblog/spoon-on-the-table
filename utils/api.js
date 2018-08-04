@@ -35,24 +35,19 @@ function fetchPromise({ endpoint, params }, options = {}) {
 }
 
 // 이메일 중복확인
-export function makeCheckUserDuplicatedParams({ email }) {
-  return {
+export function checkUserDuplicated({ email }) {
+  return fetchPromise({
     endpoint: '/api/user/duplicate',
     params: {
       method: 'POST',
       body: JSON.stringify({ email }),
     },
-  };
-}
-export function checkUserDuplicated(params) {
-  return fetchPromise(makeCheckUserDuplicatedParams(params)).then(
-    (json) => !!json.error
-  );
+  }).then((json) => !!json.error);
 }
 
 // 회원가입
-export function makeRegisterUserParams({ email, password }) {
-  return {
+export function registerUser({ email, password }) {
+  return fetchPromise({
     endpoint: '/api/user/create',
     params: {
       method: 'POST',
@@ -62,10 +57,7 @@ export function makeRegisterUserParams({ email, password }) {
         password,
       }),
     },
-  };
-}
-export function registerUser(params) {
-  return fetchPromise(makeRegisterUserParams(params))
+  })
     .then((json) => !!json.error)
     .catch(() => {
       notification.success({
@@ -76,16 +68,13 @@ export function registerUser(params) {
 }
 
 // 로그인
-export function makeLoginUserParams({ email, password }) {
-  return {
+export function loginUser({ email, password }) {
+  return fetchPromise({
     endpoint: `/api/login?username=${email}&password=${password}`,
     params: {
       method: 'GET',
     },
-  };
-}
-export function loginUser(params) {
-  return fetchPromise(makeLoginUserParams(params)).then((json) => {
+  }).then((json) => {
     if (json.error) {
       notification.error({
         message: '로그인 실패!',
@@ -116,19 +105,15 @@ export function logoutUser() {
   });
 }
 
-export function makeUpdateUserParams(id, values) {
-  return {
+// 유저 정보 업데이트 (인증필요)
+export function updateUser(id, values, dispatch) {
+  return fetchPromise({
     endpoint: `/api/user/${id}`,
     params: {
       method: 'PUT',
       body: JSON.stringify({ ...values }),
     },
-  };
-}
-
-// 유저 정보 업데이트 (인증필요)
-export function updateUser(id, values, dispatch) {
-  return fetchPromise(makeUpdateUserParams(id, values))
+  })
     .then((user) => {
       notification.success({
         message: '프로필 정보 수정',

@@ -21,12 +21,12 @@ describe('with google sdk hoc', () => {
     sinon.spy(GoogleMap.prototype, 'componentDidMount');
 
     expect(isCalled).toBeFalsy();
-    const wapper = mount(<GoogleMap />);
+    mount(<GoogleMap />);
     expect(isCalled).toBeTruthy();
 
     expect(GoogleMap.prototype.componentDidMount).toHaveProperty(
       'callCount',
-      1,
+      1
     );
     GoogleMap.prototype.componentDidMount.restore();
   });

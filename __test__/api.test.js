@@ -3,9 +3,6 @@ import {
   makeRegisterUserParams,
   makeLoginUserParams,
   makeUpdateUserParams,
-  makeSaveTableCacheParams,
-  makeDeletePhotoParams,
-  makeAddTableParams,
 } from './api';
 import { _getUserCache } from './api-for-ssr';
 

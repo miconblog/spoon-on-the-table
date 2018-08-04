@@ -2,67 +2,40 @@
 
 ## 오늘 다룰 내용
 
-- 프로필 이미지를 수정할 수 있다.
-
 ## Todo List
 
 > v 완료, 0 진행중, - 고민중
 
-- [v] 프로젝트 스켓폴딩 (SSR with Next.js or After.js)
-- [v] antd 설정
 - [ ] Storybook 설정
-- [v] 로그인/가입 페이지
-  - [v] 중복확인 응답 코드는 중복되면 492 / 중복되어 있지 않으면 200
-  - [v] 이메일을 입력하면 서버에 등록된 이메일이 있는지 /api/v1/user/dupl?email=xxxx 를 던져본다.
-  - [v] 중복메일이 아니면 가입 페이지로 이동한다.
-  - [v] 중복메일이면 로그인 페이지로 이동한다.
-  - [v] 로그인 페이지로 이동할때 중복이 확인된 이메일을 물고 넘어가야한다. (Route.push의 as와 getInitialProps를 응용 )
   - [ ] 페이스북으로 연결해서 로그인하면 회원가입페이지로 이동한다.
 - [0] 회원가입 페이지
-  - [v] 회원가입 페이지의 폼을 완성해서 회원가입 버튼을 누르면 회원가입이 되어야한다.
   - [ ] 회원가입후 메일이 유효한지 확인하는 메일을 보낸다.
   - [ ] 회원가입후 로그아웃 시켜준다. (메일이 유효하지 않으면 로그인을 시켜주지 않는다. 에러메시지로 확인을 보내줌..) / 정책문제
-- [v] 로그인 페이지
-  - [v] 로그인 페이지에서 비밀번호를 입력하고 로그인 버튼을 누르면 로그인이 되야한다.
-  - [v] 로그인 이후에 저장된 데이터를 가지고 헤더에 로그인된 이메일이 보여야한다.
-  - [v] 로그인후에 로그아웃을 누르면 로그아웃 되야한다.
 - [ ] 홈 페이지
-- [v] 세션정보 유지를 위해서 Redux 적용
-- [v] ESLint 및 VSCode 디버거 설정
 - [0] 호스팅하기 페이지
-  - [v] 호스팅하기 페이지는 로그인 유무에 따라서 테이블 설정과 가입하기 버튼이 생김
 - [ ] 나의 테이블 생성 페이지
-- [v] AWS S3에 파일 업로드하는 모듈 만들기
 - [ ] 프로필 페이지
   - [0] 프로필 이미지를 수정할 수 있다.
 - [0] 객체를 커스텀해서 toJSON 함수 오버라이딩하기
-- [v] 인증쿠키 좀더 쉽게 변경하기
-
-## Bug List
-
-- [v] 처음 페이지를 내려줄때 스타일이 만들어지지 않는 문제 있음.
+- [ ] 결제모듈 붙이기
 
 ## 방송분량
 
+- [ ] 테스트 코드 정리하는 방송
 - [ ] eslint + prettier + husky + lint-staged 설정
   - [ ] deprecated eslint-plugin-class-property@1.1.0: please use eslint-plugin-babel and babel/semi
 - [ ] /image/:photoId?size=xxx 형태로 던지면 원하는 형태로 리사이즈한다.
 - [ ] next.js 6.0 변경사항 리뷰
 - [ ] 구글 지도 SDK를 이용해 컴포넌트 직접 구현하기
-
-
-
-
-
+- [ ] Next.js <Link prefect> 와 Routing API를 이용해 prefetch 하기
 
 ### 나중에 확장해야 할 기능
 
 - [ ] 지역, 시간, 좌석수로 검색하기
 - [ ] 홈스테이 호스트 추가하기
 - [ ] 지도에서 검색하기
-- [v] VSCode 디버거 설정
-- [v] 테스트 코드 작성하기
 - [ ] 포맷터 다시 만들어 공유하기 (율무님 요청사항)
+- [ ] 통합테스트와 유닛테스트 분리: 의미없는 테스트 제거
 
 ## 초기 프로젝트 설정
 
@@ -113,10 +86,9 @@ Ant Design의 스타일 설정을 필요한 부분만 뽑아서 하려니 좀 �
 
 ## 트러블 슈팅
 
-### 1. 다른 페이지로 라우팅할때 데이터를 함께 넘기는 방법
+### 1. Nextjs 에서 라우팅할때 데이터를 함께 넘기는 방법
 
 ```javascript
-
 Router.push(href, as, { shallow: true })
 
 ```
@@ -151,8 +123,7 @@ const WrappedLoginForm = Form.create({
 
 - [global-state](https://ant.design/components/form/#components-form-demo-global-state)
 
-
-### 4. Paser.Promise
+### 4. Parse.Promise 의 함수 시그니처
 
 ```javascript
 
@@ -175,10 +146,9 @@ SDK로 로그인하면 기본적으로 localStorage에 세션 정보(세션토�
 
 #### 2. REST API를 이용하는 방법
 
-NodeJS 서버를 이용할 경우 SDK를 이용하는 것보다 /login 엔드포인트를 만들고 직접 REST API를 호출하는 것이 비교적 안전하다. (키값 노출이 없다.)
+NodeJS 서버를 이용할 경우 SDK를 이용하는 것보다 GET /api/login 엔드포인트를 만들고 직접 REST API를 호출하는 것이 비교적 안전하다. (키값 노출이 없다.)
 
 다만, REST API로 구현하면 웹 클라이언트 쪽으로 쿠키를 이용해 토큰을 내려주고, 요청을 받을때 쿠키에 박힌 토큰을 보고 유저를 직접 판단해야한다.
-
 
 ### 6. Ajax 응답으로 쿠키(set-cookie) 설정하기
 
@@ -191,13 +161,20 @@ NodeJS 서버를 이용할 경우 SDK를 이용하는 것보다 /login 엔드포
 - [sending-cookies](https://github.com/github/fetch#sending-cookies)
 - [withcredentials](https://xhr.spec.whatwg.org/#the-withcredentials-attribute)
 
-
 ## 7. 서버 라우팅과 클라이언트 라우팅
 
-SSR 이후에 이동하는 모든 링크는 클라이언트 라우팅으로 이동해야 속도가 빠르다. 그렇지않고 서버를 한번 거치면 모든걸 새로 받기 때문에 그만큼 느리다. 링크 이동시 브라우저 타이틀에 새로고침 표시가 되는지 항상 주시하고 새로고침된다면 링크를 PrefetchLink로 변경한다.
+SSR 이후에 이동하는 모든 링크는 클라이언트 라우팅으로 이동해야 속도가 빠르다. 그렇지않고 서버를 한번 거치면 모든걸 새로 받기 때문에 그만큼 느리다. 링크 이동시 브라우저 타이틀에 새로고침 표시가 되는지 항상 주시하고 클라이언트 라우팅이 될수있도록 <Link> 나 Routing API 를 이용한다.
+
+보다 나은 성능을 위해서는 prefetch를 기본으로 사용한다. 단, DEV 모드에선 동작하지 않는다.
 
 ## 8. 처음 SSR 로드할때 스타일(styled-jsx)이 만들어 지지 않는 문제
 
 일단 [styled-jsx는 서버 랜더링이 되지 않는다.](https://github.com/zeit/next.js#built-in-css-support) 따라서 이 문제를 해결하려면 스타일을 직접 삽입하거나 sass, less 같은 프리 컴파일 프로세서를 이용해서 삽입해야한다.
 
 주의할점! pages/_document.js 에서는 컴파일 스타일이 적용되지 않는다.
+
+## 9. Jest + Enzyme 환경 설정
+
+[Jest는 기본적으로 jsdom 환경](https://jestjs.io/docs/en/configuration#testenvironment-string)에서 동작하기때문에 node 환경에서 동작하려면 ```testEnvironment: 'node'```로 설정을 변경해야한다.
+
+이렇게 Jest를 node 환경으로 변경하면 Enzyme 같이 DOM 을 필요로 하는 녀석들은 jsdom 환경을 직접 만들어줘야한다. 자세한 설정은 /__test__/setupTest.js 파일을 참고한다.
