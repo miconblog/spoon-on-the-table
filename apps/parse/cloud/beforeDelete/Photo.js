@@ -1,5 +1,5 @@
-const Parse = require('parse/node');
-const s3 = require('../../../lib/aws-s3');
+// const Parse = require('parse/node');
+// const s3 = require('../../../lib/aws-s3');
 
 /**
  * 사진을 지우기 전에 S3 서버에 이미지도 같이 지운다.

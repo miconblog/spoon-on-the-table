@@ -1,4 +1,4 @@
-const Parse = require('parse/node');
+// const Parse = require('parse/node');
 
 Parse.Cloud.define('events', async (request, response) => {
   const query = new Parse.Query('Table');

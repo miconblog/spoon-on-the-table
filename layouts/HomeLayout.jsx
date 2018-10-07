@@ -5,7 +5,7 @@ import TableSpoonLogo from '../components/TableSpoonLogo';
 import PrefetchLink from '../components/PrefetchLink';
 import './HomeLayout.less';
 
-const { Content, Header } = Layout;
+const { Content, Header, Footer } = Layout;
 
 const HostMenus = (
   <Menu className="host-menu">
@@ -55,7 +55,9 @@ const HomeLayout = ({ loginUser, children, hideIntro = false }) => {
           </Col>
         </Row>
       </Header>
-      <Content>{children}</Content>
+      <Layout>
+        <Content>{children}</Content>
+      </Layout>
       <HomeFooter
         style={{
           backgroundColor: '#fff',

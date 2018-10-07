@@ -19,7 +19,7 @@ export default class MyDocument extends Document {
             content="initial-scale=1.0, width=device-width"
           />
           <link rel="stylesheet" href="/antd/antd.min.css" />
-          <link rel="stylesheet" href="/_next/static/style.css" />
+          {/* <link rel="stylesheet" href="/_next/static/style.css" /> */}
         </Head>
         <body className="coding-night">
           <Main id="test" />
