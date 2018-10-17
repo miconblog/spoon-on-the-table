@@ -124,7 +124,6 @@ async function createTable(req, res) {
 async function getTables(req, res) {
   const query = new Parse.Query(Table);
   const tables = await query.find();
-
   res.json({ tables: tables.map((t) => t.toJSON()) });
 }
 

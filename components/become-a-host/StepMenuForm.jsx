@@ -3,6 +3,7 @@ import Router from 'next/router';
 import { Form, Input, Button, Select, Row, Col } from 'antd';
 import PhotoList from './PhotoList';
 import { saveTableCache, deletePhoto } from '../../utils/api';
+import constants from '../constants';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -110,18 +111,10 @@ class StepMenuForm extends React.Component {
               ],
             })(
               <Select>
-                <Option value="none">
-                  주류는 포함되어 있지않습니다. (반입금지)
-                </Option>
-                <Option value="share">
-                  주류는 포함되어 있지않으나 가지고 오시면 같이 마셔야 합니다.
-                </Option>
-                <Option value="include">
-                  주류가 포함되어 있으므로 따로 가지고 오지마세요.
-                </Option>
-                <Option value="include,share">
-                  주류가 포함되어 있지만 가지고 오셔서 나눠마셔도 됩니다.
-                </Option>
+                <Option value="none">{constants.alcohol.none}</Option>
+                <Option value="share">{constants.alcohol.share}</Option>
+                <Option value="include">{constants.alcohol.include}</Option>
+                <Option value="include,share">{constants.alcohol['include,share']}</Option>
               </Select>
             )}
           </FormItem>

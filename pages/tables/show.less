@@ -1,0 +1,130 @@
+.TablePage {
+  background-color: #fff;
+
+  .header {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .body {
+    display: table;
+    margin: 0 auto;
+    padding-top: 30px;
+    max-width: 1080px;
+    width: 1080px;
+
+    .left {
+      float: left;
+      width: 60%;
+      padding-right: 30px;
+
+      .event-type {
+        color: rgb(145, 107, 3);
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: 800;
+      }
+
+      .table-summary {
+        padding: 24px 0;
+        font-size: 16px;
+        border-bottom: 1px solid #ebebeb;
+
+        .ant-row {
+          padding-bottom: 16px;
+
+          > div:first-child {
+            font-weight: bold;
+          }
+        }
+
+        .guest-limits {
+          div {
+            display: inline-block;
+
+            &:first-child {
+              margin-right: 20px;
+            }
+          }
+        }
+      }
+
+      .table-menu {
+        padding: 24px 0;
+        font-size: 16px;
+        border-bottom: 1px solid #ebebeb;
+      }
+
+      .table-host {
+        padding: 24px 0;
+        font-size: 16px;
+        border-bottom: 1px solid #ebebeb;
+      }
+
+      .host-review {
+        padding: 24px 0;
+        font-size: 16px;
+      }
+    }
+
+    .right {
+      float: left;
+      top: 30px;
+      width: 412px;
+      position: sticky;
+
+      .ticket-box {
+        border: 1px solid #ebebeb;
+        padding: 16px 24px 24px 24px;
+
+        .ant-btn {
+          width: 100%;
+          height: 50px;
+        }
+      }
+
+      .event-location {
+        border: 1px solid #ebebeb;
+        margin-top: 32px;
+
+        .explain-box {
+          padding: 24px 24px 12px 24px;
+          font-size: 16px;
+          border-bottom: 1px solid #ebebeb;
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          p {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+
+  .table-title {
+    font-weight: 800;
+    margin: 0px;
+    word-wrap: break-word;
+    font-size: 32px;
+    line-height: 36px;
+    letter-spacing: normal;
+    font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
+      Helvetica Neue, sans-serif;
+    text-transform: undefined;
+    color: #484848;
+    padding-top: 6px;
+    padding-bottom: 6px;
+
+    h1 {
+      color: inherit;
+      font-size: 1em;
+      font-weight: inherit;
+      line-height: inherit;
+      margin: 0px;
+      padding: 0px;
+    }
+  }
+}

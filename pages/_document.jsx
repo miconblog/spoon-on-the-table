@@ -11,7 +11,6 @@ export default class MyDocument extends Document {
     return (
       <html lang="ko">
         <Head>
-          <title>CodingNight</title>
           <meta charSet="utf-8" />
           <meta name="description" content="Share your meals and culture" />
           <meta

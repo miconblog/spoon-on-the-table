@@ -13,6 +13,7 @@ const nextApp = next({ dev: isDevelopment });
 const nextHandle = nextApp.getRequestHandler();
 const nextUsersRouter = require('./nextRoutes/users')(nextApp);
 const nextHomeRouter = require('./nextRoutes/home')(nextApp);
+const nextTableDetainRouter = require('./nextRoutes/table-detail')(nextApp);
 const nextCreateHostingRouter = require('./nextRoutes/create-table-hosting')(nextApp);
 const nextHostOnlyRouter = require('./nextRoutes/host-only')(nextApp);
 
@@ -29,11 +30,7 @@ module.exports = function() {
       server.use(expressRouter);
 
       // 상세 페이지 라우팅
-      server.get('/tables/:id', authentication, (req, res) => {
-        nextApp.render(req, res, '/post', {
-          id: req.params.id,
-        });
-      });
+      server.get('/tables/:id', authentication, nextTableDetainRouter);
 
       // 일반 유저 로그인 페이지
       server.get('/users/edit/:section', authentication, nextUsersRouter);
@@ -41,14 +38,14 @@ module.exports = function() {
 
       // 호스트 전용
       server.get('/host/:pageName', authentication, nextHostOnlyRouter);
-      
+
       // 호스팅하기 & 테이블 등록
       server.get('/become-a-host/:stepname', authentication, nextCreateHostingRouter);
       server.get('/become-a-host', authentication, nextCreateHostingRouter);
 
       // 메인 페이지
       server.get('/', authentication, nextHomeRouter);
-      
+
       // 나머지 모든 라우팅
       server.get('*', (req, res) => nextHandle(req, res));
 
