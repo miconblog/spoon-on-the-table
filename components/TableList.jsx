@@ -1,11 +1,20 @@
 import React from 'react';
 import moment from 'moment';
 import Link from 'next/link';
-import { Card, List, Tag, Avatar } from 'antd';
+import { Rate, List, Tag, Avatar, Row, Col } from 'antd';
 import './TableList.less';
 import 'moment/locale/ko';
+import BlurImage from './shared/BlurImage';
 
 moment.locale('ko');
+const MyRate = ({ value, ...rest }) => {
+  let myValue = value;
+  if (myValue < Math.ceil(myValue)) {
+    myValue = Math.floor(myValue) + 0.5;
+  }
+
+  return <Rate {...rest} value={myValue} />;
+};
 
 export default ({ tables }) => {
   console.log(tables);
@@ -13,49 +22,59 @@ export default ({ tables }) => {
   return (
     <div className="TableList">
       <div className="head">
-        <h2>테이블</h2>
+        <h2>금주의 테이블</h2>
       </div>
       <List
         className="event-list"
         dataSource={tables}
         grid={{
-          gutter: 15,
-          xs: 1,
-          sm: 2,
-          md: 3,
-          lg: 3,
-          xl: 4,
+          xs: 1, // 24 < 576
+          sm: 2, // 12 >= 576
+          md: 3, // 8 >= 768
+          lg: 4, // 6 >= 992
+          xl: 4, // 24를 5등분하기 어려움. >= 1200
+          xxl: 6, // >= 1600
         }}
         renderItem={(item) => (
           <List.Item>
             <Link href={`/tables/${item.id}`}>
-              <Card
-                hoverable
-                bordered
-                cover={<img alt="cover" src={`/image/${item.photos[0].id}`} />}
-              >
-                <Avatar
-                  size="large"
-                  className="host-photo"
-                  alt="avatar"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"
-                />
+              <div className="list-item">
+                <BlurImage url={`/image/${item.photos[0].id}`} />
 
-                <Tag color="orange" className="event-type">
-                  {item.eventType.toUpperCase()}
-                </Tag>
+                <div className="item-content">
+                  <Avatar
+                    size="large"
+                    className="host-photo"
+                    alt="avatar"
+                    src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"
+                  />
 
-                <div className="meta">
-                  <div className="date">
-                    {moment(item.startDate).format('LL')} ~{' '}
-                    {moment(item.endDate).format('LL')}
-                  </div>
+                  <Row type="flex" justify="space-between">
+                    <Col>
+                      <span className="event-type">
+                        <Tag>{item.eventType.toUpperCase()}</Tag>
+                      </span>
+                    </Col>
+                    <Col className="price">
+                      <span>
+                        무료
+                        {/* 1인당 <strong>{item.price}</strong> */}
+                      </span>
+                    </Col>
+                  </Row>
 
                   <div className="title">{item.title}</div>
 
-                  <div className="price">무료</div>
+                  <div className="sub-title">
+                    {item.address.replace('대한민국', '')}
+                  </div>
+
+                  <div className="review">
+                    <span>4.8</span> <MyRate disabled allowHalf value={4.8} />{' '}
+                    <span>20</span>
+                  </div>
                 </div>
-              </Card>
+              </div>
             </Link>
           </List.Item>
         )}

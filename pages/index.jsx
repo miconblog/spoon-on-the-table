@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider } from 'antd';
+import { Divider, Input } from 'antd';
 import { HomeLayout } from '../layouts';
 import { initStore } from '../redux/store';
 import About from '../components/About';
@@ -13,6 +13,18 @@ const Index = (props) => {
 
   return (
     <HomeLayout loginUser={loginUser}>
+      <div>
+        <Input.Search style={{ width: '320px' }} />
+      </div>
+      <Divider />
+      <div>날짜, 인원 옵션</div>
+      <Divider />
+      <div>
+        <h3>검색 결과 없음</h3>
+        <p>검색 결과가 없습니다.</p>
+
+        <Divider />
+      </div>
       <TableList {...props} />
       <Divider />
       <About />

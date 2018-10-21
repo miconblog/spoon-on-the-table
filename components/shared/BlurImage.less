@@ -1,0 +1,37 @@
+.BlurImage {
+  padding-top: 66.6667%;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAADCAIAAADUVFKvAAAAOUlEQVQIHWPMLErj42KXFJcSFFQ0MdZnrG1o1OBllpUSOvPoi4KcCOP6eS0CwhJbD56+8+xbnJ8VABzHD2XdcEizAAAAAElFTkSuQmCC');
+  background-size: 100% 100%;
+  overflow: hidden;
+  contain: strict;
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+
+  .target-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+
+    .frame {
+      position: relative;
+      width: 100%;
+      height: 100%;
+
+      .backgroud-image {
+        position: absolute;
+        background-size: cover;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
