@@ -17,6 +17,14 @@ export const reducer = (state, { type, payload }) => {
       },
     };
 
+  case 'SHOW_MARKER_MAP':
+    return {
+      ...state,
+      ...{
+        showMarkerMap: payload
+      }
+    };
+
   default:
     return state;
   }

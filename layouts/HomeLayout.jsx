@@ -1,11 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Layout, Row, Col, Avatar, Menu, Dropdown, Icon, Badge } from 'antd';
 import HomeFooter from '../components/HomeFooter';
 import TableSpoonLogo from '../components/TableSpoonLogo';
 import PrefetchLink from '../components/PrefetchLink';
 import './HomeLayout.less';
 
-const { Content, Header, Footer } = Layout;
+const { Content, Header } = Layout;
 
 const HostMenus = (
   <Menu className="host-menu">
@@ -18,12 +19,18 @@ const HostMenus = (
   </Menu>
 );
 
-const HomeLayout = ({ loginUser, children, hideIntro = false }) => {
+const HomeLayout = ({
+  loginUser,
+  children,
+  hideIntro = false,
+  sticky = false,
+}) => {
   const isShowIntro = !loginUser && !hideIntro;
+  const headerClass = sticky ? 'header sticky' : 'header';
 
   return (
     <Layout className="HomeLayout">
-      <Header className="header">
+      <Header className={headerClass}>
         <TableSpoonLogo />
         <Row className="nav" type="flex" justify="space-between">
           {isShowIntro && (
@@ -68,4 +75,9 @@ const HomeLayout = ({ loginUser, children, hideIntro = false }) => {
   );
 };
 
-export default HomeLayout;
+function mapStateToProps (state) {
+  const { showMarkerMap } = state;
+  return { sticky: showMarkerMap };
+}
+
+export default connect(mapStateToProps)(HomeLayout);

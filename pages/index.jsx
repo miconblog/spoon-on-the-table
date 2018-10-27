@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Input } from 'antd';
+import { connect } from 'react-redux';
 import { HomeLayout } from '../layouts';
 import { initStore } from '../redux/store';
 import About from '../components/About';
@@ -7,29 +7,33 @@ import SiteMap from '../components/SiteMap';
 import TableList from '../components/TableList';
 import withRedux from '../redux/withRedux';
 import { loadTables } from '../utils/api';
+// import TableEventSearch from '../components/shared/TableEventSearch';
+import TableEventSearchOption from '../components/shared/TableEventSearchOption';
+import TableEventSearchResult from '../components/shared/TableEventSearchResult';
+import MarkerMap from '../components/shared/MarkerMap';
 
 const Index = (props) => {
-  const { loginUser } = props;
+  const { loginUser, dispatch, showMarkerMap = false } = props;
+
+  console.log(props);
 
   return (
     <HomeLayout loginUser={loginUser}>
-      <div>
-        <Input.Search style={{ width: '320px' }} />
-      </div>
-      <Divider />
-      <div>날짜, 인원 옵션</div>
-      <Divider />
-      <div>
-        <h3>검색 결과 없음</h3>
-        <p>검색 결과가 없습니다.</p>
+      {/* <TableEventSearch sticky /> */}
+      <TableEventSearchOption
+        onChangeMapSwitch={(flag) => dispatch({ type: 'SHOW_MARKER_MAP', payload: flag })
+        }
+      />
 
-        <Divider />
+      <div className={showMarkerMap ? 'with-map' : ''}>
+        <TableEventSearchResult />
+        <TableList {...props} />
+        <About />
+        <SiteMap />
       </div>
-      <TableList {...props} />
-      <Divider />
-      <About />
-      <Divider />
-      <SiteMap />
+      <div className={showMarkerMap ? 'map-container' : 'map-container hide'}>
+        <MarkerMap mapCenter={{ lat: -25.363, lng: 131.044 }} />
+      </div>
     </HomeLayout>
   );
 };
@@ -54,4 +58,9 @@ Index.getInitialProps = async function({ isServer, query, store }) {
   };
 };
 
-export default withRedux(initStore)(Index);
+function mapStateToProps(state) {
+  const { showMarkerMap } = state;
+  return { showMarkerMap };
+}
+
+export default withRedux(initStore)(connect(mapStateToProps)(Index));
