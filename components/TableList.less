@@ -1,10 +1,6 @@
 .TableList {
   padding: 20px;
 
-  @media (min-width: 992px) {
-    padding: 20px 80px;
-  }
-
   .head {
     padding: 0 10px;
   }
@@ -79,6 +75,10 @@
     }
   }
 
+  @media (min-width: 992px) {
+    padding: 20px 80px;
+  }
+
   @media (min-width: 1500px) {
     .ant-col-xxl-4 {
       width: 20%;
@@ -90,4 +90,33 @@
       width: 16%;
     }
   }
+}
+
+.with-map .TableList {
+  padding: 20px;
+
+  @media (min-width: 768px) {
+    .ant-col-md-8 {
+      width: 50%;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .ant-col-md-4 {
+      width: 33%;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .ant-col-lg-6 {
+      width: 33%;
+    }
+  }
+
+  @media (min-width: 1500px) {
+    .ant-col-xxl-4 {
+      width: 25%;
+    }
+  }
+
 }

@@ -16,28 +16,26 @@ const MyRate = ({ value, ...rest }) => {
   return <Rate {...rest} value={myValue} />;
 };
 
-export default ({ tables }) => {
-  console.log(tables);
-
-  return (
-    <div className="TableList">
-      <div className="head">
-        <h2>금주의 테이블</h2>
-      </div>
-      <List
-        className="event-list"
-        dataSource={tables}
-        grid={{
-          xs: 1, // 24 < 576
-          sm: 2, // 12 >= 576
-          md: 3, // 8 >= 768
-          lg: 4, // 6 >= 992
-          xl: 4, // 24를 5등분하기 어려움. >= 1200
-          xxl: 6, // >= 1600
-        }}
-        renderItem={(item) => (
-          <List.Item>
-            <Link href={`/tables/${item.id}`}>
+const TableList = ({ tables }) => (
+  <div className="TableList">
+    <div className="head">
+      <h2>금주의 테이블</h2>
+    </div>
+    <List
+      className="event-list"
+      dataSource={tables}
+      grid={{
+        xs: 1, // 24 < 576
+        sm: 2, // 12 >= 576
+        md: 3, // 8 >= 768
+        lg: 4, // 6 >= 992
+        xl: 4, // 24를 5등분하기 어려움. >= 1200
+        xxl: 6, // >= 1600
+      }}
+      renderItem={(item) => (
+        <List.Item>
+          <Link href={`/tables/show?id=${item.id}`}>
+            <a href={`/tables/show?id=${item.id}`} style={{ display: 'block' }}>
               <div className="list-item">
                 <BlurImage url={`/image/${item.photos[0].id}`} />
 
@@ -57,7 +55,7 @@ export default ({ tables }) => {
                     </Col>
                     <Col className="price">
                       <span>
-                        무료
+                      무료
                         {/* 1인당 <strong>{item.price}</strong> */}
                       </span>
                     </Col>
@@ -75,10 +73,12 @@ export default ({ tables }) => {
                   </div>
                 </div>
               </div>
-            </Link>
-          </List.Item>
-        )}
-      />
-    </div>
-  );
-};
+            </a>
+          </Link>
+        </List.Item>
+      )}
+    />
+  </div>
+);
+
+export default TableList;
