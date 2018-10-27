@@ -127,8 +127,22 @@ async function getTables(req, res) {
   res.json({ tables: tables.map((t) => t.toJSON()) });
 }
 
+async function getTable(req, res) {
+  const query = new Parse.Query(Table);
+
+  query.equalTo('objectId', req.params.id);
+  query.include(['photos', 'host']);
+
+  const table = await query.first();
+  console.log(table, req.params.id);
+  console.log(table.toJSON());
+  res.json({ table: table.toJSON() });
+}
+
+
 // 개인정보수정은 로그인한 본인만 할 수 있음.
 router.get('/', getTables);
+router.get('/:id', getTable);
 router.post('/', authentication, createTable);
 router.get('/temporary', authentication, getUserCache);
 router.put('/temporary', authentication, bodyParser.json(), updateUserCache);

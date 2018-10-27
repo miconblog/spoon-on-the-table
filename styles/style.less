@@ -76,6 +76,31 @@ main {
   padding: 20px;
 }
 
+.with-map {
+  width: 66%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+}
+
+.map-container {
+  position: fixed;
+  width: 34%;
+  left: auto;
+  right: 0;
+  bottom: 0;
+  top: 126px;
+
+  &.hide {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+}
+
 .responsive {
   .header {
     min-width: 320px;

@@ -30,7 +30,7 @@ module.exports = function() {
       server.use(expressRouter);
 
       // 상세 페이지 라우팅
-      server.get('/tables/:id', authentication, nextTableDetainRouter);
+      server.get('/tables/show', authentication, nextTableDetainRouter);
 
       // 일반 유저 로그인 페이지
       server.get('/users/edit/:section', authentication, nextUsersRouter);

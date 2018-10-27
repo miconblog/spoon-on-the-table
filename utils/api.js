@@ -224,7 +224,7 @@ export function loadTables() {
 // (일반) 등록된 테이블 이벤트 모두 불러오기
 export function loadTableById(id) {
   return fetchPromise({
-    endpoint: `/api/table/:${id}`,
+    endpoint: `/api/tables/${id}`,
     params: {
       method: 'GET',
     },

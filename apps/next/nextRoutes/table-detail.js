@@ -2,7 +2,7 @@ const Parse = require('parse/node');
 const Table = require('../models/Table');
 
 module.exports = (nextApp) => async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.query;
   const { query = {} } = req;
 
   // 조회한다.
