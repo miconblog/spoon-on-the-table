@@ -1,3 +1,5 @@
+/* eslint no-underscore-dangle: ["error", { "allow": ["__REDUX_DEVTOOLS_EXTENSION__"] }] */
+
 import { createStore } from 'redux';
 
 // 리듀서
@@ -21,8 +23,8 @@ export const reducer = (state, { type, payload }) => {
     return {
       ...state,
       ...{
-        showMarkerMap: payload
-      }
+        showMarkerMap: payload,
+      },
     };
 
   default:
@@ -30,10 +32,13 @@ export const reducer = (state, { type, payload }) => {
   }
 };
 
-export const initStore = (initialState = {}) => createStore(
-  reducer,
-  initialState,
-  typeof window !== 'undefined' && window.devToolsExtension
-    ? window.devToolsExtension()
-    : (f) => f,
-);
+export const initStore = function(initialState = {}) {
+  return createStore(
+    reducer,
+    initialState,
+    typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
+      ? window.__REDUX_DEVTOOLS_EXTENSION__
+          && window.__REDUX_DEVTOOLS_EXTENSION__()
+      : (f) => f
+  );
+};
